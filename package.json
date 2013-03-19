@@ -1,0 +1,27 @@
+{
+  "name": "cwrap",
+  "version": "0.0.0",
+  "description": "Wrap software modules with a C interface",
+  "main": "main.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "amdefine": ">=0.0.4"
+  },
+  "devDependencies": {
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jpgygax68/node-cwrap.git"
+  },
+  "keywords": [
+    "c", "interface", "wrap"
+  ],
+  "author": "Jean-Pierre Gygax <gygax@practicomp.ch>",
+  "license": "MIT"
+}
