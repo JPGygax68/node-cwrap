@@ -13,9 +13,9 @@ fs.read('./test/lsdisplay2.h')
   else warn('This header file does not appear to have a guard against multiple inclusion');
   
   // Function declarations
-  var re = /^(?!#)((?:[ \t\n]*\w+)(?:[ \t\n]+\w+)+)(\w+)\s*\([^\)]*\) *;/gm, m; //[ \t]*(\w*)[ \t]*\(([^,](?:,[^,)])*\) *;/gm, m;
+  var re = /^(?!#)((?:[ \t\n]*\b\w+)(?:[ \t\n]+\b\w+)+)[ \t\n]*(\b\w+)[ \t\n]*\(([^\)]*)\)[ \t\n]*;/gm, m;
   while ((m = re.exec(content)) !== null) {
-    log('Function signature found:', m[0]);
+    log('Function signature found:', m[1], ' | ', m[2], ' | ', m[3]);
   }
 });
 
@@ -26,5 +26,5 @@ function log(msg) {
 }
 
 function warn(msg) {
-  console.warn(msg);
+  console.warn.apply(this, arguments);
 }

@@ -430,7 +430,8 @@ EXPORT int __cdecl lsdspRenderDebugOutput();
 	1 = an die Debug-Ausgabe schicken (sichtbar im Debugger)
 	2 = an das Debug-Fenster schicken (Ausgabe mit lsdspRenderDebugOutput)
 	*/
-EXPORT int __cdecl lsdspOpenGLErrorReporting(int option);
+EXPORT int __cdecl 
+lsdspOpenGLErrorReporting(int option);
 
 // DESKTOP WINDOW MANAGER TIMING ---------------------------------------------
 
