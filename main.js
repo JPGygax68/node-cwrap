@@ -49,7 +49,7 @@ fs.read('./test/lsdisplay2.h')
   
   // Function declarations (m[1] = before name, m[2] = name, m[3] = parameters (without parens) )
   // TODO: function trailer (const'ness, new-style return type specification)
-  var re = /^(?!#)((?:[ \t\n]*\b\w+)(?:[ \t\n]+\b\w+)+)[ \t\n]*(\b\w+)[ \t\n]*\(([^\)]*)\)[ \t\n]*;/gm, m;
+  var re = /^(?!#)((?:[ \t\n]*(?:\b(?:\w+)|\*))+)[ \t\n]*(\b\w+)[ \t\n]*\(([^\)]*)\)[ \t\n]*;/gm, m;
   log('\nFunction signatures:');
   log(  '-------------------');
   while ((m = re.exec(content)) !== null) {
@@ -58,7 +58,7 @@ fs.read('./test/lsdisplay2.h')
     if (func !== null) { intf_desc.functions[m[2]] = func; }
   }
   
-  log(intf_desc);
+  log(JSON.stringify(intf_desc, null, '\t'));
   
   //----
   
@@ -90,7 +90,7 @@ fs.read('./test/lsdisplay2.h')
     }
     header = header.trim();
     var func = new cintfdesc.Function();
-    func.retval = cintfdesc.Parameter.parse(header);
+    func.retval = cintfdesc.Parameter.parse(header, true);
     return func;
   }
   

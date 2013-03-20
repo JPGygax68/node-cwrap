@@ -8,6 +8,32 @@ if (typeof define !== 'function') { var define = require('amdefine')(module); }
 define( [  ],
 function(  ) {
 
+  //--- Regular expressions ---
+  
+  var RE_WHITESPACE = '[ \\t\\n]*';
+  var RE_OPT_WS     = '[ \\t\\n]*';
+  var RE_WORD       = '(\\b\\w+\\b)';
+  
+  function re_strip(re) { 
+    var s = re.toString();
+    var p = s.lastIndexOf('/'); 
+    return s.slice(1, p); 
+  }
+  
+  RegExp.concat = function(parts, separator, head, tail) {
+    if (separator instanceof RegExp) separator = re_strip(separator);
+    if (head      instanceof RegExp) head      = re_strip(head);
+    if (tail      instanceof RegExp) tail      = re_strip(tail);
+    head = head || '';
+    tail = tail || '';
+    return new RegExp( head + parts.map(function(el) { return el instanceof RegExp ? re_strip(el): el; }).join(separator) + tail );
+  }
+  
+  RegExp.optional = function(expr) {
+    if (expr instanceof RegExp) expr = re_strip(expr);
+    return new RegExp( '(?:' + expr + ')?' );
+  }
+  
   /** Module.
    */
   function Module() {
@@ -23,27 +49,57 @@ function(  ) {
   /** Parameter class (used for input parameters, output parameters, and return values).
    */
   function Parameter() {
-    this.elem_type = '';              /* type of element(s) being passed */
-    this.constness = Parameter.VARIABLE;
-    this.access    = Parameter.BY_VALUE;
+    //this.base_type = '';              /* type of element(s) being passed */
+    //this.constness = 0;
+    //this.access    = 0;
   }
   
   /* Const'ness */
-  Parameter.VARIABLE = 0;
-  Parameter.CONSTANT = 1;
+  Parameter.VARIABLE = 1;
+  Parameter.CONSTANT = 2;
   
   /* Access */
   Parameter.BY_VALUE   = 1;
   Parameter.BY_POINTER = 2;
   Parameter.BY_ARRAY   = 3;     // the data is organized in an array (of known/knowable size)
+    
+  Parameter.parse = (function() {
   
+    var re = RegExp.concat( [ 
+        '(const)?', 
+        RE_WORD, 
+        '(\\*)?',
+        RE_WORD+'?',
+        RegExp.optional( RegExp.concat( [/\[/, RE_WORD, /\]/], RE_OPT_WS ) )
+      ]
+      , RE_OPT_WS, '^', '$' );
   
-  Parameter.parse = function(desc) {
-    var p = new Parameter();
-    var parts = desc.split(/\b *\b/).map( function(el) { return el.trim(); } );
-    if (parts[0] === 'const') { parts.shift(); p.constness = Parameter.CONSTANT; }
-    //console.log('Parameter parts: ', parts);
-    return p;
+    return function(desc, nameless) {
+      console.log('Parameter.parse('+desc+')');
+      var param = new Parameter();
+      param.constness = Parameter.CONSTANT;
+      var m = re.exec(desc);
+      if (!m) throw new Error('Parameter syntax error: failed to parse "'+desc+'"');
+      if (m[1] === 'const') param.constness = Parameter.CONSTANT;
+      if (!m[2]) throw new Error('Parameter syntax error: missing base type name');
+      param.base_type = m[2];
+      if (m[3] === '*') param.access = Parameter.BY_POINTER;
+      if (typeof m[4] !== 'undefined') {
+        if (parseInt(m[4]) !== 0) param.access = BY_ARRAY;
+        param.size = m[4];
+      }
+      return param;
+    }
+  }) ();
+
+  Parameter.prototype.toString = function() {
+    var parts = [];
+    if (this.constness === Parameter.CONSTANT) parts.push('const');
+    parts.push(this.elem_type);
+    parts.push(this.name);
+    if      (this.access === Parameter.BY_ARRAY  ) parts.push('[' + parts.size + ']');
+    else if (this.access === Parameter.BY_POINTER) parts.push('*');
+    return parts.join(' ');
   }
   
   /** Public interface */
