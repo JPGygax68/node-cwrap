@@ -91,6 +91,7 @@ fs.read('./test/lsdisplay2.h')
     header = header.trim();
     var func = new cintfdesc.Function();
     func.retval = cintfdesc.Parameter.parse(header, true);
+    // TODO: process parameters
     return func;
   }
   

@@ -14,23 +14,17 @@ function(  ) {
   var RE_OPT_WS     = '[ \\t\\n]*';
   var RE_WORD       = '(\\b\\w+\\b)';
   
-  function re_strip(re) { 
-    var s = re.toString();
-    var p = s.lastIndexOf('/'); 
-    return s.slice(1, p); 
-  }
-  
   RegExp.concat = function(parts, separator, head, tail) {
-    if (separator instanceof RegExp) separator = re_strip(separator);
-    if (head      instanceof RegExp) head      = re_strip(head);
-    if (tail      instanceof RegExp) tail      = re_strip(tail);
+    if (separator instanceof RegExp) separator = separator.source;
+    if (head      instanceof RegExp) head      = head.source;
+    if (tail      instanceof RegExp) tail      = tail.source;
     head = head || '';
     tail = tail || '';
-    return new RegExp( head + parts.map(function(el) { return el instanceof RegExp ? re_strip(el): el; }).join(separator) + tail );
+    return new RegExp( head + parts.map(function(el) { return el instanceof RegExp ? el.source : el; }).join(separator) + tail );
   }
   
   RegExp.optional = function(expr) {
-    if (expr instanceof RegExp) expr = re_strip(expr);
+    if (expr instanceof RegExp) expr = expr.source;
     return new RegExp( '(?:' + expr + ')?' );
   }
   
