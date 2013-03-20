@@ -3,9 +3,12 @@
 var cintfdesc = require("./cintfdesc");
 var fs        = require("q-io/fs");
 
-var FUNCTION_HEADERS = [
-  // Only consider functions marked for exportation
-  { pattern: /^ *EXPORT\b/gm, predicate: function(matches) { return !!matches; } },
+// Returning false discard the function
+// Returning a string replaces the header string
+// What is left after all checkers have been executed is either empty or the return type of the function
+var FUNCTION_HEADER_CHECKERS = [
+  { pattern: /^EXPORT\b *(.*)$/gm, predicate: function(m) { return m ? m[1] : false; } },
+  { pattern: /^((?:.|\n)*)__cdecl *$/gm, predicate: function(m) { if (m) return m[1]; } }
 ];
 
 var intf_desc = {
@@ -34,7 +37,7 @@ fs.read('./test/lsdisplay2.h')
   }
   
   // Regular constants
-  var re = /^ *(?:static const|const static) +(\b[a-zA-Z]\w+\b) *= *(.*);/gm, m; // *(.(?!\/\/))+).*$/gm, m;
+  var re = /^ *(?:static const|const static) +(\b[a-zA-Z]\w+\b) *= *(.*);/gm, m;
   log('\nConstants:');
   log(  '----------');
   while ((m = re.exec(content)) !== null) {
@@ -52,7 +55,7 @@ fs.read('./test/lsdisplay2.h')
   while ((m = re.exec(content)) !== null) {
     //log(m[1], m[2], '(', m[3], ')');
     var func = processFunction(m[1], m[2], m[3], m[4]);
-    if (func !== null) { intf_desc.functions[m[2]] = func; console.log(m[2], ':', func); }
+    if (func !== null) { intf_desc.functions[m[2]] = func; }
   }
   
   //----
@@ -70,16 +73,22 @@ fs.read('./test/lsdisplay2.h')
   function processFunction(header, name, param_list, trailer) {
     //console.log(header, '|', name, '|', param_list, '|', trailer);
     // Check the header
-    var func = new cintfdesc.Function();
-    var header_ok;
-    for (var i = 0; i < FUNCTION_HEADERS.length; i ++) {
-      var checker = FUNCTION_HEADERS[i];
-      var ok;
-      if      (checker.pattern)             ok = checker.predicate.call(func, checker.pattern.exec(header) );
-      else if (checker instanceof Function) ok = checker( header );
-      if      (ok === false) return null;
-      else if (ok === true ) header_ok = true;
+    header = header.trim();
+    var ok;
+    for (var i = 0; i < FUNCTION_HEADER_CHECKERS.length; i ++) {
+      var checker = FUNCTION_HEADER_CHECKERS[i];
+      var retval;
+      // Perform check
+      if      (checker.pattern)             { checker.pattern.lastIndex = 0; retval = checker.predicate( checker.pattern.exec(header) ); }
+      else if (checker instanceof Function) retval = checker( header );
+      // Handle check result
+      if      (retval === false)            return null;
+      else if (retval === true)             ok = true;
+      else if (typeof retval === 'string' ) header = retval;
     }
+    header = header.trim();
+    var func = new cintfdesc.Function();
+    func.retval_type = cintfdesc.Type.parse(header);
     return func;
   }
   

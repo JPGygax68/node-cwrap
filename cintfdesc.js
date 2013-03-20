@@ -43,12 +43,18 @@ function(  ) {
   function Type() {
   }
   
+  Type.parse = function(type_desc) {
+    var parts = type_desc.split(/\b *\b/);
+    console.log('type parts: ', parts);
+  }
+  
   /** Public interface */
   
   return {
     Module   : Module,
     Function : CFunction,
-    Parameter: Parameter
+    Parameter: Parameter,
+    Type     : Type
   }
   
 });
