@@ -16,7 +16,6 @@ function(  ) {
   /** Function 
    */
   function CFunction() {
-    this.name   = '';
     this.retval = new Type();
     this.params = [];
   }
@@ -37,6 +36,12 @@ function(  ) {
   Parameter.BY_VALUE   = 1;
   Parameter.BY_POINTER = 2;
   Parameter.BY_ARRAY   = 3;     // the data is organized in an array (of known/knowable size)
+  
+  
+  /** Type description.
+   */
+  function Type() {
+  }
   
   /** Public interface */
   

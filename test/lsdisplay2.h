@@ -171,6 +171,8 @@ EXPORT int __cdecl lsdspDeleteExtraContext(void *disp, void *context);
 #define MBUTTONDIR_UP		2
 #define MBUTTONDIR_DBLCLK	3	//* Double-click
 
+static const MBUTTONDIR_TRIPLECLICK = 99; // bla
+
 /** Bestimmt, ob Koordinaten umgerechnet werden, wobei 0 "keine Konvertierung" bedeutet
 	und 1 "Konvertierung eingeschaltet".
 	Dabei gibt es zwei Konvertierungen, die getrennt ein- und ausgeschaltet werden können:
