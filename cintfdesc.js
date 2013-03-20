@@ -16,7 +16,7 @@ function(  ) {
   /** Function 
    */
   function CFunction() {
-    this.retval = new Type();
+    this.retval = new Parameter();
     this.params = [];
   }
 
@@ -24,13 +24,13 @@ function(  ) {
    */
   function Parameter() {
     this.elem_type = '';              /* type of element(s) being passed */
-    this.constness = Type.VARIABLE;
-    this.access    = Type.BY_VALUE;
+    this.constness = Parameter.VARIABLE;
+    this.access    = Parameter.BY_VALUE;
   }
   
   /* Const'ness */
-  Parameter.VARIABLE   = 0;
-  Parameter.CONSTANT   = 1;
+  Parameter.VARIABLE = 0;
+  Parameter.CONSTANT = 1;
   
   /* Access */
   Parameter.BY_VALUE   = 1;
@@ -38,14 +38,12 @@ function(  ) {
   Parameter.BY_ARRAY   = 3;     // the data is organized in an array (of known/knowable size)
   
   
-  /** Type description.
-   */
-  function Type() {
-  }
-  
-  Type.parse = function(type_desc) {
-    var parts = type_desc.split(/\b *\b/);
-    console.log('type parts: ', parts);
+  Parameter.parse = function(desc) {
+    var p = new Parameter();
+    var parts = desc.split(/\b *\b/).map( function(el) { return el.trim(); } );
+    if (parts[0] === 'const') { parts.shift(); p.constness = Parameter.CONSTANT; }
+    //console.log('Parameter parts: ', parts);
+    return p;
   }
   
   /** Public interface */
@@ -53,8 +51,7 @@ function(  ) {
   return {
     Module   : Module,
     Function : CFunction,
-    Parameter: Parameter,
-    Type     : Type
+    Parameter: Parameter
   }
   
 });

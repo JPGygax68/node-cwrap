@@ -58,6 +58,8 @@ fs.read('./test/lsdisplay2.h')
     if (func !== null) { intf_desc.functions[m[2]] = func; }
   }
   
+  log(intf_desc);
+  
   //----
   
   function processConstantDefine(expr) {
@@ -88,7 +90,7 @@ fs.read('./test/lsdisplay2.h')
     }
     header = header.trim();
     var func = new cintfdesc.Function();
-    func.retval_type = cintfdesc.Type.parse(header);
+    func.retval = cintfdesc.Parameter.parse(header);
     return func;
   }
   
