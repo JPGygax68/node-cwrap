@@ -10,9 +10,9 @@ function(  ) {
 
   //--- Regular expressions ---
   
-  var RE_WHITESPACE = '[ \\t\\n]*';
-  var RE_OPT_WS     = '[ \\t\\n]*';
-  var RE_WORD       = '(\\b\\w+\\b)';
+  var RE_WHITESPACE = /[ \t\n]*/;
+  var RE_OPT_WS     = /[ \t\n]*/;
+  var RE_WORD       = /(\b\w+\b)/;
   
   RegExp.concat = function(parts, separator, head, tail) {
     if (separator instanceof RegExp) separator = separator.source;
@@ -20,7 +20,10 @@ function(  ) {
     if (tail      instanceof RegExp) tail      = tail.source;
     head = head || '';
     tail = tail || '';
-    return new RegExp( head + parts.map(function(el) { return el instanceof RegExp ? el.source : el; }).join(separator) + tail );
+    parts = parts.map(function(el) { return el instanceof RegExp ? el.source : el; });
+    var re = new RegExp( head + parts.join(separator) + tail );
+    console.log('Concat =>', re);
+    return re;
   }
   
   RegExp.optional = function(expr) {
@@ -60,10 +63,10 @@ function(  ) {
   Parameter.parse = (function() {
   
     var re = RegExp.concat( [ 
-        '(const)?', 
+        /(const)?/, 
         RE_WORD, 
-        '(\\*)?',
-        RE_WORD+'?',
+        /(\*)?/,
+        RegExp.optional(RE_WORD),
         RegExp.optional( RegExp.concat( [/\[/, RE_WORD, /\]/], RE_OPT_WS ) )
       ]
       , RE_OPT_WS, '^', '$' );
