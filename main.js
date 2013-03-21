@@ -84,20 +84,28 @@ fs.read('./test/lsdisplay2.h')
       if      (checker.pattern)             { checker.pattern.lastIndex = 0; retval = checker.predicate( checker.pattern.exec(header) ); }
       else if (checker instanceof Function) retval = checker( header );
       // Handle check result
-      if      (retval === false)            return null;
+      if      (retval === false)            return null; // checker function has discarded the function
       else if (retval === true)             ok = true;
       else if (typeof retval === 'string' ) header = retval;
     }
     header = header.trim();
     var func = new cintfdesc.Function();
     func.retval = cintfdesc.Parameter.parse(header, true);
-    // TODO: process parameters
+    // Process parameters
+    if (param_list !== '' && param_list !== 'void') {
+      func.params = splitAndTrim(param_list, ',').map( function(desc) { return cintfdesc.Parameter.parse(desc); } );
+        //console.log(param);
+    }
     return func;
   }
   
 });
 
 //----------
+
+function splitAndTrim(str, sep) {
+  return str.split(sep || ',').map( function(el) { return el.trim(); } );
+}
 
 function log(msg) {
   console.log.apply(this, arguments);
