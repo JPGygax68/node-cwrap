@@ -58,10 +58,6 @@ function(  ) {
     //this.access    = 0;
   }
   
-  /* Const'ness */
-  Parameter.VARIABLE = 1;
-  Parameter.CONSTANT = 2;
-  
   /* Access */
   Parameter.BY_VALUE   = 1;
   Parameter.BY_POINTER = 2;
@@ -70,12 +66,13 @@ function(  ) {
   Parameter.parse = (function() {
 
     var re = RegExp.concat( [ 
-        /* 1  : const   */ /(const)?/, 
-        /* 2  : type    */ RE_WORD, 
-        /* 3  : pointer */ /(\*)?/,
-        /* 4  : name    */ RegExp.optional(RE_WORD),
-        /* 5  : size    */ RegExp.optional( RegExp.concat( [/\[/, RE_WORD, /\]/], RE_OPT_WS ) ),
-        /* 6/7: default */ RegExp.optional( RegExp.concat( [ '=', RegExp.or(RE_STRING, RE_NUMBER) ], RE_OPT_WS ) )
+        /* 1  : direction */ /(IN|OUT)?/,
+        /* 2  : const     */ /(const)?/, 
+        /* 3  : type      */ RE_WORD, 
+        /* 4  : pointer   */ /(\*)?/,
+        /* 5  : name      */ RegExp.optional(RE_WORD),
+        /* 6  : size      */ RegExp.optional( RegExp.concat( [/\[/, RE_WORD, /\]/], RE_OPT_WS ) ),
+        /* 7/8: default   */ RegExp.optional( RegExp.concat( [ '=', RegExp.or(RE_STRING, RE_NUMBER) ], RE_OPT_WS ) )
       ]
       , RE_OPT_WS, '^', '$' );
     console.log('Param RE:', re);
@@ -86,25 +83,29 @@ function(  ) {
       param.constness = Parameter.CONSTANT;
       var m = re.exec(desc);
       if (!m) throw new Error('Parameter syntax error: failed to parse "'+desc+'", RE: '+ re);
-      // Match 1: const'ness
-      if (m[1] === 'const') param.constness = Parameter.CONSTANT;
-      // Match 2: base type
-      if (!m[2]) throw new Error('Parameter syntax error: missing base type name');
-      param.base_type = m[2];
-      // Match 3: pointer access specifier (asterisk)
-      if (m[3] === '*') param.access = Parameter.BY_POINTER;
-      /* Match 4: name */
-      if (m[4]) {
-        param.name = m[4];
-        // Match 5: array size specifier
-        if (typeof m[5] !== 'undefined') {
-          if (parseInt(m[5]) !== 0) param.access = Parameter.BY_ARRAY;
-          param.size = m[5];
+      // Match 1: IN/OUT
+      if (m[1] === 'IN' || m[1] === 'OUT') param.direction = m[1];
+      // Match 2: const'ness
+      if (m[2] === 'const') param.is_const = m[2] === 'const';
+      // Match 3: base type
+      if (!m[3]) throw new Error('Parameter syntax error: missing base type name');
+      param.base_type = m[3];
+      // Match 4: pointer access specifier (asterisk)
+      if (m[4] === '*') param.access = Parameter.BY_POINTER;
+      /* Match 5: name */
+      if (m[5]) {
+        param.name = m[5];
+        // Match 6: array size specifier
+        if (typeof m[6] !== 'undefined') {
+          if (parseInt(m[6]) !== 0) param.access = Parameter.BY_ARRAY;
+          param.size = m[6];
         }
-        // Matches 6 or 7: default value
-        param.default_value = m[6] || m[7];
+        // Matches 7 or 8: default value
+        param.default_value = m[7] || m[8];
       }
-      // That's all folks      
+      // Default values
+      if (!param.access) param.access = Parameter.BY_VALUE;
+      // That's all folks
       return param;
     }
   }) ();
