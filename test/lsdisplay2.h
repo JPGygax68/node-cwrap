@@ -42,10 +42,10 @@ extern "C" {
 
 /* OpenGLScreen/Window option flags */
 
-const static int WITH_FRAME = (1 << 0);				// screen/window will have a border
-const static int SINGLE_BUFFERED = (1 << 1);		// single-buffered display
-const static int FORCE_FRAME = (1 << 2);
-const static int DISABLE_COMPOSITION = (1 << 3);	// disable DWM (starting with Vista)
+static const int WITH_FRAME = (1 << 0);				// screen/window will have a border
+static const int SINGLE_BUFFERED = (1 << 1);		// single-buffered display
+static const int FORCE_FRAME = (1 << 2);
+static const int DISABLE_COMPOSITION = (1 << 3);	// disable DWM (starting with Vista)
 
 EXPORT int __cdecl lsdspNumberOfScreens(void);
 
@@ -170,8 +170,6 @@ EXPORT int __cdecl lsdspDeleteExtraContext(void *disp, void *context);
 #define MBUTTONDIR_DOWN		1
 #define MBUTTONDIR_UP		2
 #define MBUTTONDIR_DBLCLK	3	//* Double-click
-
-static const MBUTTONDIR_TRIPLECLICK = 99; // bla
 
 /** Bestimmt, ob Koordinaten umgerechnet werden, wobei 0 "keine Konvertierung" bedeutet
 	und 1 "Konvertierung eingeschaltet".

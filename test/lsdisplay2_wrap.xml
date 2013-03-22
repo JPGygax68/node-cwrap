@@ -1,0 +1,2862 @@
+<?xml version="1.0" ?> 
+<top id="1" addr="0x640a28" >
+    <attributelist id="2" addr="0x640a28" >
+        <attribute name="outfile" value="test\\lsdisplay2_wrap.xml" id="3" addr="0x654738" />
+        <attribute name="name" value="lsdisplay2" id="4" addr="0x654738" />
+        <attribute name="module" value="lsdisplay2" id="5" addr="0x649b88" />
+        <attribute name="inputfile" value="test\\lsdisplay2.i" id="6" addr="0x654738" />
+        <attribute name="classes" value="0x649fb8" id="7" addr="0x649fb8" />
+        <attribute name="infile" value="test\\lsdisplay2.i" id="8" addr="0x654738" />
+        <attribute name="outfile_h" value="test\\lsdisplay2_wrap.h" id="9" addr="0x654738" />
+    </attributelist >
+
+    <include id="10" addr="0x6481b8" >
+        <attributelist id="11" addr="0x6481b8" >
+            <attribute name="name" value="C:\\Program Files\\swigwin-2.0.9\\Lib\\swig.swg" id="12" addr="0x654738" />
+        </attributelist >
+
+        <include id="13" addr="0x6481e8" >
+            <attributelist id="14" addr="0x6481e8" >
+                <attribute name="name" value="C:\\Program Files\\swigwin-2.0.9\\Lib\\swigwarnings.swg" id="15" addr="0x654738" />
+            </attributelist >
+
+            <include id="16" addr="0x648218" >
+                <attributelist id="17" addr="0x648218" >
+                    <attribute name="name" value="C:\\Program Files\\swigwin-2.0.9\\Lib\\swigwarn.swg" id="18" addr="0x654738" />
+                </attributelist >
+             
+            </include >
+        </include >
+        <typemap id="19" addr="0x648df8" >
+            <attributelist id="20" addr="0x648df8" >
+                <attribute name="code" value="free($1);" id="21" addr="0x654738" />
+                <attribute name="method" value="newfree" id="22" addr="0x654738" />
+            </attributelist >
+
+            <typemapitem id="23" addr="0x648d38" >
+                <attributelist id="24" addr="0x648d38" >
+                    <parmlist id="25" addr="0x648dc8" >
+                        <parm id="26">
+                            <attributelist id="27" addr="0x648dc8" >
+                                <attribute name="type" value="p.char" id="28" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                </attributelist >
+             
+            </typemapitem >
+        </typemap >
+        <typemap id="29" addr="0x648f08" >
+            <attributelist id="30" addr="0x648f08" >
+                <attribute name="code" value="{&#10;  free($1);&#10;  if ($input) {&#10;     $1 = ($1_type) malloc(strlen((const char *)$input)+1);&#10;     strcpy((char *)$1, (const char *)$input);&#10;  } else {&#10;     $1 = 0;&#10;  }&#10;}" id="31" addr="0x654738" />
+                <attribute name="method" value="memberin" id="32" addr="0x654738" />
+            </attributelist >
+
+            <typemapitem id="33" addr="0x648ea8" >
+                <attributelist id="34" addr="0x648ea8" >
+                    <parmlist id="35" addr="0x648ec8" >
+                        <parm id="36">
+                            <attributelist id="37" addr="0x648ec8" >
+                                <attribute name="type" value="p.char" id="38" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                </attributelist >
+             
+            </typemapitem >
+        </typemap >
+        <typemap id="39" addr="0x649038" >
+            <attributelist id="40" addr="0x649038" >
+                <kwargs id="41" addr="0x648f38" >
+                    <attributelist id="42" addr="0x648f38" >
+                        <attribute name="name" value="warning" id="43" addr="0x654738" />
+                        <attribute name="value" value="451:Setting a const char * variable may leak memory." id="44" addr="0x654738" />
+                    </attributelist >
+                    <kwargssitem id="45" addr="0x648f48" >
+                        <attributelist id="46" addr="0x648f48" >
+                        </attributelist >
+                    </kwargssitem >
+                    <kwargssitem id="47" addr="0x648f68" >
+                        <attributelist id="48" addr="0x648f68" >
+                        </attributelist >
+                    </kwargssitem >
+                </kwargs >
+                <attribute name="code" value="{&#10;  if ($input) {&#10;     $1 = ($1_type) malloc(strlen((const char *)$input)+1);&#10;     strcpy((char *)$1, (const char *)$input);&#10;  } else {&#10;     $1 = 0;&#10;  }&#10;}" id="49" addr="0x654738" />
+                <attribute name="method" value="memberin" id="50" addr="0x654738" />
+            </attributelist >
+
+            <typemapitem id="51" addr="0x648fd8" >
+                <attributelist id="52" addr="0x648fd8" >
+                    <parmlist id="53" addr="0x648ff8" >
+                        <parm id="54">
+                            <attributelist id="55" addr="0x648ff8" >
+                                <attribute name="type" value="p.q(const).char" id="56" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                </attributelist >
+             
+            </typemapitem >
+        </typemap >
+        <typemap id="57" addr="0x649128" >
+            <attributelist id="58" addr="0x649128" >
+                <attribute name="code" value="{&#10;  free($1);&#10;  if ($input) {&#10;     $1 = ($1_type) malloc(strlen((const char *)$input)+1);&#10;     strcpy((char *)$1, (const char *)$input);&#10;  } else {&#10;     $1 = 0;&#10;  }&#10;}" id="59" addr="0x654738" />
+                <attribute name="method" value="globalin" id="60" addr="0x654738" />
+            </attributelist >
+
+            <typemapitem id="61" addr="0x6490c8" >
+                <attributelist id="62" addr="0x6490c8" >
+                    <parmlist id="63" addr="0x6490e8" >
+                        <parm id="64">
+                            <attributelist id="65" addr="0x6490e8" >
+                                <attribute name="type" value="p.char" id="66" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                </attributelist >
+             
+            </typemapitem >
+        </typemap >
+        <typemap id="67" addr="0x649248" >
+            <attributelist id="68" addr="0x649248" >
+                <kwargs id="69" addr="0x649158" >
+                    <attributelist id="70" addr="0x649158" >
+                        <attribute name="name" value="warning" id="71" addr="0x654738" />
+                        <attribute name="value" value="451:Setting a const char * variable may leak memory." id="72" addr="0x654738" />
+                    </attributelist >
+                    <kwargssitem id="73" addr="0x649168" >
+                        <attributelist id="74" addr="0x649168" >
+                        </attributelist >
+                    </kwargssitem >
+                    <kwargssitem id="75" addr="0x649178" >
+                        <attributelist id="76" addr="0x649178" >
+                        </attributelist >
+                    </kwargssitem >
+                </kwargs >
+                <attribute name="code" value="{&#10;  if ($input) {&#10;     $1 = ($1_type) malloc(strlen((const char *)$input)+1);&#10;     strcpy((char *)$1, (const char *)$input);&#10;  } else {&#10;     $1 = 0;&#10;  }&#10;}" id="77" addr="0x654738" />
+                <attribute name="method" value="globalin" id="78" addr="0x654738" />
+            </attributelist >
+
+            <typemapitem id="79" addr="0x6491e8" >
+                <attributelist id="80" addr="0x6491e8" >
+                    <parmlist id="81" addr="0x649208" >
+                        <parm id="82">
+                            <attributelist id="83" addr="0x649208" >
+                                <attribute name="type" value="p.q(const).char" id="84" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                </attributelist >
+             
+            </typemapitem >
+        </typemap >
+        <typemap id="85" addr="0x649358" >
+            <attributelist id="86" addr="0x649358" >
+                <attribute name="code" value="{&#10;  if($input) {&#10;    strncpy((char*)$1, (const char *)$input, $1_dim0-1);&#10;    $1[$1_dim0-1] = 0;&#10;  } else {&#10;    $1[0] = 0;&#10;  }&#10;}" id="87" addr="0x654738" />
+                <attribute name="method" value="memberin" id="88" addr="0x654738" />
+            </attributelist >
+
+            <typemapitem id="89" addr="0x6492f8" >
+                <attributelist id="90" addr="0x6492f8" >
+                    <parmlist id="91" addr="0x649318" >
+                        <parm id="92">
+                            <attributelist id="93" addr="0x649318" >
+                                <attribute name="type" value="a(ANY).char" id="94" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                </attributelist >
+             
+            </typemapitem >
+        </typemap >
+        <typemap id="95" addr="0x649458" >
+            <attributelist id="96" addr="0x649458" >
+                <attribute name="code" value="{&#10;  if($input) {&#10;    strncpy((char*)$1, (const char *)$input, $1_dim0-1);&#10;    $1[$1_dim0-1] = 0;&#10;  } else {&#10;    $1[0] = 0;&#10;  }&#10;}" id="97" addr="0x654738" />
+                <attribute name="method" value="globalin" id="98" addr="0x654738" />
+            </attributelist >
+
+            <typemapitem id="99" addr="0x6493f8" >
+                <attributelist id="100" addr="0x6493f8" >
+                    <parmlist id="101" addr="0x649418" >
+                        <parm id="102">
+                            <attributelist id="103" addr="0x649418" >
+                                <attribute name="type" value="a(ANY).char" id="104" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                </attributelist >
+             
+            </typemapitem >
+        </typemap >
+        <typemap id="105" addr="0x649538" >
+            <attributelist id="106" addr="0x649538" >
+                <attribute name="code" value="{&#10;  if ($input) strcpy((char *)$1, (const char *)$input);&#10;  else $1[0] = 0;&#10;}" id="107" addr="0x654738" />
+                <attribute name="method" value="memberin" id="108" addr="0x654738" />
+            </attributelist >
+
+            <typemapitem id="109" addr="0x6494d8" >
+                <attributelist id="110" addr="0x6494d8" >
+                    <parmlist id="111" addr="0x6494f8" >
+                        <parm id="112">
+                            <attributelist id="113" addr="0x6494f8" >
+                                <attribute name="type" value="a().char" id="114" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                </attributelist >
+             
+            </typemapitem >
+        </typemap >
+        <typemap id="115" addr="0x649618" >
+            <attributelist id="116" addr="0x649618" >
+                <attribute name="code" value="{&#10;  if ($input) strcpy((char *)$1, (const char *)$input);&#10;  else $1[0] = 0;&#10;}" id="117" addr="0x654738" />
+                <attribute name="method" value="globalin" id="118" addr="0x654738" />
+            </attributelist >
+
+            <typemapitem id="119" addr="0x6495b8" >
+                <attributelist id="120" addr="0x6495b8" >
+                    <parmlist id="121" addr="0x6495d8" >
+                        <parm id="122">
+                            <attributelist id="123" addr="0x6495d8" >
+                                <attribute name="type" value="a().char" id="124" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                </attributelist >
+             
+            </typemapitem >
+        </typemap >
+        <typemap id="125" addr="0x649718" >
+            <attributelist id="126" addr="0x649718" >
+                <attribute name="code" value="{&#10;  size_t ii;&#10;  $1_basetype *b = ($1_basetype *) $1;&#10;  for (ii = 0; ii &lt; (size_t)$1_size; ii++) b[ii] = *(($1_basetype *) $input + ii);&#10;}" id="127" addr="0x654738" />
+                <attribute name="method" value="memberin" id="128" addr="0x654738" />
+            </attributelist >
+
+            <typemapitem id="129" addr="0x6496b8" >
+                <attributelist id="130" addr="0x6496b8" >
+                    <parmlist id="131" addr="0x6496d8" >
+                        <parm id="132">
+                            <attributelist id="133" addr="0x6496d8" >
+                                <attribute name="type" value="a(ANY).SWIGTYPE" id="134" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                </attributelist >
+             
+            </typemapitem >
+        </typemap >
+        <typemap id="135" addr="0x649818" >
+            <attributelist id="136" addr="0x649818" >
+                <attribute name="code" value="{&#10;  size_t ii;&#10;  $1_basetype *b = ($1_basetype *) $1;&#10;  for (ii = 0; ii &lt; (size_t)$1_size; ii++) b[ii] = *(($1_basetype *) $input + ii);&#10;}" id="137" addr="0x654738" />
+                <attribute name="method" value="globalin" id="138" addr="0x654738" />
+            </attributelist >
+
+            <typemapitem id="139" addr="0x6497b8" >
+                <attributelist id="140" addr="0x6497b8" >
+                    <parmlist id="141" addr="0x6497d8" >
+                        <parm id="142">
+                            <attributelist id="143" addr="0x6497d8" >
+                                <attribute name="type" value="a(ANY).SWIGTYPE" id="144" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                </attributelist >
+             
+            </typemapitem >
+        </typemap >
+        <typemap id="145" addr="0x649938" >
+            <attributelist id="146" addr="0x649938" >
+                <attribute name="code" value="{&#10;  $basetype (*inp)[$1_dim1] = ($basetype (*)[$1_dim1])($input);&#10;  $basetype (*dest)[$1_dim1] = ($basetype (*)[$1_dim1])($1);&#10;  size_t ii = 0;&#10;  for (; ii &lt; $1_dim0; ++ii) {&#10;    $basetype *ip = inp[ii];&#10;    $basetype *dp = dest[ii];&#10;    size_t jj = 0;&#10;    for (; jj &lt; $1_dim1; ++jj) dp[jj] = ip[jj];&#10;  }&#10;}" id="147" addr="0x654738" />
+                <attribute name="method" value="memberin" id="148" addr="0x654738" />
+            </attributelist >
+
+            <typemapitem id="149" addr="0x6498a8" >
+                <attributelist id="150" addr="0x6498a8" >
+                    <parmlist id="151" addr="0x6498f8" >
+                        <parm id="152">
+                            <attributelist id="153" addr="0x6498f8" >
+                                <attribute name="type" value="a(ANY).a(ANY).SWIGTYPE" id="154" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                </attributelist >
+             
+            </typemapitem >
+        </typemap >
+        <typemap id="155" addr="0x649a58" >
+            <attributelist id="156" addr="0x649a58" >
+                <attribute name="code" value="{&#10;  $basetype (*inp)[$1_dim1] = ($basetype (*)[$1_dim1])($input);&#10;  $basetype (*dest)[$1_dim1] = ($basetype (*)[$1_dim1])($1);&#10;  size_t ii = 0;&#10;  for (; ii &lt; $1_dim0; ++ii) {&#10;    $basetype *ip = inp[ii];&#10;    $basetype *dp = dest[ii];&#10;    size_t jj = 0;&#10;    for (; jj &lt; $1_dim1; ++jj) dp[jj] = ip[jj];&#10;  }&#10;}" id="157" addr="0x654738" />
+                <attribute name="method" value="globalin" id="158" addr="0x654738" />
+            </attributelist >
+
+            <typemapitem id="159" addr="0x6499c8" >
+                <attributelist id="160" addr="0x6499c8" >
+                    <parmlist id="161" addr="0x649a18" >
+                        <parm id="162">
+                            <attributelist id="163" addr="0x649a18" >
+                                <attribute name="type" value="a(ANY).a(ANY).SWIGTYPE" id="164" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                </attributelist >
+             
+            </typemapitem >
+        </typemap >
+        <insert id="165" addr="0x649a98" >
+            <attributelist id="166" addr="0x649a98" >
+                <attribute name="code" value="/* -----------------------------------------------------------------------------&#10; *  This section contains generic SWIG labels for method/variable&#10; *  declarations/attributes, and other compiler dependent labels.&#10; * ----------------------------------------------------------------------------- */&#10;&#10;/* template workaround for compilers that cannot correctly implement the C++ standard */&#10;#ifndef SWIGTEMPLATEDISAMBIGUATOR&#10;# if defined(__SUNPRO_CC) &amp;&amp; (__SUNPRO_CC &lt;= 0x560)&#10;#  define SWIGTEMPLATEDISAMBIGUATOR template&#10;# elif defined(__HP_aCC)&#10;/* Needed even with `aCC -AA' when `aCC -V' reports HP ANSI C++ B3910B A.03.55 */&#10;/* If we find a maximum version that requires this, the test would be __HP_aCC &lt;= 35500 for A.03.55 */&#10;#  define SWIGTEMPLATEDISAMBIGUATOR template&#10;# else&#10;#  define SWIGTEMPLATEDISAMBIGUATOR&#10;# endif&#10;#endif&#10;&#10;/* inline attribute */&#10;#ifndef SWIGINLINE&#10;# if defined(__cplusplus) || (defined(__GNUC__) &amp;&amp; !defined(__STRICT_ANSI__))&#10;#   define SWIGINLINE inline&#10;# else&#10;#   define SWIGINLINE&#10;# endif&#10;#endif&#10;&#10;/* attribute recognised by some compilers to avoid 'unused' warnings */&#10;#ifndef SWIGUNUSED&#10;# if defined(__GNUC__)&#10;#   if !(defined(__cplusplus)) || (__GNUC__ > 3 || (__GNUC__ == 3 &amp;&amp; __GNUC_MINOR__ >= 4))&#10;#     define SWIGUNUSED __attribute__ ((__unused__)) &#10;#   else&#10;#     define SWIGUNUSED&#10;#   endif&#10;# elif defined(__ICC)&#10;#   define SWIGUNUSED __attribute__ ((__unused__)) &#10;# else&#10;#   define SWIGUNUSED &#10;# endif&#10;#endif&#10;&#10;#ifndef SWIG_MSC_UNSUPPRESS_4505&#10;# if defined(_MSC_VER)&#10;#   pragma warning(disable : 4505) /* unreferenced local function has been removed */&#10;# endif &#10;#endif&#10;&#10;#ifndef SWIGUNUSEDPARM&#10;# ifdef __cplusplus&#10;#   define SWIGUNUSEDPARM(p)&#10;# else&#10;#   define SWIGUNUSEDPARM(p) p SWIGUNUSED &#10;# endif&#10;#endif&#10;&#10;/* internal SWIG method */&#10;#ifndef SWIGINTERN&#10;# define SWIGINTERN static SWIGUNUSED&#10;#endif&#10;&#10;/* internal inline SWIG method */&#10;#ifndef SWIGINTERNINLINE&#10;# define SWIGINTERNINLINE SWIGINTERN SWIGINLINE&#10;#endif&#10;&#10;/* exporting methods */&#10;#if (__GNUC__ >= 4) || (__GNUC__ == 3 &amp;&amp; __GNUC_MINOR__ >= 4)&#10;#  ifndef GCC_HASCLASSVISIBILITY&#10;#    define GCC_HASCLASSVISIBILITY&#10;#  endif&#10;#endif&#10;&#10;#ifndef SWIGEXPORT&#10;# if defined(_WIN32) || defined(__WIN32__) || defined(__CYGWIN__)&#10;#   if defined(STATIC_LINKED)&#10;#     define SWIGEXPORT&#10;#   else&#10;#     define SWIGEXPORT __declspec(dllexport)&#10;#   endif&#10;# else&#10;#   if defined(__GNUC__) &amp;&amp; defined(GCC_HASCLASSVISIBILITY)&#10;#     define SWIGEXPORT __attribute__ ((visibility(&quot;default&quot;)))&#10;#   else&#10;#     define SWIGEXPORT&#10;#   endif&#10;# endif&#10;#endif&#10;&#10;/* calling conventions for Windows */&#10;#ifndef SWIGSTDCALL&#10;# if defined(_WIN32) || defined(__WIN32__) || defined(__CYGWIN__)&#10;#   define SWIGSTDCALL __stdcall&#10;# else&#10;#   define SWIGSTDCALL&#10;# endif &#10;#endif&#10;&#10;/* Deal with Microsoft's attempt at deprecating C standard runtime functions */&#10;#if !defined(SWIG_NO_CRT_SECURE_NO_DEPRECATE) &amp;&amp; defined(_MSC_VER) &amp;&amp; !defined(_CRT_SECURE_NO_DEPRECATE)&#10;# define _CRT_SECURE_NO_DEPRECATE&#10;#endif&#10;&#10;/* Deal with Microsoft's attempt at deprecating methods in the standard C++ library */&#10;#if !defined(SWIG_NO_SCL_SECURE_NO_DEPRECATE) &amp;&amp; defined(_MSC_VER) &amp;&amp; !defined(_SCL_SECURE_NO_DEPRECATE)&#10;# define _SCL_SECURE_NO_DEPRECATE&#10;#endif&#10;&#10;" id="167" addr="0x654738" />
+                <attribute name="section" value="runtime" id="168" addr="0x654738" />
+            </attributelist >
+         
+        </insert >
+    </include >
+    <include id="169" addr="0x649b68" >
+        <attributelist id="170" addr="0x649b68" >
+            <attribute name="name" value="test\\lsdisplay2.i" id="171" addr="0x654738" />
+            <attribute name="module" value="" id="172" addr="0x649bb8" />
+            <attribute name="options" value="0x649b18" id="173" addr="0x649b18" />
+        </attributelist >
+
+        <module id="174" addr="0x649b88" >
+            <attributelist id="175" addr="0x649b88" >
+                <attribute name="name" value="lsdisplay2" id="176" addr="0x654738" />
+            </attributelist >
+         
+        </module >
+        <insert id="177" addr="0x649bd8" >
+            <attributelist id="178" addr="0x649bd8" >
+                <attribute name="code" value="&#10;#include &quot;lsdisplay2.h&quot;&#10;" id="179" addr="0x654738" />
+            </attributelist >
+         
+        </insert >
+        <class id="180" addr="0x649c18" >
+            <attributelist id="181" addr="0x649c18" >
+                <attribute name="name" value="Position" id="182" addr="0x654738" />
+                <attribute name="sym_symtab" value="0x640468" id="183" addr="0x640468" />
+                <attribute name="symtab" value="0x649ca8" id="184" addr="0x649ca8" />
+                <attribute name="allows_typedef" value="1" id="185" addr="0x654738" />
+                <attribute name="typepass_visit" value="1" id="186" addr="0x654738" />
+                <attribute name="allocate_visit" value="1" id="187" addr="0x654738" />
+                <attribute name="kind" value="struct" id="188" addr="0x654738" />
+                <attribute name="sym_name" value="Position" id="189" addr="0x654738" />
+                <attribute name="allocate_default_constructor" value="1" id="190" addr="0x654738" />
+                <attribute name="allocate_default_destructor" value="1" id="191" addr="0x654738" />
+                <attribute name="allocate_copy_constructor" value="1" id="192" addr="0x654738" />
+                <attribute name="module" value="lsdisplay2" id="193" addr="0x649b88" />
+                <attribute name="sym_overname" value="__SWIG_0" id="194" addr="0x654738" />
+                <typescope id="195" addr="0x653d58" >
+                    <attributelist id="196" addr="0x653d58" >
+                        <attribute name="name" value="Position" id="197" addr="0x654738" />
+                        <typetab id="198" addr="0x653d68" >
+                            <attributelist id="199" addr="0x653d68" >
+                            </attributelist >
+                        </typetab >
+                        <attribute name="parent" value="0x6404d8" id="200" addr="0x6404d8" />
+                        <attribute name="qname" value="Position" id="201" addr="0x654738" />
+                        <attribute name="symtab" value="0x649ca8" id="202" addr="0x649ca8" />
+                    </attributelist >
+                    <typescopesitem id="203" addr="0x653d28" >
+                        <attributelist id="204" addr="0x653d28" >
+                        </attributelist >
+                    </typescopesitem >
+                    <typescopesitem id="205" addr="0x653d68" >
+                        <attributelist id="206" addr="0x653d68" >
+                        </attributelist >
+                    </typescopesitem >
+                    <typescopesitem id="207" addr="0x6404d8" >
+                        <attributelist id="208" addr="0x6404d8" >
+                            <attribute name="name" value="" id="209" addr="0x654738" />
+                            <typetab id="210" addr="0x640508" >
+                                <attributelist id="211" addr="0x640508" >
+                                    <attribute name="struct Position" value="struct Position" id="212" addr="0x654738" />
+                                </attributelist >
+                                <typetabsitem id="213" addr="0x653ce8" >
+                                    <attributelist id="214" addr="0x653ce8" >
+                                    </attributelist >
+                                </typetabsitem >
+                            </typetab >
+                        </attributelist >
+                    </typescopesitem >
+                    <typescopesitem id="215" addr="0x653d78" >
+                        <attributelist id="216" addr="0x653d78" >
+                        </attributelist >
+                    </typescopesitem >
+                    <typescopesitem id="217" addr="0x649ca8" >
+                        <attributelist id="218" addr="0x649ca8" >
+                            <attribute name="name" value="Position" id="219" addr="0x654738" />
+                            <attribute name="csymtab" value="0x649cc8" id="220" addr="0x649cc8" />
+                            <attribute name="symtab" value="0x649c98" id="221" addr="0x649c98" />
+                        </attributelist >
+                    </typescopesitem >
+                </typescope >
+            </attributelist >
+
+            <cdecl id="222" addr="0x649dd8" >
+                <attributelist id="223" addr="0x649dd8" >
+                    <attribute name="ismember" value="1" id="224" addr="0x654738" />
+                    <attribute name="sym_name" value="x" id="225" addr="0x654738" />
+                    <attribute name="name" value="x" id="226" addr="0x654738" />
+                    <attribute name="decl" value="" id="227" addr="0x654738" />
+                    <attribute name="access" value="public" id="228" addr="0x654738" />
+                    <attribute name="kind" value="variable" id="229" addr="0x654738" />
+                    <attribute name="type" value="int" id="230" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x649ca8" id="231" addr="0x649ca8" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="232" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="233" addr="0x649d78" >
+                <attributelist id="234" addr="0x649d78" >
+                    <attribute name="ismember" value="1" id="235" addr="0x654738" />
+                    <attribute name="sym_name" value="y" id="236" addr="0x654738" />
+                    <attribute name="name" value="y" id="237" addr="0x654738" />
+                    <attribute name="decl" value="" id="238" addr="0x654738" />
+                    <attribute name="access" value="public" id="239" addr="0x654738" />
+                    <attribute name="kind" value="variable" id="240" addr="0x654738" />
+                    <attribute name="type" value="int" id="241" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x649ca8" id="242" addr="0x649ca8" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="243" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+        </class >
+        <cdecl id="244" addr="0x64a0d8" >
+            <attributelist id="245" addr="0x64a0d8" >
+                <attribute name="sym_name" value="goTo" id="246" addr="0x654738" />
+                <attribute name="name" value="goTo" id="247" addr="0x654738" />
+                <attribute name="decl" value="f(p.q(const).Position)." id="248" addr="0x654738" />
+                <parmlist id="249" addr="0x64a088" >
+                    <parm id="250">
+                        <attributelist id="251" addr="0x64a088" >
+                            <attribute name="name" value="pos" id="252" addr="0x654738" />
+                            <attribute name="type" value="p.q(const).Position" id="253" addr="0x654738" />
+                            <attribute name="compactdefargs" value="1" id="254" addr="0x654738" />
+                        </attributelist >
+                    </parm >
+                </parmlist >
+                <attribute name="kind" value="function" id="255" addr="0x654738" />
+                <attribute name="type" value="void" id="256" addr="0x654738" />
+                <attribute name="sym_symtab" value="0x640468" id="257" addr="0x640468" />
+                <attribute name="sym_overname" value="__SWIG_0" id="258" addr="0x654738" />
+            </attributelist >
+         
+        </cdecl >
+        <include id="259" addr="0x64a178" >
+            <attributelist id="260" addr="0x64a178" >
+                <attribute name="name" value="test\\lsdisplay2.h" id="261" addr="0x654738" />
+            </attributelist >
+
+            <cdecl id="262" addr="0x64a238" >
+                <attributelist id="263" addr="0x64a238" >
+                    <attribute name="value" value="(1 &lt;&lt; 0)" id="264" addr="0x654738" />
+                    <attribute name="name" value="WITH_FRAME" id="265" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="266" addr="0x640468" />
+                    <attribute name="hasvalue" value="1" id="267" addr="0x654738" />
+                    <attribute name="kind" value="variable" id="268" addr="0x654738" />
+                    <attribute name="feature_immutable" value="1" id="269" addr="0x654738" />
+                    <attribute name="sym_name" value="WITH_FRAME" id="270" addr="0x654738" />
+                    <attribute name="decl" value="" id="271" addr="0x654738" />
+                    <attribute name="type" value="q(const).int" id="272" addr="0x654738" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="273" addr="0x654738" />
+                    <attribute name="hasconsttype" value="1" id="274" addr="0x654738" />
+                    <attribute name="storage" value="static" id="275" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="276" addr="0x64a3c8" >
+                <attributelist id="277" addr="0x64a3c8" >
+                    <attribute name="value" value="(1 &lt;&lt; 1)" id="278" addr="0x654738" />
+                    <attribute name="name" value="SINGLE_BUFFERED" id="279" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="280" addr="0x640468" />
+                    <attribute name="hasvalue" value="1" id="281" addr="0x654738" />
+                    <attribute name="kind" value="variable" id="282" addr="0x654738" />
+                    <attribute name="feature_immutable" value="1" id="283" addr="0x654738" />
+                    <attribute name="sym_name" value="SINGLE_BUFFERED" id="284" addr="0x654738" />
+                    <attribute name="decl" value="" id="285" addr="0x654738" />
+                    <attribute name="type" value="q(const).int" id="286" addr="0x654738" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="287" addr="0x654738" />
+                    <attribute name="hasconsttype" value="1" id="288" addr="0x654738" />
+                    <attribute name="storage" value="static" id="289" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="290" addr="0x64a508" >
+                <attributelist id="291" addr="0x64a508" >
+                    <attribute name="value" value="(1 &lt;&lt; 2)" id="292" addr="0x654738" />
+                    <attribute name="name" value="FORCE_FRAME" id="293" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="294" addr="0x640468" />
+                    <attribute name="hasvalue" value="1" id="295" addr="0x654738" />
+                    <attribute name="kind" value="variable" id="296" addr="0x654738" />
+                    <attribute name="feature_immutable" value="1" id="297" addr="0x654738" />
+                    <attribute name="sym_name" value="FORCE_FRAME" id="298" addr="0x654738" />
+                    <attribute name="decl" value="" id="299" addr="0x654738" />
+                    <attribute name="type" value="q(const).int" id="300" addr="0x654738" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="301" addr="0x654738" />
+                    <attribute name="hasconsttype" value="1" id="302" addr="0x654738" />
+                    <attribute name="storage" value="static" id="303" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="304" addr="0x64a648" >
+                <attributelist id="305" addr="0x64a648" >
+                    <attribute name="value" value="(1 &lt;&lt; 3)" id="306" addr="0x654738" />
+                    <attribute name="name" value="DISABLE_COMPOSITION" id="307" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="308" addr="0x640468" />
+                    <attribute name="hasvalue" value="1" id="309" addr="0x654738" />
+                    <attribute name="kind" value="variable" id="310" addr="0x654738" />
+                    <attribute name="feature_immutable" value="1" id="311" addr="0x654738" />
+                    <attribute name="sym_name" value="DISABLE_COMPOSITION" id="312" addr="0x654738" />
+                    <attribute name="decl" value="" id="313" addr="0x654738" />
+                    <attribute name="type" value="q(const).int" id="314" addr="0x654738" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="315" addr="0x654738" />
+                    <attribute name="hasconsttype" value="1" id="316" addr="0x654738" />
+                    <attribute name="storage" value="static" id="317" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="318" addr="0x64a778" >
+                <attributelist id="319" addr="0x64a778" >
+                    <attribute name="sym_name" value="lsdspNumberOfScreens" id="320" addr="0x654738" />
+                    <attribute name="name" value="lsdspNumberOfScreens" id="321" addr="0x654738" />
+                    <attribute name="decl" value="f(void)." id="322" addr="0x654738" />
+                    <parmlist id="323" addr="0x64a738" >
+                        <parm id="324">
+                            <attributelist id="325" addr="0x64a738" >
+                                <attribute name="type" value="void" id="326" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="327" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="328" addr="0x654738" />
+                    <attribute name="type" value="int" id="329" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="330" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="331" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="332" addr="0x64ab08" >
+                <attributelist id="333" addr="0x64ab08" >
+                    <attribute name="sym_name" value="lsdspGetScreenInfo" id="334" addr="0x654738" />
+                    <attribute name="name" value="lsdspGetScreenInfo" id="335" addr="0x654738" />
+                    <attribute name="decl" value="f(int,p.int,p.int,p.unsigned int,p.unsigned int)." id="336" addr="0x654738" />
+                    <parmlist id="337" addr="0x64a878" >
+                        <parm id="338">
+                            <attributelist id="339" addr="0x64a878" >
+                                <attribute name="name" value="screen" id="340" addr="0x654738" />
+                                <attribute name="type" value="int" id="341" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="342" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="343">
+                            <attributelist id="344" addr="0x64a908" >
+                                <attribute name="name" value="x" id="345" addr="0x654738" />
+                                <attribute name="type" value="p.int" id="346" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="347">
+                            <attributelist id="348" addr="0x64a998" >
+                                <attribute name="name" value="y" id="349" addr="0x654738" />
+                                <attribute name="type" value="p.int" id="350" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="351">
+                            <attributelist id="352" addr="0x64aa28" >
+                                <attribute name="name" value="w" id="353" addr="0x654738" />
+                                <attribute name="type" value="p.unsigned int" id="354" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="355">
+                            <attributelist id="356" addr="0x64aab8" >
+                                <attribute name="name" value="h" id="357" addr="0x654738" />
+                                <attribute name="type" value="p.unsigned int" id="358" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="359" addr="0x654738" />
+                    <attribute name="type" value="int" id="360" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="361" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="362" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="363" addr="0x64acd8" >
+                <attributelist id="364" addr="0x64acd8" >
+                    <attribute name="sym_name" value="lsdspOpenGLScreen" id="365" addr="0x654738" />
+                    <attribute name="name" value="lsdspOpenGLScreen" id="366" addr="0x654738" />
+                    <attribute name="decl" value="f(int,unsigned int).p." id="367" addr="0x654738" />
+                    <parmlist id="368" addr="0x64ac08" >
+                        <parm id="369">
+                            <attributelist id="370" addr="0x64ac08" >
+                                <attribute name="name" value="screen" id="371" addr="0x654738" />
+                                <attribute name="type" value="int" id="372" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="373" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="374">
+                            <attributelist id="375" addr="0x64ac98" >
+                                <attribute name="name" value="options" id="376" addr="0x654738" />
+                                <attribute name="type" value="unsigned int" id="377" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="378" addr="0x654738" />
+                    <attribute name="type" value="void" id="379" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="380" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="381" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="382" addr="0x64af38" >
+                <attributelist id="383" addr="0x64af38" >
+                    <attribute name="sym_name" value="lsdspSetSourceRate" id="384" addr="0x654738" />
+                    <attribute name="name" value="lsdspSetSourceRate" id="385" addr="0x654738" />
+                    <attribute name="decl" value="f(p.void,unsigned int,unsigned int)." id="386" addr="0x654738" />
+                    <parmlist id="387" addr="0x64adc8" >
+                        <parm id="388">
+                            <attributelist id="389" addr="0x64adc8" >
+                                <attribute name="name" value="screen" id="390" addr="0x654738" />
+                                <attribute name="type" value="p.void" id="391" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="392" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="393">
+                            <attributelist id="394" addr="0x64ae58" >
+                                <attribute name="name" value="num" id="395" addr="0x654738" />
+                                <attribute name="type" value="unsigned int" id="396" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="397">
+                            <attributelist id="398" addr="0x64aee8" >
+                                <attribute name="name" value="denom" id="399" addr="0x654738" />
+                                <attribute name="type" value="unsigned int" id="400" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="401" addr="0x654738" />
+                    <attribute name="type" value="int" id="402" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="403" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="404" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="405" addr="0x64b078" >
+                <attributelist id="406" addr="0x64b078" >
+                    <attribute name="sym_name" value="lsdspCloseGLScreen" id="407" addr="0x654738" />
+                    <attribute name="name" value="lsdspCloseGLScreen" id="408" addr="0x654738" />
+                    <attribute name="decl" value="f(p.void)." id="409" addr="0x654738" />
+                    <parmlist id="410" addr="0x64b028" >
+                        <parm id="411">
+                            <attributelist id="412" addr="0x64b028" >
+                                <attribute name="name" value="handle" id="413" addr="0x654738" />
+                                <attribute name="type" value="p.void" id="414" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="415" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="416" addr="0x654738" />
+                    <attribute name="type" value="int" id="417" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="418" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="419" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="420" addr="0x64b1b8" >
+                <attributelist id="421" addr="0x64b1b8" >
+                    <attribute name="sym_name" value="lsdspCloseGLWindow" id="422" addr="0x654738" />
+                    <attribute name="name" value="lsdspCloseGLWindow" id="423" addr="0x654738" />
+                    <attribute name="decl" value="f(p.void)." id="424" addr="0x654738" />
+                    <parmlist id="425" addr="0x64b168" >
+                        <parm id="426">
+                            <attributelist id="427" addr="0x64b168" >
+                                <attribute name="name" value="handle" id="428" addr="0x654738" />
+                                <attribute name="type" value="p.void" id="429" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="430" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="431" addr="0x654738" />
+                    <attribute name="type" value="int" id="432" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="433" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="434" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="435" addr="0x64b5d8" >
+                <attributelist id="436" addr="0x64b5d8" >
+                    <attribute name="sym_name" value="lsdspOpenGLWindow2" id="437" addr="0x654738" />
+                    <attribute name="name" value="lsdspOpenGLWindow2" id="438" addr="0x654738" />
+                    <attribute name="decl" value="f(unsigned int,int,int,unsigned int,unsigned int,p.q(const).char).p." id="439" addr="0x654738" />
+                    <parmlist id="440" addr="0x64b2b8" >
+                        <parm id="441">
+                            <attributelist id="442" addr="0x64b2b8" >
+                                <attribute name="name" value="screen" id="443" addr="0x654738" />
+                                <attribute name="type" value="unsigned int" id="444" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="445" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="446">
+                            <attributelist id="447" addr="0x64b348" >
+                                <attribute name="name" value="x" id="448" addr="0x654738" />
+                                <attribute name="type" value="int" id="449" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="450">
+                            <attributelist id="451" addr="0x64b3d8" >
+                                <attribute name="name" value="y" id="452" addr="0x654738" />
+                                <attribute name="type" value="int" id="453" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="454">
+                            <attributelist id="455" addr="0x64b468" >
+                                <attribute name="name" value="w" id="456" addr="0x654738" />
+                                <attribute name="type" value="unsigned int" id="457" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="458">
+                            <attributelist id="459" addr="0x64b4f8" >
+                                <attribute name="name" value="h" id="460" addr="0x654738" />
+                                <attribute name="type" value="unsigned int" id="461" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="462">
+                            <attributelist id="463" addr="0x64b598" >
+                                <attribute name="name" value="caption" id="464" addr="0x654738" />
+                                <attribute name="type" value="p.q(const).char" id="465" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="466" addr="0x654738" />
+                    <attribute name="type" value="void" id="467" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="468" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="469" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="470" addr="0x64b718" >
+                <attributelist id="471" addr="0x64b718" >
+                    <attribute name="sym_name" value="lsdspDisplayGood" id="472" addr="0x654738" />
+                    <attribute name="name" value="lsdspDisplayGood" id="473" addr="0x654738" />
+                    <attribute name="decl" value="f(p.void)." id="474" addr="0x654738" />
+                    <parmlist id="475" addr="0x64b6c8" >
+                        <parm id="476">
+                            <attributelist id="477" addr="0x64b6c8" >
+                                <attribute name="name" value="disp" id="478" addr="0x654738" />
+                                <attribute name="type" value="p.void" id="479" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="480" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="481" addr="0x654738" />
+                    <attribute name="type" value="int" id="482" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="483" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="484" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="485" addr="0x64b978" >
+                <attributelist id="486" addr="0x64b978" >
+                    <attribute name="sym_name" value="lsdspGetWindowInnerSize" id="487" addr="0x654738" />
+                    <attribute name="name" value="lsdspGetWindowInnerSize" id="488" addr="0x654738" />
+                    <attribute name="decl" value="f(p.void,p.unsigned int,p.unsigned int)." id="489" addr="0x654738" />
+                    <parmlist id="490" addr="0x64b808" >
+                        <parm id="491">
+                            <attributelist id="492" addr="0x64b808" >
+                                <attribute name="name" value="_win" id="493" addr="0x654738" />
+                                <attribute name="type" value="p.void" id="494" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="495" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="496">
+                            <attributelist id="497" addr="0x64b898" >
+                                <attribute name="name" value="width" id="498" addr="0x654738" />
+                                <attribute name="type" value="p.unsigned int" id="499" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="500">
+                            <attributelist id="501" addr="0x64b928" >
+                                <attribute name="name" value="height" id="502" addr="0x654738" />
+                                <attribute name="type" value="p.unsigned int" id="503" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="504" addr="0x654738" />
+                    <attribute name="type" value="int" id="505" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="506" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="507" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="508" addr="0x64bb58" >
+                <attributelist id="509" addr="0x64bb58" >
+                    <attribute name="sym_name" value="lsdspChangeWindowTitle" id="510" addr="0x654738" />
+                    <attribute name="name" value="lsdspChangeWindowTitle" id="511" addr="0x654738" />
+                    <attribute name="decl" value="f(p.void,p.q(const).char)." id="512" addr="0x654738" />
+                    <parmlist id="513" addr="0x64ba68" >
+                        <parm id="514">
+                            <attributelist id="515" addr="0x64ba68" >
+                                <attribute name="name" value="handle" id="516" addr="0x654738" />
+                                <attribute name="type" value="p.void" id="517" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="518" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="519">
+                            <attributelist id="520" addr="0x64bb08" >
+                                <attribute name="name" value="title" id="521" addr="0x654738" />
+                                <attribute name="type" value="p.q(const).char" id="522" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="523" addr="0x654738" />
+                    <attribute name="type" value="int" id="524" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="525" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="526" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="527" addr="0x64bd38" >
+                <attributelist id="528" addr="0x64bd38" >
+                    <attribute name="sym_name" value="lsdspChangeScreenTitle" id="529" addr="0x654738" />
+                    <attribute name="name" value="lsdspChangeScreenTitle" id="530" addr="0x654738" />
+                    <attribute name="decl" value="f(p.void,p.q(const).char)." id="531" addr="0x654738" />
+                    <parmlist id="532" addr="0x64bc48" >
+                        <parm id="533">
+                            <attributelist id="534" addr="0x64bc48" >
+                                <attribute name="name" value="handle" id="535" addr="0x654738" />
+                                <attribute name="type" value="p.void" id="536" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="537" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="538">
+                            <attributelist id="539" addr="0x64bce8" >
+                                <attribute name="name" value="title" id="540" addr="0x654738" />
+                                <attribute name="type" value="p.q(const).char" id="541" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="542" addr="0x654738" />
+                    <attribute name="type" value="int" id="543" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="544" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="545" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="546" addr="0x64be78" >
+                <attributelist id="547" addr="0x64be78" >
+                    <attribute name="sym_name" value="lsdspSelectGLScreen" id="548" addr="0x654738" />
+                    <attribute name="name" value="lsdspSelectGLScreen" id="549" addr="0x654738" />
+                    <attribute name="decl" value="f(p.void)." id="550" addr="0x654738" />
+                    <parmlist id="551" addr="0x64be28" >
+                        <parm id="552">
+                            <attributelist id="553" addr="0x64be28" >
+                                <attribute name="name" value="handle" id="554" addr="0x654738" />
+                                <attribute name="type" value="p.void" id="555" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="556" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="557" addr="0x654738" />
+                    <attribute name="type" value="int" id="558" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="559" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="560" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="561" addr="0x64bfb8" >
+                <attributelist id="562" addr="0x64bfb8" >
+                    <attribute name="sym_name" value="lsdspSelectGLWindow" id="563" addr="0x654738" />
+                    <attribute name="name" value="lsdspSelectGLWindow" id="564" addr="0x654738" />
+                    <attribute name="decl" value="f(p.void)." id="565" addr="0x654738" />
+                    <parmlist id="566" addr="0x64bf68" >
+                        <parm id="567">
+                            <attributelist id="568" addr="0x64bf68" >
+                                <attribute name="name" value="handle" id="569" addr="0x654738" />
+                                <attribute name="type" value="p.void" id="570" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="571" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="572" addr="0x654738" />
+                    <attribute name="type" value="int" id="573" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="574" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="575" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="576" addr="0x64c078" >
+                <attributelist id="577" addr="0x64c078" >
+                    <attribute name="sym_name" value="lsdspRestoreOriginalContext" id="578" addr="0x654738" />
+                    <attribute name="name" value="lsdspRestoreOriginalContext" id="579" addr="0x654738" />
+                    <attribute name="decl" value="f()." id="580" addr="0x654738" />
+                    <attribute name="kind" value="function" id="581" addr="0x654738" />
+                    <attribute name="type" value="int" id="582" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="583" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="584" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="585" addr="0x64c1a8" >
+                <attributelist id="586" addr="0x64c1a8" >
+                    <attribute name="sym_name" value="lsdspSwapBuffers" id="587" addr="0x654738" />
+                    <attribute name="name" value="lsdspSwapBuffers" id="588" addr="0x654738" />
+                    <attribute name="decl" value="f(p.void)." id="589" addr="0x654738" />
+                    <parmlist id="590" addr="0x64c158" >
+                        <parm id="591">
+                            <attributelist id="592" addr="0x64c158" >
+                                <attribute name="name" value="handle" id="593" addr="0x654738" />
+                                <attribute name="type" value="p.void" id="594" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="595" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="596" addr="0x654738" />
+                    <attribute name="type" value="int" id="597" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="598" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="599" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="600" addr="0x64c368" >
+                <attributelist id="601" addr="0x64c368" >
+                    <attribute name="sym_name" value="lsdspSharingContexts" id="602" addr="0x654738" />
+                    <attribute name="name" value="lsdspSharingContexts" id="603" addr="0x654738" />
+                    <attribute name="decl" value="f(p.void,p.void)." id="604" addr="0x654738" />
+                    <parmlist id="605" addr="0x64c298" >
+                        <parm id="606">
+                            <attributelist id="607" addr="0x64c298" >
+                                <attribute name="name" value="disp1" id="608" addr="0x654738" />
+                                <attribute name="type" value="p.void" id="609" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="610" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="611">
+                            <attributelist id="612" addr="0x64c318" >
+                                <attribute name="name" value="disp2" id="613" addr="0x654738" />
+                                <attribute name="type" value="p.void" id="614" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="615" addr="0x654738" />
+                    <attribute name="type" value="int" id="616" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="617" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="618" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="619" addr="0x64c498" >
+                <attributelist id="620" addr="0x64c498" >
+                    <attribute name="sym_name" value="lsdspCreateExtraContext" id="621" addr="0x654738" />
+                    <attribute name="name" value="lsdspCreateExtraContext" id="622" addr="0x654738" />
+                    <attribute name="decl" value="f(p.void).p." id="623" addr="0x654738" />
+                    <parmlist id="624" addr="0x64c458" >
+                        <parm id="625">
+                            <attributelist id="626" addr="0x64c458" >
+                                <attribute name="name" value="handle" id="627" addr="0x654738" />
+                                <attribute name="type" value="p.void" id="628" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="629" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="630" addr="0x654738" />
+                    <attribute name="type" value="void" id="631" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="632" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="633" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="634" addr="0x64c658" >
+                <attributelist id="635" addr="0x64c658" >
+                    <attribute name="sym_name" value="lsdspSelectExtraContext" id="636" addr="0x654738" />
+                    <attribute name="name" value="lsdspSelectExtraContext" id="637" addr="0x654738" />
+                    <attribute name="decl" value="f(p.void,p.void)." id="638" addr="0x654738" />
+                    <parmlist id="639" addr="0x64c588" >
+                        <parm id="640">
+                            <attributelist id="641" addr="0x64c588" >
+                                <attribute name="name" value="disp" id="642" addr="0x654738" />
+                                <attribute name="type" value="p.void" id="643" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="644" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="645">
+                            <attributelist id="646" addr="0x64c608" >
+                                <attribute name="name" value="context" id="647" addr="0x654738" />
+                                <attribute name="type" value="p.void" id="648" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="649" addr="0x654738" />
+                    <attribute name="type" value="int" id="650" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="651" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="652" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="653" addr="0x64c818" >
+                <attributelist id="654" addr="0x64c818" >
+                    <attribute name="sym_name" value="lsdspDeleteExtraContext" id="655" addr="0x654738" />
+                    <attribute name="name" value="lsdspDeleteExtraContext" id="656" addr="0x654738" />
+                    <attribute name="decl" value="f(p.void,p.void)." id="657" addr="0x654738" />
+                    <parmlist id="658" addr="0x64c748" >
+                        <parm id="659">
+                            <attributelist id="660" addr="0x64c748" >
+                                <attribute name="name" value="disp" id="661" addr="0x654738" />
+                                <attribute name="type" value="p.void" id="662" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="663" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="664">
+                            <attributelist id="665" addr="0x64c7c8" >
+                                <attribute name="name" value="context" id="666" addr="0x654738" />
+                                <attribute name="type" value="p.void" id="667" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="668" addr="0x654738" />
+                    <attribute name="type" value="int" id="669" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="670" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="671" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <constant id="672" addr="0x64c8a8" >
+                <attributelist id="673" addr="0x64c8a8" >
+                    <attribute name="sym_name" value="EVENT_KEYBOARD" id="674" addr="0x654738" />
+                    <attribute name="name" value="EVENT_KEYBOARD" id="675" addr="0x654738" />
+                    <attribute name="feature_immutable" value="1" id="676" addr="0x654738" />
+                    <attribute name="value" value="1" id="677" addr="0x654738" />
+                    <attribute name="storage" value="%constant" id="678" addr="0x654738" />
+                    <attribute name="type" value="int" id="679" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="680" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="681" addr="0x654738" />
+                </attributelist >
+             
+            </constant >
+            <constant id="682" addr="0x64c938" >
+                <attributelist id="683" addr="0x64c938" >
+                    <attribute name="sym_name" value="EVENT_MOUSEMOTION" id="684" addr="0x654738" />
+                    <attribute name="name" value="EVENT_MOUSEMOTION" id="685" addr="0x654738" />
+                    <attribute name="feature_immutable" value="1" id="686" addr="0x654738" />
+                    <attribute name="value" value="2" id="687" addr="0x654738" />
+                    <attribute name="storage" value="%constant" id="688" addr="0x654738" />
+                    <attribute name="type" value="int" id="689" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="690" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="691" addr="0x654738" />
+                </attributelist >
+             
+            </constant >
+            <constant id="692" addr="0x64c9c8" >
+                <attributelist id="693" addr="0x64c9c8" >
+                    <attribute name="sym_name" value="EVENT_MOUSEBUTTON" id="694" addr="0x654738" />
+                    <attribute name="name" value="EVENT_MOUSEBUTTON" id="695" addr="0x654738" />
+                    <attribute name="feature_immutable" value="1" id="696" addr="0x654738" />
+                    <attribute name="value" value="3" id="697" addr="0x654738" />
+                    <attribute name="storage" value="%constant" id="698" addr="0x654738" />
+                    <attribute name="type" value="int" id="699" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="700" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="701" addr="0x654738" />
+                </attributelist >
+             
+            </constant >
+            <constant id="702" addr="0x64ca58" >
+                <attributelist id="703" addr="0x64ca58" >
+                    <attribute name="sym_name" value="EVENT_QUIT" id="704" addr="0x654738" />
+                    <attribute name="name" value="EVENT_QUIT" id="705" addr="0x654738" />
+                    <attribute name="feature_immutable" value="1" id="706" addr="0x654738" />
+                    <attribute name="value" value="4" id="707" addr="0x654738" />
+                    <attribute name="storage" value="%constant" id="708" addr="0x654738" />
+                    <attribute name="type" value="int" id="709" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="710" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="711" addr="0x654738" />
+                </attributelist >
+             
+            </constant >
+            <constant id="712" addr="0x64cae8" >
+                <attributelist id="713" addr="0x64cae8" >
+                    <attribute name="sym_name" value="KEYPRESS_DOWN" id="714" addr="0x654738" />
+                    <attribute name="name" value="KEYPRESS_DOWN" id="715" addr="0x654738" />
+                    <attribute name="feature_immutable" value="1" id="716" addr="0x654738" />
+                    <attribute name="value" value="1" id="717" addr="0x654738" />
+                    <attribute name="storage" value="%constant" id="718" addr="0x654738" />
+                    <attribute name="type" value="int" id="719" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="720" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="721" addr="0x654738" />
+                </attributelist >
+             
+            </constant >
+            <constant id="722" addr="0x64cb78" >
+                <attributelist id="723" addr="0x64cb78" >
+                    <attribute name="sym_name" value="KEYPRESS_UP" id="724" addr="0x654738" />
+                    <attribute name="name" value="KEYPRESS_UP" id="725" addr="0x654738" />
+                    <attribute name="feature_immutable" value="1" id="726" addr="0x654738" />
+                    <attribute name="value" value="2" id="727" addr="0x654738" />
+                    <attribute name="storage" value="%constant" id="728" addr="0x654738" />
+                    <attribute name="type" value="int" id="729" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="730" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="731" addr="0x654738" />
+                </attributelist >
+             
+            </constant >
+            <constant id="732" addr="0x64cc08" >
+                <attributelist id="733" addr="0x64cc08" >
+                    <attribute name="sym_name" value="KEYTYPE_CHARACTER" id="734" addr="0x654738" />
+                    <attribute name="name" value="KEYTYPE_CHARACTER" id="735" addr="0x654738" />
+                    <attribute name="feature_immutable" value="1" id="736" addr="0x654738" />
+                    <attribute name="value" value="1" id="737" addr="0x654738" />
+                    <attribute name="storage" value="%constant" id="738" addr="0x654738" />
+                    <attribute name="type" value="int" id="739" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="740" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="741" addr="0x654738" />
+                </attributelist >
+             
+            </constant >
+            <constant id="742" addr="0x64cc98" >
+                <attributelist id="743" addr="0x64cc98" >
+                    <attribute name="sym_name" value="KEYTYPE_VIRTUAL" id="744" addr="0x654738" />
+                    <attribute name="name" value="KEYTYPE_VIRTUAL" id="745" addr="0x654738" />
+                    <attribute name="feature_immutable" value="1" id="746" addr="0x654738" />
+                    <attribute name="value" value="2" id="747" addr="0x654738" />
+                    <attribute name="storage" value="%constant" id="748" addr="0x654738" />
+                    <attribute name="type" value="int" id="749" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="750" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="751" addr="0x654738" />
+                </attributelist >
+             
+            </constant >
+            <constant id="752" addr="0x64cd28" >
+                <attributelist id="753" addr="0x64cd28" >
+                    <attribute name="sym_name" value="METAKEY_SHIFT" id="754" addr="0x654738" />
+                    <attribute name="name" value="METAKEY_SHIFT" id="755" addr="0x654738" />
+                    <attribute name="feature_immutable" value="1" id="756" addr="0x654738" />
+                    <attribute name="value" value="0" id="757" addr="0x654738" />
+                    <attribute name="storage" value="%constant" id="758" addr="0x654738" />
+                    <attribute name="type" value="int" id="759" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="760" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="761" addr="0x654738" />
+                </attributelist >
+             
+            </constant >
+            <constant id="762" addr="0x64cdb8" >
+                <attributelist id="763" addr="0x64cdb8" >
+                    <attribute name="sym_name" value="METAKEY_CONTROL" id="764" addr="0x654738" />
+                    <attribute name="name" value="METAKEY_CONTROL" id="765" addr="0x654738" />
+                    <attribute name="feature_immutable" value="1" id="766" addr="0x654738" />
+                    <attribute name="value" value="1" id="767" addr="0x654738" />
+                    <attribute name="storage" value="%constant" id="768" addr="0x654738" />
+                    <attribute name="type" value="int" id="769" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="770" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="771" addr="0x654738" />
+                </attributelist >
+             
+            </constant >
+            <constant id="772" addr="0x64ce48" >
+                <attributelist id="773" addr="0x64ce48" >
+                    <attribute name="sym_name" value="METAKEY_ALT" id="774" addr="0x654738" />
+                    <attribute name="name" value="METAKEY_ALT" id="775" addr="0x654738" />
+                    <attribute name="feature_immutable" value="1" id="776" addr="0x654738" />
+                    <attribute name="value" value="2" id="777" addr="0x654738" />
+                    <attribute name="storage" value="%constant" id="778" addr="0x654738" />
+                    <attribute name="type" value="int" id="779" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="780" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="781" addr="0x654738" />
+                </attributelist >
+             
+            </constant >
+            <constant id="782" addr="0x64ced8" >
+                <attributelist id="783" addr="0x64ced8" >
+                    <attribute name="sym_name" value="METAKEY_CAPSLOCK" id="784" addr="0x654738" />
+                    <attribute name="name" value="METAKEY_CAPSLOCK" id="785" addr="0x654738" />
+                    <attribute name="feature_immutable" value="1" id="786" addr="0x654738" />
+                    <attribute name="value" value="3" id="787" addr="0x654738" />
+                    <attribute name="storage" value="%constant" id="788" addr="0x654738" />
+                    <attribute name="type" value="int" id="789" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="790" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="791" addr="0x654738" />
+                </attributelist >
+             
+            </constant >
+            <constant id="792" addr="0x64cf68" >
+                <attributelist id="793" addr="0x64cf68" >
+                    <attribute name="sym_name" value="METAKEY_NUMLOCK" id="794" addr="0x654738" />
+                    <attribute name="name" value="METAKEY_NUMLOCK" id="795" addr="0x654738" />
+                    <attribute name="feature_immutable" value="1" id="796" addr="0x654738" />
+                    <attribute name="value" value="4" id="797" addr="0x654738" />
+                    <attribute name="storage" value="%constant" id="798" addr="0x654738" />
+                    <attribute name="type" value="int" id="799" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="800" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="801" addr="0x654738" />
+                </attributelist >
+             
+            </constant >
+            <constant id="802" addr="0x64cff8" >
+                <attributelist id="803" addr="0x64cff8" >
+                    <attribute name="sym_name" value="MOUSEBUTTON_LEFT" id="804" addr="0x654738" />
+                    <attribute name="name" value="MOUSEBUTTON_LEFT" id="805" addr="0x654738" />
+                    <attribute name="feature_immutable" value="1" id="806" addr="0x654738" />
+                    <attribute name="value" value="1" id="807" addr="0x654738" />
+                    <attribute name="storage" value="%constant" id="808" addr="0x654738" />
+                    <attribute name="type" value="int" id="809" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="810" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="811" addr="0x654738" />
+                </attributelist >
+             
+            </constant >
+            <constant id="812" addr="0x64d088" >
+                <attributelist id="813" addr="0x64d088" >
+                    <attribute name="sym_name" value="MOUSEBUTTON_RIGHT" id="814" addr="0x654738" />
+                    <attribute name="name" value="MOUSEBUTTON_RIGHT" id="815" addr="0x654738" />
+                    <attribute name="feature_immutable" value="1" id="816" addr="0x654738" />
+                    <attribute name="value" value="2" id="817" addr="0x654738" />
+                    <attribute name="storage" value="%constant" id="818" addr="0x654738" />
+                    <attribute name="type" value="int" id="819" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="820" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="821" addr="0x654738" />
+                </attributelist >
+             
+            </constant >
+            <constant id="822" addr="0x64d118" >
+                <attributelist id="823" addr="0x64d118" >
+                    <attribute name="sym_name" value="MOUSEBUTTON_MIDDLE" id="824" addr="0x654738" />
+                    <attribute name="name" value="MOUSEBUTTON_MIDDLE" id="825" addr="0x654738" />
+                    <attribute name="feature_immutable" value="1" id="826" addr="0x654738" />
+                    <attribute name="value" value="3" id="827" addr="0x654738" />
+                    <attribute name="storage" value="%constant" id="828" addr="0x654738" />
+                    <attribute name="type" value="int" id="829" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="830" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="831" addr="0x654738" />
+                </attributelist >
+             
+            </constant >
+            <constant id="832" addr="0x64d1a8" >
+                <attributelist id="833" addr="0x64d1a8" >
+                    <attribute name="sym_name" value="MOUSEBUTTON_WHEEL" id="834" addr="0x654738" />
+                    <attribute name="name" value="MOUSEBUTTON_WHEEL" id="835" addr="0x654738" />
+                    <attribute name="feature_immutable" value="1" id="836" addr="0x654738" />
+                    <attribute name="value" value="4" id="837" addr="0x654738" />
+                    <attribute name="storage" value="%constant" id="838" addr="0x654738" />
+                    <attribute name="type" value="int" id="839" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="840" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="841" addr="0x654738" />
+                </attributelist >
+             
+            </constant >
+            <constant id="842" addr="0x64d238" >
+                <attributelist id="843" addr="0x64d238" >
+                    <attribute name="sym_name" value="MOUSEBUTTON_X1" id="844" addr="0x654738" />
+                    <attribute name="name" value="MOUSEBUTTON_X1" id="845" addr="0x654738" />
+                    <attribute name="feature_immutable" value="1" id="846" addr="0x654738" />
+                    <attribute name="value" value="5" id="847" addr="0x654738" />
+                    <attribute name="storage" value="%constant" id="848" addr="0x654738" />
+                    <attribute name="type" value="int" id="849" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="850" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="851" addr="0x654738" />
+                </attributelist >
+             
+            </constant >
+            <constant id="852" addr="0x64d2c8" >
+                <attributelist id="853" addr="0x64d2c8" >
+                    <attribute name="sym_name" value="MOUSEBUTTON_X2" id="854" addr="0x654738" />
+                    <attribute name="name" value="MOUSEBUTTON_X2" id="855" addr="0x654738" />
+                    <attribute name="feature_immutable" value="1" id="856" addr="0x654738" />
+                    <attribute name="value" value="6" id="857" addr="0x654738" />
+                    <attribute name="storage" value="%constant" id="858" addr="0x654738" />
+                    <attribute name="type" value="int" id="859" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="860" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="861" addr="0x654738" />
+                </attributelist >
+             
+            </constant >
+            <constant id="862" addr="0x64d358" >
+                <attributelist id="863" addr="0x64d358" >
+                    <attribute name="sym_name" value="MBUTTONDIR_DOWN" id="864" addr="0x654738" />
+                    <attribute name="name" value="MBUTTONDIR_DOWN" id="865" addr="0x654738" />
+                    <attribute name="feature_immutable" value="1" id="866" addr="0x654738" />
+                    <attribute name="value" value="1" id="867" addr="0x654738" />
+                    <attribute name="storage" value="%constant" id="868" addr="0x654738" />
+                    <attribute name="type" value="int" id="869" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="870" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="871" addr="0x654738" />
+                </attributelist >
+             
+            </constant >
+            <constant id="872" addr="0x64d3e8" >
+                <attributelist id="873" addr="0x64d3e8" >
+                    <attribute name="sym_name" value="MBUTTONDIR_UP" id="874" addr="0x654738" />
+                    <attribute name="name" value="MBUTTONDIR_UP" id="875" addr="0x654738" />
+                    <attribute name="feature_immutable" value="1" id="876" addr="0x654738" />
+                    <attribute name="value" value="2" id="877" addr="0x654738" />
+                    <attribute name="storage" value="%constant" id="878" addr="0x654738" />
+                    <attribute name="type" value="int" id="879" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="880" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="881" addr="0x654738" />
+                </attributelist >
+             
+            </constant >
+            <constant id="882" addr="0x64d478" >
+                <attributelist id="883" addr="0x64d478" >
+                    <attribute name="sym_name" value="MBUTTONDIR_DBLCLK" id="884" addr="0x654738" />
+                    <attribute name="name" value="MBUTTONDIR_DBLCLK" id="885" addr="0x654738" />
+                    <attribute name="feature_immutable" value="1" id="886" addr="0x654738" />
+                    <attribute name="value" value="3" id="887" addr="0x654738" />
+                    <attribute name="storage" value="%constant" id="888" addr="0x654738" />
+                    <attribute name="type" value="int" id="889" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="890" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="891" addr="0x654738" />
+                </attributelist >
+             
+            </constant >
+            <cdecl id="892" addr="0x64d658" >
+                <attributelist id="893" addr="0x64d658" >
+                    <attribute name="sym_name" value="lsdspSelectCoordinateConversions" id="894" addr="0x654738" />
+                    <attribute name="name" value="lsdspSelectCoordinateConversions" id="895" addr="0x654738" />
+                    <attribute name="decl" value="f(int,int)." id="896" addr="0x654738" />
+                    <parmlist id="897" addr="0x64d578" >
+                        <parm id="898">
+                            <attributelist id="899" addr="0x64d578" >
+                                <attribute name="name" value="coords" id="900" addr="0x654738" />
+                                <attribute name="type" value="int" id="901" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="902" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="903">
+                            <attributelist id="904" addr="0x64d608" >
+                                <attribute name="name" value="mouse" id="905" addr="0x654738" />
+                                <attribute name="type" value="int" id="906" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="907" addr="0x654738" />
+                    <attribute name="type" value="int" id="908" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="909" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="910" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="911" addr="0x64d708" >
+                <attributelist id="912" addr="0x64d708" >
+                    <attribute name="sym_name" value="lsdspGetNextEvent" id="913" addr="0x654738" />
+                    <attribute name="name" value="lsdspGetNextEvent" id="914" addr="0x654738" />
+                    <attribute name="decl" value="f().p." id="915" addr="0x654738" />
+                    <attribute name="kind" value="function" id="916" addr="0x654738" />
+                    <attribute name="type" value="void" id="917" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="918" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="919" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="920" addr="0x64d838" >
+                <attributelist id="921" addr="0x64d838" >
+                    <attribute name="sym_name" value="lsdspEventType" id="922" addr="0x654738" />
+                    <attribute name="name" value="lsdspEventType" id="923" addr="0x654738" />
+                    <attribute name="decl" value="f(p.void)." id="924" addr="0x654738" />
+                    <parmlist id="925" addr="0x64d7e8" >
+                        <parm id="926">
+                            <attributelist id="927" addr="0x64d7e8" >
+                                <attribute name="name" value="evt" id="928" addr="0x654738" />
+                                <attribute name="type" value="p.void" id="929" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="930" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="931" addr="0x654738" />
+                    <attribute name="type" value="int" id="932" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="933" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="934" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="935" addr="0x64d968" >
+                <attributelist id="936" addr="0x64d968" >
+                    <attribute name="sym_name" value="lsdspEventTarget" id="937" addr="0x654738" />
+                    <attribute name="name" value="lsdspEventTarget" id="938" addr="0x654738" />
+                    <attribute name="decl" value="f(p.void).p." id="939" addr="0x654738" />
+                    <parmlist id="940" addr="0x64d928" >
+                        <parm id="941">
+                            <attributelist id="942" addr="0x64d928" >
+                                <attribute name="name" value="evt" id="943" addr="0x654738" />
+                                <attribute name="type" value="p.void" id="944" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="945" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="946" addr="0x654738" />
+                    <attribute name="type" value="void" id="947" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="948" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="949" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="950" addr="0x64dc58" >
+                <attributelist id="951" addr="0x64dc58" >
+                    <attribute name="sym_name" value="lsdspDecodeKeyEvent" id="952" addr="0x654738" />
+                    <attribute name="name" value="lsdspDecodeKeyEvent" id="953" addr="0x654738" />
+                    <attribute name="decl" value="f(p.void,p.int,p.int,p.int)." id="954" addr="0x654738" />
+                    <parmlist id="955" addr="0x64da58" >
+                        <parm id="956">
+                            <attributelist id="957" addr="0x64da58" >
+                                <attribute name="name" value="evt" id="958" addr="0x654738" />
+                                <attribute name="type" value="p.void" id="959" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="960" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="961">
+                            <attributelist id="962" addr="0x64dae8" >
+                                <attribute name="name" value="type" id="963" addr="0x654738" />
+                                <attribute name="type" value="p.int" id="964" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="965">
+                            <attributelist id="966" addr="0x64db78" >
+                                <attribute name="name" value="code" id="967" addr="0x654738" />
+                                <attribute name="type" value="p.int" id="968" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="969">
+                            <attributelist id="970" addr="0x64dc08" >
+                                <attribute name="name" value="dir" id="971" addr="0x654738" />
+                                <attribute name="type" value="p.int" id="972" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="973" addr="0x654738" />
+                    <attribute name="type" value="int" id="974" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="975" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="976" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="977" addr="0x64dd18" >
+                <attributelist id="978" addr="0x64dd18" >
+                    <attribute name="sym_name" value="lsdspGetMetaKeyStates" id="979" addr="0x654738" />
+                    <attribute name="name" value="lsdspGetMetaKeyStates" id="980" addr="0x654738" />
+                    <attribute name="decl" value="f()." id="981" addr="0x654738" />
+                    <attribute name="kind" value="function" id="982" addr="0x654738" />
+                    <attribute name="type" value="int" id="983" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="984" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="985" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="986" addr="0x64df68" >
+                <attributelist id="987" addr="0x64df68" >
+                    <attribute name="sym_name" value="lsdspGetMouseEventCoords" id="988" addr="0x654738" />
+                    <attribute name="name" value="lsdspGetMouseEventCoords" id="989" addr="0x654738" />
+                    <attribute name="decl" value="f(p.void,p.int,p.int)." id="990" addr="0x654738" />
+                    <parmlist id="991" addr="0x64ddf8" >
+                        <parm id="992">
+                            <attributelist id="993" addr="0x64ddf8" >
+                                <attribute name="name" value="evt" id="994" addr="0x654738" />
+                                <attribute name="type" value="p.void" id="995" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="996" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="997">
+                            <attributelist id="998" addr="0x64de88" >
+                                <attribute name="name" value="x" id="999" addr="0x654738" />
+                                <attribute name="type" value="p.int" id="1000" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1001">
+                            <attributelist id="1002" addr="0x64df18" >
+                                <attribute name="name" value="y" id="1003" addr="0x654738" />
+                                <attribute name="type" value="p.int" id="1004" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="1005" addr="0x654738" />
+                    <attribute name="type" value="int" id="1006" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1007" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1008" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="1009" addr="0x64e1c8" >
+                <attributelist id="1010" addr="0x64e1c8" >
+                    <attribute name="sym_name" value="lsdspGetMouseButtonAction" id="1011" addr="0x654738" />
+                    <attribute name="name" value="lsdspGetMouseButtonAction" id="1012" addr="0x654738" />
+                    <attribute name="decl" value="f(p.void,p.int,p.int)." id="1013" addr="0x654738" />
+                    <parmlist id="1014" addr="0x64e058" >
+                        <parm id="1015">
+                            <attributelist id="1016" addr="0x64e058" >
+                                <attribute name="name" value="_evt" id="1017" addr="0x654738" />
+                                <attribute name="type" value="p.void" id="1018" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="1019" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1020">
+                            <attributelist id="1021" addr="0x64e0e8" >
+                                <attribute name="name" value="button" id="1022" addr="0x654738" />
+                                <attribute name="type" value="p.int" id="1023" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1024">
+                            <attributelist id="1025" addr="0x64e178" >
+                                <attribute name="name" value="dir" id="1026" addr="0x654738" />
+                                <attribute name="type" value="p.int" id="1027" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="1028" addr="0x654738" />
+                    <attribute name="type" value="int" id="1029" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1030" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1031" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <constant id="1032" addr="0x64e258" >
+                <attributelist id="1033" addr="0x64e258" >
+                    <attribute name="sym_name" value="FONTTYPE_ANY" id="1034" addr="0x654738" />
+                    <attribute name="name" value="FONTTYPE_ANY" id="1035" addr="0x654738" />
+                    <attribute name="feature_immutable" value="1" id="1036" addr="0x654738" />
+                    <attribute name="value" value="0" id="1037" addr="0x654738" />
+                    <attribute name="storage" value="%constant" id="1038" addr="0x654738" />
+                    <attribute name="type" value="int" id="1039" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1040" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1041" addr="0x654738" />
+                </attributelist >
+             
+            </constant >
+            <constant id="1042" addr="0x64e2e8" >
+                <attributelist id="1043" addr="0x64e2e8" >
+                    <attribute name="sym_name" value="FONTTYPE_SYSTEM" id="1044" addr="0x654738" />
+                    <attribute name="name" value="FONTTYPE_SYSTEM" id="1045" addr="0x654738" />
+                    <attribute name="feature_immutable" value="1" id="1046" addr="0x654738" />
+                    <attribute name="value" value="1" id="1047" addr="0x654738" />
+                    <attribute name="storage" value="%constant" id="1048" addr="0x654738" />
+                    <attribute name="type" value="int" id="1049" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1050" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1051" addr="0x654738" />
+                </attributelist >
+             
+            </constant >
+            <constant id="1052" addr="0x64e378" >
+                <attributelist id="1053" addr="0x64e378" >
+                    <attribute name="sym_name" value="FONTTYPE_DECORATIVE" id="1054" addr="0x654738" />
+                    <attribute name="name" value="FONTTYPE_DECORATIVE" id="1055" addr="0x654738" />
+                    <attribute name="feature_immutable" value="1" id="1056" addr="0x654738" />
+                    <attribute name="value" value="2" id="1057" addr="0x654738" />
+                    <attribute name="storage" value="%constant" id="1058" addr="0x654738" />
+                    <attribute name="type" value="int" id="1059" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1060" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1061" addr="0x654738" />
+                </attributelist >
+             
+            </constant >
+            <constant id="1062" addr="0x64e408" >
+                <attributelist id="1063" addr="0x64e408" >
+                    <attribute name="sym_name" value="FONTTYPE_MODERN" id="1064" addr="0x654738" />
+                    <attribute name="name" value="FONTTYPE_MODERN" id="1065" addr="0x654738" />
+                    <attribute name="feature_immutable" value="1" id="1066" addr="0x654738" />
+                    <attribute name="value" value="3" id="1067" addr="0x654738" />
+                    <attribute name="storage" value="%constant" id="1068" addr="0x654738" />
+                    <attribute name="type" value="int" id="1069" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1070" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1071" addr="0x654738" />
+                </attributelist >
+             
+            </constant >
+            <constant id="1072" addr="0x64e498" >
+                <attributelist id="1073" addr="0x64e498" >
+                    <attribute name="sym_name" value="FONTTYPE_ROMAN" id="1074" addr="0x654738" />
+                    <attribute name="name" value="FONTTYPE_ROMAN" id="1075" addr="0x654738" />
+                    <attribute name="feature_immutable" value="1" id="1076" addr="0x654738" />
+                    <attribute name="value" value="4" id="1077" addr="0x654738" />
+                    <attribute name="storage" value="%constant" id="1078" addr="0x654738" />
+                    <attribute name="type" value="int" id="1079" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1080" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1081" addr="0x654738" />
+                </attributelist >
+             
+            </constant >
+            <constant id="1082" addr="0x64e528" >
+                <attributelist id="1083" addr="0x64e528" >
+                    <attribute name="sym_name" value="FONTTYPE_SCRIPT" id="1084" addr="0x654738" />
+                    <attribute name="name" value="FONTTYPE_SCRIPT" id="1085" addr="0x654738" />
+                    <attribute name="feature_immutable" value="1" id="1086" addr="0x654738" />
+                    <attribute name="value" value="5" id="1087" addr="0x654738" />
+                    <attribute name="storage" value="%constant" id="1088" addr="0x654738" />
+                    <attribute name="type" value="int" id="1089" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1090" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1091" addr="0x654738" />
+                </attributelist >
+             
+            </constant >
+            <constant id="1092" addr="0x64e5b8" >
+                <attributelist id="1093" addr="0x64e5b8" >
+                    <attribute name="sym_name" value="FONTTYPE_SWISS" id="1094" addr="0x654738" />
+                    <attribute name="name" value="FONTTYPE_SWISS" id="1095" addr="0x654738" />
+                    <attribute name="feature_immutable" value="1" id="1096" addr="0x654738" />
+                    <attribute name="value" value="6" id="1097" addr="0x654738" />
+                    <attribute name="storage" value="%constant" id="1098" addr="0x654738" />
+                    <attribute name="type" value="int" id="1099" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1100" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1101" addr="0x654738" />
+                </attributelist >
+             
+            </constant >
+            <constant id="1102" addr="0x64e648" >
+                <attributelist id="1103" addr="0x64e648" >
+                    <attribute name="sym_name" value="FONTATTRIB_BOLD" id="1104" addr="0x654738" />
+                    <attribute name="name" value="FONTATTRIB_BOLD" id="1105" addr="0x654738" />
+                    <attribute name="feature_immutable" value="1" id="1106" addr="0x654738" />
+                    <attribute name="value" value="0" id="1107" addr="0x654738" />
+                    <attribute name="storage" value="%constant" id="1108" addr="0x654738" />
+                    <attribute name="type" value="int" id="1109" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1110" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1111" addr="0x654738" />
+                </attributelist >
+             
+            </constant >
+            <constant id="1112" addr="0x64e6d8" >
+                <attributelist id="1113" addr="0x64e6d8" >
+                    <attribute name="sym_name" value="FONTATTRIB_ITALIC" id="1114" addr="0x654738" />
+                    <attribute name="name" value="FONTATTRIB_ITALIC" id="1115" addr="0x654738" />
+                    <attribute name="feature_immutable" value="1" id="1116" addr="0x654738" />
+                    <attribute name="value" value="1" id="1117" addr="0x654738" />
+                    <attribute name="storage" value="%constant" id="1118" addr="0x654738" />
+                    <attribute name="type" value="int" id="1119" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1120" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1121" addr="0x654738" />
+                </attributelist >
+             
+            </constant >
+            <constant id="1122" addr="0x64e768" >
+                <attributelist id="1123" addr="0x64e768" >
+                    <attribute name="sym_name" value="ALIGN_LEFT" id="1124" addr="0x654738" />
+                    <attribute name="name" value="ALIGN_LEFT" id="1125" addr="0x654738" />
+                    <attribute name="feature_immutable" value="1" id="1126" addr="0x654738" />
+                    <attribute name="value" value="1" id="1127" addr="0x654738" />
+                    <attribute name="storage" value="%constant" id="1128" addr="0x654738" />
+                    <attribute name="type" value="int" id="1129" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1130" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1131" addr="0x654738" />
+                </attributelist >
+             
+            </constant >
+            <constant id="1132" addr="0x64e7f8" >
+                <attributelist id="1133" addr="0x64e7f8" >
+                    <attribute name="sym_name" value="ALIGN_RIGHT" id="1134" addr="0x654738" />
+                    <attribute name="name" value="ALIGN_RIGHT" id="1135" addr="0x654738" />
+                    <attribute name="feature_immutable" value="1" id="1136" addr="0x654738" />
+                    <attribute name="value" value="2" id="1137" addr="0x654738" />
+                    <attribute name="storage" value="%constant" id="1138" addr="0x654738" />
+                    <attribute name="type" value="int" id="1139" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1140" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1141" addr="0x654738" />
+                </attributelist >
+             
+            </constant >
+            <constant id="1142" addr="0x64e888" >
+                <attributelist id="1143" addr="0x64e888" >
+                    <attribute name="sym_name" value="ALIGN_CENTER" id="1144" addr="0x654738" />
+                    <attribute name="name" value="ALIGN_CENTER" id="1145" addr="0x654738" />
+                    <attribute name="feature_immutable" value="1" id="1146" addr="0x654738" />
+                    <attribute name="value" value="3" id="1147" addr="0x654738" />
+                    <attribute name="storage" value="%constant" id="1148" addr="0x654738" />
+                    <attribute name="type" value="int" id="1149" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1150" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1151" addr="0x654738" />
+                </attributelist >
+             
+            </constant >
+            <cdecl id="1152" addr="0x64ec08" >
+                <attributelist id="1153" addr="0x64ec08" >
+                    <attribute name="sym_name" value="lsdspGetFont" id="1154" addr="0x654738" />
+                    <attribute name="name" value="lsdspGetFont" id="1155" addr="0x654738" />
+                    <attribute name="decl" value="f(p.void,int,p.q(const).char,unsigned int,unsigned int).p." id="1156" addr="0x654738" />
+                    <parmlist id="1157" addr="0x64e978" >
+                        <parm id="1158">
+                            <attributelist id="1159" addr="0x64e978" >
+                                <attribute name="name" value="disp" id="1160" addr="0x654738" />
+                                <attribute name="type" value="p.void" id="1161" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="1162" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1163">
+                            <attributelist id="1164" addr="0x64ea08" >
+                                <attribute name="name" value="type" id="1165" addr="0x654738" />
+                                <attribute name="type" value="int" id="1166" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1167">
+                            <attributelist id="1168" addr="0x64eaa8" >
+                                <attribute name="name" value="family" id="1169" addr="0x654738" />
+                                <attribute name="type" value="p.q(const).char" id="1170" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1171">
+                            <attributelist id="1172" addr="0x64eb38" >
+                                <attribute name="name" value="height" id="1173" addr="0x654738" />
+                                <attribute name="type" value="unsigned int" id="1174" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1175">
+                            <attributelist id="1176" addr="0x64ebc8" >
+                                <attribute name="name" value="attribs" id="1177" addr="0x654738" />
+                                <attribute name="type" value="unsigned int" id="1178" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="1179" addr="0x654738" />
+                    <attribute name="type" value="void" id="1180" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1181" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1182" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="1183" addr="0x64f028" >
+                <attributelist id="1184" addr="0x64f028" >
+                    <attribute name="sym_name" value="lsdspTextExtentsA" id="1185" addr="0x654738" />
+                    <attribute name="name" value="lsdspTextExtentsA" id="1186" addr="0x654738" />
+                    <attribute name="decl" value="f(p.void,p.q(const).char,unsigned int,p.int,p.int,p.unsigned int)." id="1187" addr="0x654738" />
+                    <parmlist id="1188" addr="0x64ecf8" >
+                        <parm id="1189">
+                            <attributelist id="1190" addr="0x64ecf8" >
+                                <attribute name="name" value="font" id="1191" addr="0x654738" />
+                                <attribute name="type" value="p.void" id="1192" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="1193" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1194">
+                            <attributelist id="1195" addr="0x64ed98" >
+                                <attribute name="name" value="text" id="1196" addr="0x654738" />
+                                <attribute name="type" value="p.q(const).char" id="1197" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1198">
+                            <attributelist id="1199" addr="0x64ee28" >
+                                <attribute name="name" value="len" id="1200" addr="0x654738" />
+                                <attribute name="type" value="unsigned int" id="1201" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1202">
+                            <attributelist id="1203" addr="0x64eeb8" >
+                                <attribute name="name" value="ascent" id="1204" addr="0x654738" />
+                                <attribute name="type" value="p.int" id="1205" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1206">
+                            <attributelist id="1207" addr="0x64ef48" >
+                                <attribute name="name" value="descent" id="1208" addr="0x654738" />
+                                <attribute name="type" value="p.int" id="1209" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1210">
+                            <attributelist id="1211" addr="0x64efd8" >
+                                <attribute name="name" value="width" id="1212" addr="0x654738" />
+                                <attribute name="type" value="p.unsigned int" id="1213" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="1214" addr="0x654738" />
+                    <attribute name="type" value="int" id="1215" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1216" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1217" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="1218" addr="0x64f448" >
+                <attributelist id="1219" addr="0x64f448" >
+                    <attribute name="sym_name" value="lsdspTextExtentsW" id="1220" addr="0x654738" />
+                    <attribute name="name" value="lsdspTextExtentsW" id="1221" addr="0x654738" />
+                    <attribute name="decl" value="f(p.void,p.q(const).wchar_t,unsigned int,p.int,p.int,p.unsigned int)." id="1222" addr="0x654738" />
+                    <parmlist id="1223" addr="0x64f118" >
+                        <parm id="1224">
+                            <attributelist id="1225" addr="0x64f118" >
+                                <attribute name="name" value="font" id="1226" addr="0x654738" />
+                                <attribute name="type" value="p.void" id="1227" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="1228" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1229">
+                            <attributelist id="1230" addr="0x64f1b8" >
+                                <attribute name="name" value="text" id="1231" addr="0x654738" />
+                                <attribute name="type" value="p.q(const).wchar_t" id="1232" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1233">
+                            <attributelist id="1234" addr="0x64f248" >
+                                <attribute name="name" value="len" id="1235" addr="0x654738" />
+                                <attribute name="type" value="unsigned int" id="1236" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1237">
+                            <attributelist id="1238" addr="0x64f2d8" >
+                                <attribute name="name" value="ascent" id="1239" addr="0x654738" />
+                                <attribute name="type" value="p.int" id="1240" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1241">
+                            <attributelist id="1242" addr="0x64f368" >
+                                <attribute name="name" value="descent" id="1243" addr="0x654738" />
+                                <attribute name="type" value="p.int" id="1244" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1245">
+                            <attributelist id="1246" addr="0x64f3f8" >
+                                <attribute name="name" value="width" id="1247" addr="0x654738" />
+                                <attribute name="type" value="p.unsigned int" id="1248" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="1249" addr="0x654738" />
+                    <attribute name="type" value="int" id="1250" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1251" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1252" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="1253" addr="0x64f588" >
+                <attributelist id="1254" addr="0x64f588" >
+                    <attribute name="sym_name" value="lsdspPrepareFor2D" id="1255" addr="0x654738" />
+                    <attribute name="name" value="lsdspPrepareFor2D" id="1256" addr="0x654738" />
+                    <attribute name="decl" value="f(p.void)." id="1257" addr="0x654738" />
+                    <parmlist id="1258" addr="0x64f538" >
+                        <parm id="1259">
+                            <attributelist id="1260" addr="0x64f538" >
+                                <attribute name="name" value="disp" id="1261" addr="0x654738" />
+                                <attribute name="type" value="p.void" id="1262" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="1263" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="1264" addr="0x654738" />
+                    <attribute name="type" value="int" id="1265" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1266" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1267" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="1268" addr="0x64f6c8" >
+                <attributelist id="1269" addr="0x64f6c8" >
+                    <attribute name="sym_name" value="lsdspDisplayIn2DMode" id="1270" addr="0x654738" />
+                    <attribute name="name" value="lsdspDisplayIn2DMode" id="1271" addr="0x654738" />
+                    <attribute name="decl" value="f(p.void)." id="1272" addr="0x654738" />
+                    <parmlist id="1273" addr="0x64f678" >
+                        <parm id="1274">
+                            <attributelist id="1275" addr="0x64f678" >
+                                <attribute name="name" value="disp" id="1276" addr="0x654738" />
+                                <attribute name="type" value="p.void" id="1277" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="1278" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="1279" addr="0x654738" />
+                    <attribute name="type" value="int" id="1280" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1281" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1282" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="1283" addr="0x64f808" >
+                <attributelist id="1284" addr="0x64f808" >
+                    <attribute name="sym_name" value="lsdspDone2D" id="1285" addr="0x654738" />
+                    <attribute name="name" value="lsdspDone2D" id="1286" addr="0x654738" />
+                    <attribute name="decl" value="f(p.void)." id="1287" addr="0x654738" />
+                    <parmlist id="1288" addr="0x64f7b8" >
+                        <parm id="1289">
+                            <attributelist id="1290" addr="0x64f7b8" >
+                                <attribute name="name" value="disp" id="1291" addr="0x654738" />
+                                <attribute name="type" value="p.void" id="1292" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="1293" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="1294" addr="0x654738" />
+                    <attribute name="type" value="int" id="1295" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1296" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1297" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="1298" addr="0x64fb88" >
+                <attributelist id="1299" addr="0x64fb88" >
+                    <attribute name="sym_name" value="lsdspDrawTextA" id="1300" addr="0x654738" />
+                    <attribute name="name" value="lsdspDrawTextA" id="1301" addr="0x654738" />
+                    <attribute name="decl" value="f(p.void,p.void,int,int,p.q(const).char)." id="1302" addr="0x654738" />
+                    <parmlist id="1303" addr="0x64f8f8" >
+                        <parm id="1304">
+                            <attributelist id="1305" addr="0x64f8f8" >
+                                <attribute name="name" value="disp" id="1306" addr="0x654738" />
+                                <attribute name="type" value="p.void" id="1307" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="1308" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1309">
+                            <attributelist id="1310" addr="0x64f978" >
+                                <attribute name="name" value="font" id="1311" addr="0x654738" />
+                                <attribute name="type" value="p.void" id="1312" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1313">
+                            <attributelist id="1314" addr="0x64fa08" >
+                                <attribute name="name" value="x" id="1315" addr="0x654738" />
+                                <attribute name="type" value="int" id="1316" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1317">
+                            <attributelist id="1318" addr="0x64fa98" >
+                                <attribute name="name" value="y" id="1319" addr="0x654738" />
+                                <attribute name="type" value="int" id="1320" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1321">
+                            <attributelist id="1322" addr="0x64fb38" >
+                                <attribute name="name" value="text" id="1323" addr="0x654738" />
+                                <attribute name="type" value="p.q(const).char" id="1324" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="1325" addr="0x654738" />
+                    <attribute name="type" value="int" id="1326" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1327" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1328" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="1329" addr="0x64ff08" >
+                <attributelist id="1330" addr="0x64ff08" >
+                    <attribute name="sym_name" value="lsdspDrawTextW" id="1331" addr="0x654738" />
+                    <attribute name="name" value="lsdspDrawTextW" id="1332" addr="0x654738" />
+                    <attribute name="decl" value="f(p.void,p.void,int,int,p.q(const).wchar_t)." id="1333" addr="0x654738" />
+                    <parmlist id="1334" addr="0x64fc78" >
+                        <parm id="1335">
+                            <attributelist id="1336" addr="0x64fc78" >
+                                <attribute name="name" value="disp" id="1337" addr="0x654738" />
+                                <attribute name="type" value="p.void" id="1338" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="1339" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1340">
+                            <attributelist id="1341" addr="0x64fcf8" >
+                                <attribute name="name" value="font" id="1342" addr="0x654738" />
+                                <attribute name="type" value="p.void" id="1343" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1344">
+                            <attributelist id="1345" addr="0x64fd88" >
+                                <attribute name="name" value="x" id="1346" addr="0x654738" />
+                                <attribute name="type" value="int" id="1347" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1348">
+                            <attributelist id="1349" addr="0x64fe18" >
+                                <attribute name="name" value="y" id="1350" addr="0x654738" />
+                                <attribute name="type" value="int" id="1351" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1352">
+                            <attributelist id="1353" addr="0x64feb8" >
+                                <attribute name="name" value="text" id="1354" addr="0x654738" />
+                                <attribute name="type" value="p.q(const).wchar_t" id="1355" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="1356" addr="0x654738" />
+                    <attribute name="type" value="int" id="1357" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1358" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1359" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="1360" addr="0x650318" >
+                <attributelist id="1361" addr="0x650318" >
+                    <attribute name="sym_name" value="lsdspDrawText2" id="1362" addr="0x654738" />
+                    <attribute name="name" value="lsdspDrawText2" id="1363" addr="0x654738" />
+                    <attribute name="decl" value="f(p.void,p.void,int,int,p.q(const).char,unsigned int)." id="1364" addr="0x654738" />
+                    <parmlist id="1365" addr="0x64fff8" >
+                        <parm id="1366">
+                            <attributelist id="1367" addr="0x64fff8" >
+                                <attribute name="name" value="disp" id="1368" addr="0x654738" />
+                                <attribute name="type" value="p.void" id="1369" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="1370" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1371">
+                            <attributelist id="1372" addr="0x650078" >
+                                <attribute name="name" value="font" id="1373" addr="0x654738" />
+                                <attribute name="type" value="p.void" id="1374" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1375">
+                            <attributelist id="1376" addr="0x650108" >
+                                <attribute name="name" value="x" id="1377" addr="0x654738" />
+                                <attribute name="type" value="int" id="1378" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1379">
+                            <attributelist id="1380" addr="0x650198" >
+                                <attribute name="name" value="y" id="1381" addr="0x654738" />
+                                <attribute name="type" value="int" id="1382" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1383">
+                            <attributelist id="1384" addr="0x650238" >
+                                <attribute name="name" value="text" id="1385" addr="0x654738" />
+                                <attribute name="type" value="p.q(const).char" id="1386" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1387">
+                            <attributelist id="1388" addr="0x6502c8" >
+                                <attribute name="name" value="options" id="1389" addr="0x654738" />
+                                <attribute name="type" value="unsigned int" id="1390" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="1391" addr="0x654738" />
+                    <attribute name="type" value="int" id="1392" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1393" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1394" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="1395" addr="0x650478" >
+                <attributelist id="1396" addr="0x650478" >
+                    <attribute name="sym_name" value="lsdspSaveFontCache" id="1397" addr="0x654738" />
+                    <attribute name="name" value="lsdspSaveFontCache" id="1398" addr="0x654738" />
+                    <attribute name="decl" value="f(p.q(const).char)." id="1399" addr="0x654738" />
+                    <parmlist id="1400" addr="0x650428" >
+                        <parm id="1401">
+                            <attributelist id="1402" addr="0x650428" >
+                                <attribute name="name" value="path" id="1403" addr="0x654738" />
+                                <attribute name="type" value="p.q(const).char" id="1404" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="1405" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="1406" addr="0x654738" />
+                    <attribute name="type" value="int" id="1407" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1408" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1409" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="1410" addr="0x6505d8" >
+                <attributelist id="1411" addr="0x6505d8" >
+                    <attribute name="sym_name" value="lsdspLoadFontCache" id="1412" addr="0x654738" />
+                    <attribute name="name" value="lsdspLoadFontCache" id="1413" addr="0x654738" />
+                    <attribute name="decl" value="f(p.q(const).char)." id="1414" addr="0x654738" />
+                    <parmlist id="1415" addr="0x650588" >
+                        <parm id="1416">
+                            <attributelist id="1417" addr="0x650588" >
+                                <attribute name="name" value="path" id="1418" addr="0x654738" />
+                                <attribute name="type" value="p.q(const).char" id="1419" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="1420" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="1421" addr="0x654738" />
+                    <attribute name="type" value="int" id="1422" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1423" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1424" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="1425" addr="0x6507a8" >
+                <attributelist id="1426" addr="0x6507a8" >
+                    <attribute name="sym_name" value="lsdspSetControlDisabled" id="1427" addr="0x654738" />
+                    <attribute name="name" value="lsdspSetControlDisabled" id="1428" addr="0x654738" />
+                    <attribute name="decl" value="f(p.void,int)." id="1429" addr="0x654738" />
+                    <parmlist id="1430" addr="0x6506c8" >
+                        <parm id="1431">
+                            <attributelist id="1432" addr="0x6506c8" >
+                                <attribute name="name" value="ctl" id="1433" addr="0x654738" />
+                                <attribute name="type" value="p.void" id="1434" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="1435" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1436">
+                            <attributelist id="1437" addr="0x650758" >
+                                <attribute name="name" value="state" id="1438" addr="0x654738" />
+                                <attribute name="type" value="int" id="1439" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="1440" addr="0x654738" />
+                    <attribute name="type" value="int" id="1441" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1442" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1443" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="1444" addr="0x6508e8" >
+                <attributelist id="1445" addr="0x6508e8" >
+                    <attribute name="sym_name" value="lsdspDeleteControl" id="1446" addr="0x654738" />
+                    <attribute name="name" value="lsdspDeleteControl" id="1447" addr="0x654738" />
+                    <attribute name="decl" value="f(p.void)." id="1448" addr="0x654738" />
+                    <parmlist id="1449" addr="0x650898" >
+                        <parm id="1450">
+                            <attributelist id="1451" addr="0x650898" >
+                                <attribute name="name" value="ctl" id="1452" addr="0x654738" />
+                                <attribute name="type" value="p.void" id="1453" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="1454" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="1455" addr="0x654738" />
+                    <attribute name="type" value="int" id="1456" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1457" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1458" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="1459" addr="0x650b48" >
+                <attributelist id="1460" addr="0x650b48" >
+                    <attribute name="sym_name" value="lsdspMoveControl" id="1461" addr="0x654738" />
+                    <attribute name="name" value="lsdspMoveControl" id="1462" addr="0x654738" />
+                    <attribute name="decl" value="f(p.void,int,int)." id="1463" addr="0x654738" />
+                    <parmlist id="1464" addr="0x6509d8" >
+                        <parm id="1465">
+                            <attributelist id="1466" addr="0x6509d8" >
+                                <attribute name="name" value="ctl" id="1467" addr="0x654738" />
+                                <attribute name="type" value="p.void" id="1468" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="1469" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1470">
+                            <attributelist id="1471" addr="0x650a68" >
+                                <attribute name="name" value="x" id="1472" addr="0x654738" />
+                                <attribute name="type" value="int" id="1473" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1474">
+                            <attributelist id="1475" addr="0x650af8" >
+                                <attribute name="name" value="y" id="1476" addr="0x654738" />
+                                <attribute name="type" value="int" id="1477" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="1478" addr="0x654738" />
+                    <attribute name="type" value="int" id="1479" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1480" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1481" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="1482" addr="0x650fe8" >
+                <attributelist id="1483" addr="0x650fe8" >
+                    <attribute name="sym_name" value="lsdspCreateButton" id="1484" addr="0x654738" />
+                    <attribute name="name" value="lsdspCreateButton" id="1485" addr="0x654738" />
+                    <attribute name="decl" value="f(p.void,int,int,int,int,p.q(const).char,p.int).p." id="1486" addr="0x654738" />
+                    <parmlist id="1487" addr="0x650c38" >
+                        <parm id="1488">
+                            <attributelist id="1489" addr="0x650c38" >
+                                <attribute name="name" value="disp" id="1490" addr="0x654738" />
+                                <attribute name="type" value="p.void" id="1491" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="1492" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1493">
+                            <attributelist id="1494" addr="0x650cc8" >
+                                <attribute name="name" value="x" id="1495" addr="0x654738" />
+                                <attribute name="type" value="int" id="1496" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1497">
+                            <attributelist id="1498" addr="0x650d58" >
+                                <attribute name="name" value="y" id="1499" addr="0x654738" />
+                                <attribute name="type" value="int" id="1500" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1501">
+                            <attributelist id="1502" addr="0x650de8" >
+                                <attribute name="name" value="w" id="1503" addr="0x654738" />
+                                <attribute name="type" value="int" id="1504" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1505">
+                            <attributelist id="1506" addr="0x650e78" >
+                                <attribute name="name" value="h" id="1507" addr="0x654738" />
+                                <attribute name="type" value="int" id="1508" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1509">
+                            <attributelist id="1510" addr="0x650f18" >
+                                <attribute name="name" value="caption" id="1511" addr="0x654738" />
+                                <attribute name="type" value="p.q(const).char" id="1512" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1513">
+                            <attributelist id="1514" addr="0x650fa8" >
+                                <attribute name="name" value="click_counter" id="1515" addr="0x654738" />
+                                <attribute name="type" value="p.int" id="1516" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="1517" addr="0x654738" />
+                    <attribute name="type" value="void" id="1518" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1519" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1520" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="1521" addr="0x651128" >
+                <attributelist id="1522" addr="0x651128" >
+                    <attribute name="sym_name" value="lsdspRetrieveButtonClicks" id="1523" addr="0x654738" />
+                    <attribute name="name" value="lsdspRetrieveButtonClicks" id="1524" addr="0x654738" />
+                    <attribute name="decl" value="f(p.void)." id="1525" addr="0x654738" />
+                    <parmlist id="1526" addr="0x6510d8" >
+                        <parm id="1527">
+                            <attributelist id="1528" addr="0x6510d8" >
+                                <attribute name="name" value="btn" id="1529" addr="0x654738" />
+                                <attribute name="type" value="p.void" id="1530" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="1531" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="1532" addr="0x654738" />
+                    <attribute name="type" value="int" id="1533" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1534" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1535" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="1536" addr="0x651308" >
+                <attributelist id="1537" addr="0x651308" >
+                    <attribute name="sym_name" value="lsdspSetButtonCaption" id="1538" addr="0x654738" />
+                    <attribute name="name" value="lsdspSetButtonCaption" id="1539" addr="0x654738" />
+                    <attribute name="decl" value="f(p.void,p.q(const).char)." id="1540" addr="0x654738" />
+                    <parmlist id="1541" addr="0x651218" >
+                        <parm id="1542">
+                            <attributelist id="1543" addr="0x651218" >
+                                <attribute name="name" value="button" id="1544" addr="0x654738" />
+                                <attribute name="type" value="p.void" id="1545" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="1546" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1547">
+                            <attributelist id="1548" addr="0x6512b8" >
+                                <attribute name="name" value="caption" id="1549" addr="0x654738" />
+                                <attribute name="type" value="p.q(const).char" id="1550" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="1551" addr="0x654738" />
+                    <attribute name="type" value="int" id="1552" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1553" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1554" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="1555" addr="0x651848" >
+                <attributelist id="1556" addr="0x651848" >
+                    <attribute name="sym_name" value="lsdspDirectoryListBoxCreate" id="1557" addr="0x654738" />
+                    <attribute name="name" value="lsdspDirectoryListBoxCreate" id="1558" addr="0x654738" />
+                    <attribute name="decl" value="f(p.void,int,int,int,int,p.q(const).char,p.q(const).char,p.int).p." id="1559" addr="0x654738" />
+                    <parmlist id="1560" addr="0x6513f8" >
+                        <parm id="1561">
+                            <attributelist id="1562" addr="0x6513f8" >
+                                <attribute name="name" value="disp" id="1563" addr="0x654738" />
+                                <attribute name="type" value="p.void" id="1564" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="1565" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1566">
+                            <attributelist id="1567" addr="0x651488" >
+                                <attribute name="name" value="x" id="1568" addr="0x654738" />
+                                <attribute name="type" value="int" id="1569" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1570">
+                            <attributelist id="1571" addr="0x651518" >
+                                <attribute name="name" value="y" id="1572" addr="0x654738" />
+                                <attribute name="type" value="int" id="1573" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1574">
+                            <attributelist id="1575" addr="0x6515a8" >
+                                <attribute name="name" value="w" id="1576" addr="0x654738" />
+                                <attribute name="type" value="int" id="1577" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1578">
+                            <attributelist id="1579" addr="0x651638" >
+                                <attribute name="name" value="h" id="1580" addr="0x654738" />
+                                <attribute name="type" value="int" id="1581" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1582">
+                            <attributelist id="1583" addr="0x6516d8" >
+                                <attribute name="name" value="folder_path" id="1584" addr="0x654738" />
+                                <attribute name="type" value="p.q(const).char" id="1585" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1586">
+                            <attributelist id="1587" addr="0x651778" >
+                                <attribute name="name" value="filters" id="1588" addr="0x654738" />
+                                <attribute name="type" value="p.q(const).char" id="1589" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1590">
+                            <attributelist id="1591" addr="0x651808" >
+                                <attribute name="name" value="select_accum" id="1592" addr="0x654738" />
+                                <attribute name="type" value="p.int" id="1593" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="1594" addr="0x654738" />
+                    <attribute name="type" value="void" id="1595" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1596" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1597" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="1598" addr="0x651988" >
+                <attributelist id="1599" addr="0x651988" >
+                    <attribute name="sym_name" value="lsdspDirectoryListBoxRetrieveCloseCount" id="1600" addr="0x654738" />
+                    <attribute name="name" value="lsdspDirectoryListBoxRetrieveCloseCount" id="1601" addr="0x654738" />
+                    <attribute name="decl" value="f(p.void)." id="1602" addr="0x654738" />
+                    <parmlist id="1603" addr="0x651938" >
+                        <parm id="1604">
+                            <attributelist id="1605" addr="0x651938" >
+                                <attribute name="name" value="_dlb" id="1606" addr="0x654738" />
+                                <attribute name="type" value="p.void" id="1607" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="1608" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="1609" addr="0x654738" />
+                    <attribute name="type" value="int" id="1610" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1611" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1612" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="1613" addr="0x651be8" >
+                <attributelist id="1614" addr="0x651be8" >
+                    <attribute name="sym_name" value="lsdspDirectoryListBoxGetSelectedFilePath" id="1615" addr="0x654738" />
+                    <attribute name="name" value="lsdspDirectoryListBoxGetSelectedFilePath" id="1616" addr="0x654738" />
+                    <attribute name="decl" value="f(p.void,p.char,int)." id="1617" addr="0x654738" />
+                    <parmlist id="1618" addr="0x651a78" >
+                        <parm id="1619">
+                            <attributelist id="1620" addr="0x651a78" >
+                                <attribute name="name" value="lbx" id="1621" addr="0x654738" />
+                                <attribute name="type" value="p.void" id="1622" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="1623" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1624">
+                            <attributelist id="1625" addr="0x651b08" >
+                                <attribute name="name" value="buffer" id="1626" addr="0x654738" />
+                                <attribute name="type" value="p.char" id="1627" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1628">
+                            <attributelist id="1629" addr="0x651b98" >
+                                <attribute name="name" value="bsize" id="1630" addr="0x654738" />
+                                <attribute name="type" value="int" id="1631" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="1632" addr="0x654738" />
+                    <attribute name="type" value="int" id="1633" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1634" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1635" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="1636" addr="0x651d28" >
+                <attributelist id="1637" addr="0x651d28" >
+                    <attribute name="sym_name" value="lsdspControlSetFocus" id="1638" addr="0x654738" />
+                    <attribute name="name" value="lsdspControlSetFocus" id="1639" addr="0x654738" />
+                    <attribute name="decl" value="f(p.void)." id="1640" addr="0x654738" />
+                    <parmlist id="1641" addr="0x651cd8" >
+                        <parm id="1642">
+                            <attributelist id="1643" addr="0x651cd8" >
+                                <attribute name="name" value="wid" id="1644" addr="0x654738" />
+                                <attribute name="type" value="p.void" id="1645" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="1646" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="1647" addr="0x654738" />
+                    <attribute name="type" value="int" id="1648" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1649" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1650" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="1651" addr="0x651e68" >
+                <attributelist id="1652" addr="0x651e68" >
+                    <attribute name="sym_name" value="lsdspRenderUI" id="1653" addr="0x654738" />
+                    <attribute name="name" value="lsdspRenderUI" id="1654" addr="0x654738" />
+                    <attribute name="decl" value="f(p.void)." id="1655" addr="0x654738" />
+                    <parmlist id="1656" addr="0x651e18" >
+                        <parm id="1657">
+                            <attributelist id="1658" addr="0x651e18" >
+                                <attribute name="name" value="_disp" id="1659" addr="0x654738" />
+                                <attribute name="type" value="p.void" id="1660" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="1661" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="1662" addr="0x654738" />
+                    <attribute name="type" value="int" id="1663" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1664" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1665" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="1666" addr="0x652178" >
+                <attributelist id="1667" addr="0x652178" >
+                    <attribute name="sym_name" value="lsdspCreateAndSelectFBO" id="1668" addr="0x654738" />
+                    <attribute name="name" value="lsdspCreateAndSelectFBO" id="1669" addr="0x654738" />
+                    <attribute name="decl" value="f(int,unsigned int,unsigned int,unsigned int)." id="1670" addr="0x654738" />
+                    <parmlist id="1671" addr="0x651f68" >
+                        <parm id="1672">
+                            <attributelist id="1673" addr="0x651f68" >
+                                <attribute name="name" value="id" id="1674" addr="0x654738" />
+                                <attribute name="type" value="int" id="1675" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="1676" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1677">
+                            <attributelist id="1678" addr="0x651ff8" >
+                                <attribute name="name" value="width" id="1679" addr="0x654738" />
+                                <attribute name="type" value="unsigned int" id="1680" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1681">
+                            <attributelist id="1682" addr="0x652088" >
+                                <attribute name="name" value="height" id="1683" addr="0x654738" />
+                                <attribute name="type" value="unsigned int" id="1684" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1685">
+                            <attributelist id="1686" addr="0x652128" >
+                                <attribute name="name" value="options" id="1687" addr="0x654738" />
+                                <attribute name="value" value="0" id="1688" addr="0x654738" />
+                                <attribute name="type" value="unsigned int" id="1689" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="1690" addr="0x654738" />
+                    <attribute name="type" value="int" id="1691" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1692" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1693" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="1694" addr="0x6522c8" >
+                <attributelist id="1695" addr="0x6522c8" >
+                    <attribute name="sym_name" value="lsdspDoneFBO" id="1696" addr="0x654738" />
+                    <attribute name="name" value="lsdspDoneFBO" id="1697" addr="0x654738" />
+                    <attribute name="decl" value="f(int)." id="1698" addr="0x654738" />
+                    <parmlist id="1699" addr="0x652278" >
+                        <parm id="1700">
+                            <attributelist id="1701" addr="0x652278" >
+                                <attribute name="name" value="id" id="1702" addr="0x654738" />
+                                <attribute name="type" value="int" id="1703" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="1704" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="1705" addr="0x654738" />
+                    <attribute name="type" value="int" id="1706" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1707" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1708" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="1709" addr="0x652418" >
+                <attributelist id="1710" addr="0x652418" >
+                    <attribute name="sym_name" value="lsdspReactivateFBO" id="1711" addr="0x654738" />
+                    <attribute name="name" value="lsdspReactivateFBO" id="1712" addr="0x654738" />
+                    <attribute name="decl" value="f(int)." id="1713" addr="0x654738" />
+                    <parmlist id="1714" addr="0x6523c8" >
+                        <parm id="1715">
+                            <attributelist id="1716" addr="0x6523c8" >
+                                <attribute name="name" value="id" id="1717" addr="0x654738" />
+                                <attribute name="type" value="int" id="1718" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="1719" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="1720" addr="0x654738" />
+                    <attribute name="type" value="int" id="1721" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1722" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1723" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="1724" addr="0x6524d8" >
+                <attributelist id="1725" addr="0x6524d8" >
+                    <attribute name="sym_name" value="lsdspInitPerformanceFunctions" id="1726" addr="0x654738" />
+                    <attribute name="name" value="lsdspInitPerformanceFunctions" id="1727" addr="0x654738" />
+                    <attribute name="decl" value="f()." id="1728" addr="0x654738" />
+                    <attribute name="kind" value="function" id="1729" addr="0x654738" />
+                    <attribute name="type" value="int" id="1730" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1731" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1732" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="1733" addr="0x652588" >
+                <attributelist id="1734" addr="0x652588" >
+                    <attribute name="sym_name" value="lsdspShutdownPerformanceFunctions" id="1735" addr="0x654738" />
+                    <attribute name="name" value="lsdspShutdownPerformanceFunctions" id="1736" addr="0x654738" />
+                    <attribute name="decl" value="f()." id="1737" addr="0x654738" />
+                    <attribute name="kind" value="function" id="1738" addr="0x654738" />
+                    <attribute name="type" value="int" id="1739" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1740" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1741" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="1742" addr="0x652638" >
+                <attributelist id="1743" addr="0x652638" >
+                    <attribute name="sym_name" value="lsdspBeginPerformanceExperiment" id="1744" addr="0x654738" />
+                    <attribute name="name" value="lsdspBeginPerformanceExperiment" id="1745" addr="0x654738" />
+                    <attribute name="decl" value="f()." id="1746" addr="0x654738" />
+                    <attribute name="kind" value="function" id="1747" addr="0x654738" />
+                    <attribute name="type" value="int" id="1748" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1749" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1750" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="1751" addr="0x652778" >
+                <attributelist id="1752" addr="0x652778" >
+                    <attribute name="sym_name" value="lsdspBeginExperimentPass" id="1753" addr="0x654738" />
+                    <attribute name="name" value="lsdspBeginExperimentPass" id="1754" addr="0x654738" />
+                    <attribute name="decl" value="f(int)." id="1755" addr="0x654738" />
+                    <parmlist id="1756" addr="0x652728" >
+                        <parm id="1757">
+                            <attributelist id="1758" addr="0x652728" >
+                                <attribute name="name" value="pass_" id="1759" addr="0x654738" />
+                                <attribute name="type" value="int" id="1760" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="1761" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="1762" addr="0x654738" />
+                    <attribute name="type" value="int" id="1763" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1764" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1765" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="1766" addr="0x6528c8" >
+                <attributelist id="1767" addr="0x6528c8" >
+                    <attribute name="sym_name" value="lsdspEndExperimentPass" id="1768" addr="0x654738" />
+                    <attribute name="name" value="lsdspEndExperimentPass" id="1769" addr="0x654738" />
+                    <attribute name="decl" value="f(int)." id="1770" addr="0x654738" />
+                    <parmlist id="1771" addr="0x652878" >
+                        <parm id="1772">
+                            <attributelist id="1773" addr="0x652878" >
+                                <attribute name="name" value="pass_" id="1774" addr="0x654738" />
+                                <attribute name="type" value="int" id="1775" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="1776" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="1777" addr="0x654738" />
+                    <attribute name="type" value="int" id="1778" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1779" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1780" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="1781" addr="0x652988" >
+                <attributelist id="1782" addr="0x652988" >
+                    <attribute name="sym_name" value="lsdspEndPerformanceExperiment" id="1783" addr="0x654738" />
+                    <attribute name="name" value="lsdspEndPerformanceExperiment" id="1784" addr="0x654738" />
+                    <attribute name="decl" value="f()." id="1785" addr="0x654738" />
+                    <attribute name="kind" value="function" id="1786" addr="0x654738" />
+                    <attribute name="type" value="int" id="1787" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1788" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1789" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="1790" addr="0x652a38" >
+                <attributelist id="1791" addr="0x652a38" >
+                    <attribute name="sym_name" value="lsdspSampleAndRenderStats" id="1792" addr="0x654738" />
+                    <attribute name="name" value="lsdspSampleAndRenderStats" id="1793" addr="0x654738" />
+                    <attribute name="decl" value="f()." id="1794" addr="0x654738" />
+                    <attribute name="kind" value="function" id="1795" addr="0x654738" />
+                    <attribute name="type" value="int" id="1796" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1797" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1798" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="1799" addr="0x652c08" >
+                <attributelist id="1800" addr="0x652c08" >
+                    <attribute name="sym_name" value="lsdspLogDwmTimingInfo" id="1801" addr="0x654738" />
+                    <attribute name="name" value="lsdspLogDwmTimingInfo" id="1802" addr="0x654738" />
+                    <attribute name="decl" value="f(p.void,p.q(const).char)." id="1803" addr="0x654738" />
+                    <parmlist id="1804" addr="0x652b18" >
+                        <parm id="1805">
+                            <attributelist id="1806" addr="0x652b18" >
+                                <attribute name="name" value="disp" id="1807" addr="0x654738" />
+                                <attribute name="type" value="p.void" id="1808" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="1809" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1810">
+                            <attributelist id="1811" addr="0x652bb8" >
+                                <attribute name="name" value="path" id="1812" addr="0x654738" />
+                                <attribute name="type" value="p.q(const).char" id="1813" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="1814" addr="0x654738" />
+                    <attribute name="type" value="int" id="1815" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1816" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1817" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="1818" addr="0x652e68" >
+                <attributelist id="1819" addr="0x652e68" >
+                    <attribute name="sym_name" value="lsdspDrawTestBitmap" id="1820" addr="0x654738" />
+                    <attribute name="name" value="lsdspDrawTestBitmap" id="1821" addr="0x654738" />
+                    <attribute name="decl" value="f(p.void,int,int)." id="1822" addr="0x654738" />
+                    <parmlist id="1823" addr="0x652cf8" >
+                        <parm id="1824">
+                            <attributelist id="1825" addr="0x652cf8" >
+                                <attribute name="name" value="disp" id="1826" addr="0x654738" />
+                                <attribute name="type" value="p.void" id="1827" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="1828" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1829">
+                            <attributelist id="1830" addr="0x652d88" >
+                                <attribute name="name" value="x" id="1831" addr="0x654738" />
+                                <attribute name="type" value="int" id="1832" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1833">
+                            <attributelist id="1834" addr="0x652e18" >
+                                <attribute name="name" value="y" id="1835" addr="0x654738" />
+                                <attribute name="type" value="int" id="1836" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="1837" addr="0x654738" />
+                    <attribute name="type" value="int" id="1838" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1839" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1840" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="1841" addr="0x652fc8" >
+                <attributelist id="1842" addr="0x652fc8" >
+                    <attribute name="sym_name" value="lsdspDebugWrite" id="1843" addr="0x654738" />
+                    <attribute name="name" value="lsdspDebugWrite" id="1844" addr="0x654738" />
+                    <attribute name="decl" value="f(p.q(const).char)." id="1845" addr="0x654738" />
+                    <parmlist id="1846" addr="0x652f78" >
+                        <parm id="1847">
+                            <attributelist id="1848" addr="0x652f78" >
+                                <attribute name="name" value="line" id="1849" addr="0x654738" />
+                                <attribute name="type" value="p.q(const).char" id="1850" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="1851" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="1852" addr="0x654738" />
+                    <attribute name="type" value="int" id="1853" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1854" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1855" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="1856" addr="0x653088" >
+                <attributelist id="1857" addr="0x653088" >
+                    <attribute name="sym_name" value="lsdspRenderDebugOutput" id="1858" addr="0x654738" />
+                    <attribute name="name" value="lsdspRenderDebugOutput" id="1859" addr="0x654738" />
+                    <attribute name="decl" value="f()." id="1860" addr="0x654738" />
+                    <attribute name="kind" value="function" id="1861" addr="0x654738" />
+                    <attribute name="type" value="int" id="1862" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1863" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1864" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="1865" addr="0x6531c8" >
+                <attributelist id="1866" addr="0x6531c8" >
+                    <attribute name="sym_name" value="lsdspOpenGLErrorReporting" id="1867" addr="0x654738" />
+                    <attribute name="name" value="lsdspOpenGLErrorReporting" id="1868" addr="0x654738" />
+                    <attribute name="decl" value="f(int)." id="1869" addr="0x654738" />
+                    <parmlist id="1870" addr="0x653178" >
+                        <parm id="1871">
+                            <attributelist id="1872" addr="0x653178" >
+                                <attribute name="name" value="option" id="1873" addr="0x654738" />
+                                <attribute name="type" value="int" id="1874" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="1875" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="1876" addr="0x654738" />
+                    <attribute name="type" value="int" id="1877" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1878" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1879" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="1880" addr="0x6533b8" >
+                <attributelist id="1881" addr="0x6533b8" >
+                    <attribute name="sym_name" value="lsdspRecordDwmTiming" id="1882" addr="0x654738" />
+                    <attribute name="name" value="lsdspRecordDwmTiming" id="1883" addr="0x654738" />
+                    <attribute name="decl" value="f(int,p.q(const).char)." id="1884" addr="0x654738" />
+                    <parmlist id="1885" addr="0x6532c8" >
+                        <parm id="1886">
+                            <attributelist id="1887" addr="0x6532c8" >
+                                <attribute name="name" value="quantity" id="1888" addr="0x654738" />
+                                <attribute name="type" value="int" id="1889" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="1890" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1891">
+                            <attributelist id="1892" addr="0x653368" >
+                                <attribute name="name" value="path" id="1893" addr="0x654738" />
+                                <attribute name="type" value="p.q(const).char" id="1894" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="1895" addr="0x654738" />
+                    <attribute name="type" value="int" id="1896" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1897" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1898" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <constant id="1899" addr="0x653448" >
+                <attributelist id="1900" addr="0x653448" >
+                    <attribute name="sym_name" value="LSDSP_NO_ERROR" id="1901" addr="0x654738" />
+                    <attribute name="name" value="LSDSP_NO_ERROR" id="1902" addr="0x654738" />
+                    <attribute name="feature_immutable" value="1" id="1903" addr="0x654738" />
+                    <attribute name="value" value="0" id="1904" addr="0x654738" />
+                    <attribute name="storage" value="%constant" id="1905" addr="0x654738" />
+                    <attribute name="type" value="int" id="1906" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1907" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1908" addr="0x654738" />
+                </attributelist >
+             
+            </constant >
+            <constant id="1909" addr="0x6534e8" >
+                <attributelist id="1910" addr="0x6534e8" >
+                    <attribute name="sym_name" value="LSDSP_UNKNOWN" id="1911" addr="0x654738" />
+                    <attribute name="name" value="LSDSP_UNKNOWN" id="1912" addr="0x654738" />
+                    <attribute name="feature_immutable" value="1" id="1913" addr="0x654738" />
+                    <attribute name="value" value="-1" id="1914" addr="0x654738" />
+                    <attribute name="storage" value="%constant" id="1915" addr="0x654738" />
+                    <attribute name="type" value="int" id="1916" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1917" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1918" addr="0x654738" />
+                </attributelist >
+             
+            </constant >
+            <constant id="1919" addr="0x653588" >
+                <attributelist id="1920" addr="0x653588" >
+                    <attribute name="sym_name" value="LSDSP_GENERIC" id="1921" addr="0x654738" />
+                    <attribute name="name" value="LSDSP_GENERIC" id="1922" addr="0x654738" />
+                    <attribute name="feature_immutable" value="1" id="1923" addr="0x654738" />
+                    <attribute name="value" value="-2" id="1924" addr="0x654738" />
+                    <attribute name="storage" value="%constant" id="1925" addr="0x654738" />
+                    <attribute name="type" value="int" id="1926" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1927" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1928" addr="0x654738" />
+                </attributelist >
+             
+            </constant >
+            <constant id="1929" addr="0x653628" >
+                <attributelist id="1930" addr="0x653628" >
+                    <attribute name="sym_name" value="LSDSP_RUNTIME_ERROR" id="1931" addr="0x654738" />
+                    <attribute name="name" value="LSDSP_RUNTIME_ERROR" id="1932" addr="0x654738" />
+                    <attribute name="feature_immutable" value="1" id="1933" addr="0x654738" />
+                    <attribute name="value" value="-3" id="1934" addr="0x654738" />
+                    <attribute name="storage" value="%constant" id="1935" addr="0x654738" />
+                    <attribute name="type" value="int" id="1936" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1937" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1938" addr="0x654738" />
+                </attributelist >
+             
+            </constant >
+            <constant id="1939" addr="0x6536c8" >
+                <attributelist id="1940" addr="0x6536c8" >
+                    <attribute name="sym_name" value="LSDSP_WINDOWS_API" id="1941" addr="0x654738" />
+                    <attribute name="name" value="LSDSP_WINDOWS_API" id="1942" addr="0x654738" />
+                    <attribute name="feature_immutable" value="1" id="1943" addr="0x654738" />
+                    <attribute name="value" value="-10" id="1944" addr="0x654738" />
+                    <attribute name="storage" value="%constant" id="1945" addr="0x654738" />
+                    <attribute name="type" value="int" id="1946" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1947" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1948" addr="0x654738" />
+                </attributelist >
+             
+            </constant >
+            <cdecl id="1949" addr="0x6538a8" >
+                <attributelist id="1950" addr="0x6538a8" >
+                    <attribute name="sym_name" value="lsdspGetLastError" id="1951" addr="0x654738" />
+                    <attribute name="name" value="lsdspGetLastError" id="1952" addr="0x654738" />
+                    <attribute name="decl" value="f(p.char,unsigned int)." id="1953" addr="0x654738" />
+                    <parmlist id="1954" addr="0x6537c8" >
+                        <parm id="1955">
+                            <attributelist id="1956" addr="0x6537c8" >
+                                <attribute name="name" value="databuf" id="1957" addr="0x654738" />
+                                <attribute name="type" value="p.char" id="1958" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="1959" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1960">
+                            <attributelist id="1961" addr="0x653858" >
+                                <attribute name="name" value="bufsize" id="1962" addr="0x654738" />
+                                <attribute name="type" value="unsigned int" id="1963" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="1964" addr="0x654738" />
+                    <attribute name="type" value="int" id="1965" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1966" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1967" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="1968" addr="0x653b18" >
+                <attributelist id="1969" addr="0x653b18" >
+                    <attribute name="sym_name" value="lsdspGetErrorText" id="1970" addr="0x654738" />
+                    <attribute name="name" value="lsdspGetErrorText" id="1971" addr="0x654738" />
+                    <attribute name="decl" value="f(int,p.char,unsigned int)." id="1972" addr="0x654738" />
+                    <parmlist id="1973" addr="0x6539a8" >
+                        <parm id="1974">
+                            <attributelist id="1975" addr="0x6539a8" >
+                                <attribute name="name" value="code" id="1976" addr="0x654738" />
+                                <attribute name="type" value="int" id="1977" addr="0x654738" />
+                                <attribute name="compactdefargs" value="1" id="1978" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1979">
+                            <attributelist id="1980" addr="0x653a38" >
+                                <attribute name="name" value="textbuf" id="1981" addr="0x654738" />
+                                <attribute name="type" value="p.char" id="1982" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                        <parm id="1983">
+                            <attributelist id="1984" addr="0x653ac8" >
+                                <attribute name="name" value="bufsize" id="1985" addr="0x654738" />
+                                <attribute name="type" value="unsigned int" id="1986" addr="0x654738" />
+                            </attributelist >
+                        </parm >
+                    </parmlist >
+                    <attribute name="kind" value="function" id="1987" addr="0x654738" />
+                    <attribute name="type" value="int" id="1988" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1989" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1990" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+            <cdecl id="1991" addr="0x653bd8" >
+                <attributelist id="1992" addr="0x653bd8" >
+                    <attribute name="sym_name" value="lsdspDummy" id="1993" addr="0x654738" />
+                    <attribute name="name" value="lsdspDummy" id="1994" addr="0x654738" />
+                    <attribute name="decl" value="f()." id="1995" addr="0x654738" />
+                    <attribute name="kind" value="function" id="1996" addr="0x654738" />
+                    <attribute name="type" value="int" id="1997" addr="0x654738" />
+                    <attribute name="sym_symtab" value="0x640468" id="1998" addr="0x640468" />
+                    <attribute name="sym_overname" value="__SWIG_0" id="1999" addr="0x654738" />
+                </attributelist >
+             
+            </cdecl >
+        </include >
+    </include >
+</top >
