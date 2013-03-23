@@ -25,6 +25,8 @@ fs.read(input_path).then( function(content) {
 })
 
 .then( function() {
+  return templ.read('nodebindings.tmpl.cc')
+    .then( function(template) { return template.exec(intf); } );
 });
 
 //--- Main steps ---
@@ -66,8 +68,7 @@ function extractInterface(doc) {
   });
   
   // Done.
-  //console.log( JSON.stringify(intf, null, '\t') );
-  console.log( JSON.stringify(intf.constants, null, '\t') );
+  //console.log( JSON.stringify(intf.constants, null, '\t') );
 }
 
 //--- Helper stuff ---
