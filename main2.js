@@ -1,9 +1,9 @@
 "use strict";
 
-var fs     = require("q-io/fs");
-var Dom    = require("xmldom").DOMParser;
-var xpath  = require("xpath");
-var templ  = require("./templates");
+var fs        = require("q-io/fs");
+var Dom       = require("xmldom").DOMParser;
+var xpath     = require("xpath");
+var Template  = require("./template");
 
 var input_path = process.argv[2];
 //console.log(input_path);
@@ -25,7 +25,7 @@ fs.read(input_path).then( function(content) {
 })
 
 .then( function() {
-  return templ.read('nodebindings.tmpl.cc')
+  return Template.read('nodebindings.tmpl.cc')
     .then( function(template) { return template.exec(intf); } );
 });
 
