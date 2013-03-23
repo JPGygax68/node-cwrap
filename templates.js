@@ -14,13 +14,31 @@ function(       fs  ) {
   function read(filename) {
     return fs.read(filename)
       .then( function(template) {
+      
+        var stack = [ { children: [] } ];
+        var top = stack[0];
         var m;
         while ((m = scanner.exec(template)) !== null) {
-          var block = m[1] !== null && m[3] !== null; // if all spaces at beginning and newline at end: (block instead of inline)
+          var inline = ! (m[1] !== null && m[3] !== null);
           var command = m[2];
-          console.log(m[0], 'at:', m.index, 'to:', scanner.lastIndex, 'block:', block, 'command:', command);
+          if (command !== 'end') beginBlock( m.index, scanner.lastIndex, command );
+          else                   endBlock  ( m.index, scanner.lastIndex );
         }
-        return {}; // TODO
+        console.log( JSON.stringify(stack[0], null, "    ") );
+        return stack[0];
+        
+        function beginBlock(outer, inner, command) {
+          var block = { outer_start: outer, inner_start: inner, children: [], command: command };
+          top.children.push( block );
+          top = block;
+          stack.push(top);
+        }
+        
+        function endBlock(outer, inner) {
+          top.inner_end = inner; top.outer_end = outer;
+          stack.pop();
+          top = stack[stack.length-1];
+        }
       });
   }
   
