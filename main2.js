@@ -3,21 +3,35 @@
 var fs     = require("q-io/fs");
 var Dom    = require("xmldom").DOMParser;
 var xpath  = require("xpath");
+var templ  = require("./templates");
 
 var input_path = process.argv[2];
 //console.log(input_path);
 
-// Interface description
-var intf = { functions: {}, constants: {} };
+var intf;
+
+//--- MAIN PROCEDURE ---
   
 // TODO: integrate SWIG ?
-fs.read(input_path)
-.then( function(content) {
 
+// Read and parse the XML
+fs.read(input_path).then( function(content) {
   // Repair the closing tags (which have a space at the end, tsk tsk)
   content = content.replace(/<\/(\w+)\s+>/gm, '</$1>');
   // Parse the whole thing
   var doc = new Dom().parseFromString(content);
+  // Extract the interface description
+  var intf = extractInterface(doc);  
+})
+
+.then( function() {
+});
+
+//--- Main steps ---
+
+function extractInterface(doc) {
+
+  intf = { functions: {}, constants: {} };
   
   // Get the functions
   var attrib_lists = xpath.select('//cdecl/attributelist/attribute[@name="kind"][@value="function"]/..', doc);
@@ -54,9 +68,9 @@ fs.read(input_path)
   // Done.
   //console.log( JSON.stringify(intf, null, '\t') );
   console.log( JSON.stringify(intf.constants, null, '\t') );
-});
+}
 
-//----------
+//--- Helper stuff ---
 
 function log(msg) {
   console.log.apply(this, arguments);
