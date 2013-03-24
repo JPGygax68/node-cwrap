@@ -13,6 +13,8 @@ function(       fs  ) {
   
   function Block() {}
   
+  Block.prototype.execute = function(context, emitter) { throw new Error('Block.execute() method must be overridden'); }
+  
   function Text(start, end) {  
     this.start = start; this.end = end;
   }
@@ -63,7 +65,7 @@ function(       fs  ) {
 
     this.code = code;
     
-    var stack = [ { children: [] } ];
+    var stack = [ new Structure() ];
     function current()       { return stack[stack.length-1]; }
     function addChild(child) { current().children.push(child); return child; }
     
@@ -94,31 +96,6 @@ function(       fs  ) {
     this.root_block = stack[0];
     //console.log( JSON.stringify(stack[0], null, "    ") );
 
-    //---------
-    
-    function beginBlock(start, end, command, params) {
-      var block = { command: command, params: params, outer_start: start, inner_start: end, children: [] };
-      top.children.push( block );
-      top = block;
-      stack.push(top);
-    }
-    
-    function nextBlock(start, end, command, params) {
-      endBlock  (start, end);
-      beginBlock(start, end, command, params);
-    }
-    
-    function endBlock(start, end) {
-      top.inner_end = start; top.outer_end = end;
-      stack.pop();
-      top = stack[stack.length-1];
-    }
-    
-    function addPlaceholder(start, end, command, params) {
-      // Placeholders don't have inner start or end (no "content")
-      var block = { command: command, params: params, outer_start: start, outer_end: end };
-      top.children.push( block );
-    }
   }
   
   Template.read = function(filename) {
@@ -128,44 +105,9 @@ function(       fs  ) {
   
   Template.prototype.exec = function(data) {
   
-    console.log( JSON.stringify(this.root_block, null, "    ") );
-    return;
+    this.root_block.execute(data, emit);
     
-    var self = this;
-    
-    console.log(this.root_block);
-    execBlock(this.root_block);
-    
-    function execBlock(block) {
-      if (typeof block.inner_start === 'number') {
-        var pos = block.inner_start;
-        if (block.children && block.children.length > 0) {
-          if (block.inner_start < block.children[0].outer_start) emit('<start>'+self.code.slice(block.inner_start, block.children[0].outer_start));
-          for (var i = 0; i < block.children.length; i++) {
-            var child = block.children[i];
-            execBlock(child);
-            pos = child.outer_end;
-          }
-          if (pos < block.inner_end) emit('<end>'+self.code.slice(pos, block.inner_end));
-        }
-        else {
-          emit('<'+block.command+'>'+self.code.slice(block.inner_start, block.inner_end));
-        }
-      }
-      else {
-        emit('<PLACEHOLDER>');
-      }
-      
-      function emit(text) { process.stdout.write(text); }
-    }
-    
-    function emitBlock(block) {
-      if (block.inner_start < block.inner_end) {
-        console.log('--->');
-        console.log( self.code.slice(block.inner_start, block.inner_end) );
-        console.log('<---');
-      }
-    }
+    function emit(text) { process.stdout.write(text); }
   }
   
   return Template;
