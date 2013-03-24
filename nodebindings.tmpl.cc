@@ -10,8 +10,7 @@ Handle<Value>
 
   {{$foreach param}}
   {{$=type}} {{$=name}} = static_cast<{{$=type}}>( args[{{$=_index}}}}->{{$=typeConverterMethod}}() );
-  {{$$end}}
-
+  {{$end}}
   
   {{$if !retval.type}}
   gl{{$=name}}({{$list params name}});
