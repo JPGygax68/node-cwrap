@@ -41,7 +41,7 @@ function extractInterface(doc) {
     // Extract the function name
     var name = xpath.select('./attribute[@name="name"]/@value', attrib_list)[0].value;
     // Create and add a new function descriptor
-    var func = { params: {} };
+    var func = { name: name, params: {} };
     intf.functions[name] = func;
     // Extract and store the data
     func.type = xpath.select('./attribute[@name="type"]/@value', attrib_list)[0].value;
@@ -60,7 +60,7 @@ function extractInterface(doc) {
     // Extract the function name
     var name = xpath.select('./attribute[@name="name"]/@value', attrib_list)[0].value;
     // Create and add a new function descriptor
-    var constant = { };
+    var constant = { name: name };
     intf.constants[name] = constant;
     // Extract and store the data
     constant.type  = xpath.select('./attribute[@name="type"]/@value' , attrib_list)[0].value;

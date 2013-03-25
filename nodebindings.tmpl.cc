@@ -1,7 +1,7 @@
 {{$forall functions}}
 
 extern "C" {
-  GLAPI {{$=retval.type}} GLAPIENTRY {{$=name}}({{$list params type}});
+  GLAPI {{$=type}} GLAPIENTRY {{$=name}}({{$list params type}});
 }
 
 Handle<Value>
@@ -12,16 +12,16 @@ Handle<Value>
   {{$=type}} {{$=name}} = static_cast<{{$=type}}>( args[{{$=_index}}}}->{{$=typeConverterMethod}}() );
   {{$end}}
   
-  {{$if !retval.type}}
+  {{$if type="void"}}
   gl{{$=name}}({{$list params name}});
   {{$else}}
-  {{$=retval.type}} {{$=retval.name}} = gl{{$=name}}({{$list params name}});
+  {{$=type}} {{$=name}} = gl{{$=name}}({{$list params name}});
   {{$end}}
 
-  {{$if !retval.type}}
+  {{$if !type}}
   return scope.Close(Undefined());
   {{$else}}
-  return scope.Close({{$=V8TypeWrapper(retval.type)}}::New({{$=retval.name}}));
+  return scope.Close({{$=V8TypeWrapper(type)}}::New({{$=name}}));
   {{$end}}
 }
 {{$end}}
