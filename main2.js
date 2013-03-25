@@ -14,20 +14,26 @@ var intf;
   
 // Extend the template system
 
+/** These are class names, but the same names can also be used as methods on
+    generic Value instances to cast to a specific type.
+ */
 Template.registerFunction( 'v8TypeWrapper', function(ctype) {
   var MAP = {
-    GLenum    : 'Uint32Value',
-    GLint     : 'Int32Value',
-    GLuint    : 'Uint32Value',
-    GLsizei   : 'Int32Value',
-    GLbitfield: 'Uint32Value',
-    GLboolean : 'BooleanValue',
-    GLsizeiptr: 'Int32Value',
-    GLfloat   : 'NumberValue',
-    GLdouble  : 'NumberValue',
-    GLclampf  : 'NumberValue',
-    GLclampd  : 'NumberValue'
+    'int'          : 'Int32Value',
+    'unsigned int' : 'Uint32Value' /*,
+    GLenum         : 'Uint32Value',
+    GLint          : 'Int32Value',
+    GLuint         : 'Uint32Value',
+    GLsizei        : 'Int32Value',
+    GLbitfield     : 'Uint32Value',
+    GLboolean      : 'BooleanValue',
+    GLsizeiptr     : 'Int32Value',
+    GLfloat        : 'NumberValue',
+    GLdouble       : 'NumberValue',
+    GLclampf       : 'NumberValue',
+    GLclampd       : 'NumberValue' */
   };
+  console.assert(MAP[ctype], ctype);
   return MAP[ctype];
 });
 
@@ -63,12 +69,17 @@ function extractInterface(doc) {
     // Extract and store the data
     func.type = xpath.select('./attribute[@name="type"]/@value', attrib_list)[0].value;
     var param_nodes = xpath.select('./parmlist/parm', attrib_list);
+    var count = 0;
     param_nodes.forEach( function(param_node, i) {
       var name_attr = xpath.select('./attributelist/attribute[@name="name"]/@value', param_node)[0];
       var type_attr = xpath.select('./attributelist/attribute[@name="type"]/@value', param_node)[0];      
-      var key = name_attr ? name_attr.value : i.toString();
-      func.params[key] = { type: type_attr.value };
+      // Have to support unnamed parameters
+      var name = name_attr ? name_attr.value : 'param_'+i;
+      func.params[name] = { _index: count, name: name, type: type_attr.value };
+      count ++;
     });
+    // Special case: if only parameter is "void", there are no parameters at all
+    if (count === 1 && func.params['param_0'] && func.params.param_0.type === 'void') func.params = {};
   });
   
   // Get the constants
@@ -85,7 +96,7 @@ function extractInterface(doc) {
   });
   
   // Done.
-  //console.log( JSON.stringify(intf.constants, null, '\t') );
+  //console.log( JSON.stringify(intf.functions, null, '\t') );
 }
 
 //--- Helper stuff ---

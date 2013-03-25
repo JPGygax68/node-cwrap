@@ -25,13 +25,13 @@ function(       fs ,  _           ) {
   function Placeholder(expr) {
     // Create an expression evaluator function
     var code = 'return (' + adaptExpression(expr) + ');';
-    this.exprEval = Function('data', code);
+    this.exprEval = buildFunction('data', code);
   }
   Placeholder.prototype = new Block();
   Placeholder.prototype.constructor = Placeholder;
   Placeholder.prototype.execute = function(data, source, emitter) { 
-    //this.path.split('.').forEach( function(key) { data = data[key]; } );
-    emitter(this.exprEval(data));
+    //console.log('Placeholder data:', data);
+    emitter(this.exprEval(data, context).toString() );
   }
   
   function Structure() { this.children = []; }
@@ -69,10 +69,10 @@ function(       fs ,  _           ) {
     if (condition.length > 0) {
       var code = 'return (' + adaptExpression(condition) + ');';
       //console.log('condition:', code);
-      var condEval = Function('data', code);
+      var condEval = buildFunction('data', code);
     }
     else {
-      var condEval = Function('return true;');
+      var condEval = buildFunction('data', 'return true;');
     }
     this.branches.push( {condEval: condEval, first_block: this.children.length } );
   }
@@ -80,7 +80,7 @@ function(       fs ,  _           ) {
     for (var i = 0; i < this.branches.length; i++) {
       var branch = this.branches[i];
       //console.log('Data for Conditional:', data);
-      if (branch.condEval(data)) {
+      if (branch.condEval(data, context)) {
         var to_block = i < (this.branches.length-1) ? this.branches[i+1].first_block : this.children.length;
         for (var j = branch.first_block; j < to_block; j++) {
           var block = this.children[j];
@@ -104,11 +104,11 @@ function(       fs ,  _           ) {
     emitter( list.join(', ') );
   }
   
-  //--- Functions that can be called from the template ---
+  //--- Functions and stuff usable from within the template ---
   
-  var functions = {};
+  var context = {};
   
-  function registerFunction(name, func) { functions[name] = func; }
+  function registerFunction(name, func) { context[name] = func; }
   
   //--- Utilities ---
   
@@ -119,13 +119,22 @@ function(       fs ,  _           ) {
     var result = '', p = 0;
     while ((m = pat.exec(expr)) !== null) {
       result += expr.slice(p, m.index);
-      if (!functions[m[1]]) result += 'data.';
+      if (!context[m[1]]) result += 'data.';
       result += m[1];
       p = pat.lastIndex;
     }
     if (p < expr.length) result += expr.slice(p);
     console.log('adaptExpression("'+expr+'") => "'+result+'"');
     return result;
+  }
+  
+  function buildFunction(param, code) {
+    // Make injected context available without prefix
+    var statements = _.map(context, function(elem, name) { return 'var '+name+' = context["'+name+'"];' } );
+    statements.push(code);
+    var code = statements.join('\n');
+    console.log(code);
+    return new Function(param, 'context', code);
   }
   
   //--- MAIN CLASS ---

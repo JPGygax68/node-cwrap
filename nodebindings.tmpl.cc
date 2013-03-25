@@ -8,20 +8,22 @@ Handle<Value>
 {{$=name}}(const Arguments& args) {
   HandleScope scope;
 
-  {{$foreach param}}
-  {{$=type}} {{$=name}} = static_cast<{{$=type}}>( args[{{$=_index}}}}->{{$=converterMethod(type)}}() );
+  {{$forall params}}
+  {{$if type != "void"}}
+  {{$=type}} {{$=name}} = static_cast<{{$=type}}>( args[{{$=_index}}]->{{$=v8TypeWrapper(type)}}() );
+  {{$end}}
   {{$end}}
   
-  {{$if type="void"}}
+  {{$if type == "void"}}
   {{$=name}}({{$list params name}});
   {{$else}}
-  {{$=type}} {{$=name}} = {{$=name}}({{$list params name}});
+  {{$=type}} result = {{$=name}}({{$list params name}});
   {{$end}}
 
-  {{$if !type}}
+  {{$if type == "void"}}
   return scope.Close(Undefined());
   {{$else}}
-  return scope.Close({{$=v8TypeWrapper(type)}}::New({{$=name}}));
+  return scope.Close({{$=v8TypeWrapper(type)}}::New(result));
   {{$end}}
 }
 {{$end}}
