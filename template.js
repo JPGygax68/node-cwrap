@@ -101,13 +101,13 @@ function(       fs ,  _           ) {
   
   //--- MAIN CLASS ---
   
-  //          -->          <--- block/inline discrimination
-  //                    -->    <--- introducer: {{$
-  //                       --->           <--- command
-  //                                  --->       <--- parameters
-  //                                         --->  >--- terminator: }}
-  //                                           --->     <--- optional newline
-  var scanner = /(^[ \t]*)?{{\$(\b\w+\b|=)([^}]*)}}(\n)?/gm;
+  //          -->          <--- 1: block/inline discrimination
+  //                    -->    <--- introducer: "{{$"
+  //                       --->           <--- 2: command
+  //                                  --->       <--- 3: parameters
+  //                                         --->  <--- terminator: "}}"
+  //                                           --->                            <--- 4: optional newline
+  var scanner = /(^[ \t]*)?{{\$(\b\w+\b|=)([^}]*)}}([ \t]*(?:\r\n?|\l\n?))?/gm;
   
   function Template(code) {
 
@@ -120,10 +120,12 @@ function(       fs ,  _           ) {
     var m;
     var pos = 0;
     while ((m = scanner.exec(code)) !== null) {
-      var inline  = !(m[1] !== null && m[3] !== null);
+      // Inline if lacking a newline at the end
+      //var inline  = (typeof m[4] === 'undefined');
+      //console.log('inline:', inline, m[2], '"'+m[1]+'"', '"'+m[4]+'"');
       var command = m[2], params = m[3].trim();
       // Text between last marked position and beginning of tag becomes new child (text) block
-      current().children.push( new Text(pos, m.index) );
+      addChild( new Text(pos, m.index) );
       // Tag type dependent actions
       if      (command === '='      ) addChild( new Placeholder(params) );
       else if (command === 'if'     ) stack.push( addChild(new Conditional(params)) );
@@ -134,8 +136,9 @@ function(       fs ,  _           ) {
       else if (command === 'end'    ) stack.pop();
       else if (command === 'list'   ) addChild( new JSList(params) );
       else                            throw new Error('Unrecognized template command "'+command+'"');
-      // Advance
+      // Advance past tag
       pos = scanner.lastIndex;
+      console.log(pos);
     }
     // Add last block of text
     addChild( new Text(pos, code.length) );
