@@ -9,19 +9,19 @@ Handle<Value>
   HandleScope scope;
 
   {{$foreach param}}
-  {{$=type}} {{$=name}} = static_cast<{{$=type}}>( args[{{$=_index}}}}->{{$=typeConverterMethod}}() );
+  {{$=type}} {{$=name}} = static_cast<{{$=type}}>( args[{{$=_index}}}}->{{$=converterMethod(type)}}() );
   {{$end}}
   
   {{$if type="void"}}
-  gl{{$=name}}({{$list params name}});
+  {{$=name}}({{$list params name}});
   {{$else}}
-  {{$=type}} {{$=name}} = gl{{$=name}}({{$list params name}});
+  {{$=type}} {{$=name}} = {{$=name}}({{$list params name}});
   {{$end}}
 
   {{$if !type}}
   return scope.Close(Undefined());
   {{$else}}
-  return scope.Close({{$=V8TypeWrapper(type)}}::New({{$=name}}));
+  return scope.Close({{$=v8TypeWrapper(type)}}::New({{$=name}}));
   {{$end}}
 }
 {{$end}}

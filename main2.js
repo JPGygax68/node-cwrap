@@ -12,7 +12,24 @@ var intf;
 
 //--- MAIN PROCEDURE ---
   
-// TODO: integrate SWIG ?
+// Extend the template system
+
+Template.registerFunction( 'v8TypeWrapper', function(ctype) {
+  var MAP = {
+    GLenum    : 'Uint32Value',
+    GLint     : 'Int32Value',
+    GLuint    : 'Uint32Value',
+    GLsizei   : 'Int32Value',
+    GLbitfield: 'Uint32Value',
+    GLboolean : 'BooleanValue',
+    GLsizeiptr: 'Int32Value',
+    GLfloat   : 'NumberValue',
+    GLdouble  : 'NumberValue',
+    GLclampf  : 'NumberValue',
+    GLclampd  : 'NumberValue'
+  };
+  return MAP[ctype];
+});
 
 // Read and parse the XML
 fs.read(input_path).then( function(content) {

@@ -13,31 +13,33 @@ function(       fs ,  _           ) {
   
   function Block() {}
   
-  Block.prototype.execute = function(context, source, emitter) { throw new Error('Block.execute() method must be overridden'); }
+  Block.prototype.execute = function(data, source, emitter) { throw new Error('Block.execute() method must be overridden'); }
   
   function Text(start, end) {  
     this.start = start; this.end = end;
   }
   Text.prototype = new Block();
   Text.prototype.constructor = Text;
-  Text.prototype.execute = function(context, source, emitter) { emitter(source.slice(this.start, this.end)); }
+  Text.prototype.execute = function(data, source, emitter) { emitter(source.slice(this.start, this.end)); }
   
-  function Placeholder(path) {
-    this.path = path; // TODO: parse
+  function Placeholder(expr) {
+    // Create an expression evaluator function
+    var code = 'return (' + adaptExpression(expr) + ');';
+    this.exprEval = Function('data', code);
   }
   Placeholder.prototype = new Block();
   Placeholder.prototype.constructor = Placeholder;
-  Placeholder.prototype.execute = function(context, source, emitter) { 
-    this.path.split('.').forEach( function(key) { context = context[key]; } );
-    emitter(context);
+  Placeholder.prototype.execute = function(data, source, emitter) { 
+    //this.path.split('.').forEach( function(key) { data = data[key]; } );
+    emitter(this.exprEval(data));
   }
   
   function Structure() { this.children = []; }
   Structure.prototype = new Block();
   Structure.prototype.constructor = Structure;
-  Structure.prototype.execute = function(context, source, emitter) { 
+  Structure.prototype.execute = function(data, source, emitter) { 
     // This implementation can be used 1:1 by root block
-    this.children.forEach( function(child) { child.execute(context, source, emitter); } );
+    this.children.forEach( function(child) { child.execute(data, source, emitter); } );
   }
   
   function Repeater(set) {
@@ -46,12 +48,12 @@ function(       fs ,  _           ) {
   }
   Repeater.prototype = new Structure();
   Repeater.prototype.constructor = Repeater;
-  Repeater.prototype.execute = function(context, source, emitter) {
-    this.set.split('.').forEach( function(key) { context = context[key]; } );
-    //console.log('Repeater outer context:', context);
-    _.each(context, function(ctx, key) { 
-      //console.log('Repeater inner context:', ctx, '(key = '+key+')');
-      Structure.prototype.execute.call(this, ctx, source, emitter); 
+  Repeater.prototype.execute = function(data, source, emitter) {
+    this.set.split('.').forEach( function(key) { data = data[key]; } );
+    //console.log('Repeater outer data:', data);
+    _.each(data, function(data_item, key) { 
+      //console.log('Repeater inner data:', data_item, '(key = '+key+')');
+      Structure.prototype.execute.call(this, data_item, source, emitter); 
     }, this);
   }
   
@@ -65,38 +67,65 @@ function(       fs ,  _           ) {
   Conditional.prototype.newBranch = function(condition) {
     // TODO: check for proper sequence if .. elsif .. else
     if (condition.length > 0) {
-      var code = 'return (' + condition.replace(/(\b(\w+)\b)/, 'context.$1') + ');'; // TODO: prevent this in string constants
+      var code = 'return (' + adaptExpression(condition) + ');';
       //console.log('condition:', code);
-      var condEval = Function('context', code);
+      var condEval = Function('data', code);
     }
     else {
       var condEval = Function('return true;');
     }
     this.branches.push( {condEval: condEval, first_block: this.children.length } );
   }
-  Conditional.prototype.execute = function(context, source, emitter) {
-    //throw new Error('Conditional.execute() NOT IMPLEMENTED'); 
+  Conditional.prototype.execute = function(data, source, emitter) {
     for (var i = 0; i < this.branches.length; i++) {
       var branch = this.branches[i];
-      //console.log('Conditional context:', context);
-      if (branch.condEval(context)) {
+      //console.log('Data for Conditional:', data);
+      if (branch.condEval(data)) {
         var to_block = i < (this.branches.length-1) ? this.branches[i+1].first_block : this.children.length;
         for (var j = branch.first_block; j < to_block; j++) {
           var block = this.children[j];
-          block.execute(context, source, emitter);
+          block.execute(data, source, emitter);
         }
-        break; // first if / elsif (or else) wins
+        break; // first if / elsif wins, rest are not considered
       }
     }
   }
   
-  function JSList(list) { this.list = list; }
+  function JSList(params) {
+    var params = params.split(' ').map( function(el) { return el.trim(); } );
+    if (params.length < 1) throw new Error('List element needs at minimum the name of the list, and optionally the name of an element member');
+    this.list = params[0];
+    if (params.length > 1) this.member = params[1];
+  }
   JSList.prototype = new Structure();
   JSList.prototype.constructor = JSList;
-  JSList.prototype.execute = function(context, source, emitter) { throw new Error('JSList.execute() NOT IMPLEMENTED'); }
-  JSList.prototype.execute = function(context, source, emitter) { 
-    // TODO: provisional dummy implementation
-    emitter('<<JSLIST>>');
+  JSList.prototype.execute = function(data, source, emitter) { 
+    var list = this.member ? _.pluck(data[this.list], this.member) : data[this.list];
+    emitter( list.join(', ') );
+  }
+  
+  //--- Functions that can be called from the template ---
+  
+  var functions = {};
+  
+  function registerFunction(name, func) { functions[name] = func; }
+  
+  //--- Utilities ---
+  
+  function adaptExpression(expr) {
+    // prepend the "data" parameter to all identifiers except register functions
+    //return expr.replace(/(\b(\w+)\b)/, 'data.$1')
+    var pat = /(?!")(\b(\w+)\b)(?!")/gm, m;
+    var result = '', p = 0;
+    while ((m = pat.exec(expr)) !== null) {
+      result += expr.slice(p, m.index);
+      if (!functions[m[1]]) result += 'data.';
+      result += m[1];
+      p = pat.lastIndex;
+    }
+    if (p < expr.length) result += expr.slice(p);
+    console.log('adaptExpression("'+expr+'") => "'+result+'"');
+    return result;
   }
   
   //--- MAIN CLASS ---
@@ -138,7 +167,7 @@ function(       fs ,  _           ) {
       else                            throw new Error('Unrecognized template command "'+command+'"');
       // Advance past tag
       pos = scanner.lastIndex;
-      console.log(pos);
+      //console.log(pos);
     }
     // Add last block of text
     addChild( new Text(pos, code.length) );
@@ -148,6 +177,8 @@ function(       fs ,  _           ) {
     this.root_block = stack[0];
     //console.log( JSON.stringify(stack[0], null, "    ") );
   }
+  
+  Template.registerFunction = registerFunction;
   
   Template.read = function(filename) {
     return fs.read(filename)
