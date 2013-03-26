@@ -1,7 +1,7 @@
 {{$forall functions}}
 
 extern "C" {
-  GLAPI {{$=type}} GLAPIENTRY {{$=name}}({{$list params type}});
+  GLAPI {{$=type}} GLAPIENTRY {{$=name}}({{$list params ctype}});
 }
 
 Handle<Value>
@@ -10,7 +10,7 @@ Handle<Value>
 
   {{$forall params}}
   {{$if type != "void"}}
-  {{$=type}} {{$=name}} = static_cast<{{$=type}}>( args[{{$=_index}}]->{{$=v8TypeWrapper(type)}}() );
+  {{$=ctype}} {{$=name}} = static_cast<{{$=ctype}}>( args[{{$=index}}]->{{$=v8TypeWrapper(type)}}() );
   {{$end if}}
   {{$end forall}}
   
