@@ -67,6 +67,9 @@ function(  xmldom ,  xpath ,    Template  ) {
       intf.functions[name] = func;
       // Extract and store the data
       func.type = xpath.select('./attribute[@name="type"]/@value', attrib_list)[0].value;
+      func.decl = xpath.select('./attribute[@name="decl"]/@value', attrib_list)[0].value;
+      if (func.decl.slice(-3) === '.p.') func.type = 'p.' + func.type; // APPEARS TO BE A BUG IN SWIG
+      func.ctype = convertTypeToC(func.type);
       var param_nodes = xpath.select('./parmlist/parm', attrib_list);
       var count = 0;
       param_nodes.forEach( function(param_node, i) {
@@ -110,7 +113,12 @@ function(  xmldom ,  xpath ,    Template  ) {
     this.index = index;
     this.name = name;
     this.type = type;
-    
+    this.ctype = convertTypeToC(this.type);
+  }
+
+  //--- Helper stuff ---
+
+  function convertTypeToC(type) {
     // Convert type descriptor back to C/++ type specification
     var parts = [];
     var pointer = false;
@@ -124,11 +132,9 @@ function(  xmldom ,  xpath ,    Template  ) {
         pointer = false;
       }
     });
-    this.ctype = parts.join(' ');
+    return parts.join(' ');
   }
-
-  //--- Helper stuff ---
-
+  
   function log(msg) {
     console.log.apply(this, arguments);
   }

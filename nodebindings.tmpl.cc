@@ -1,7 +1,7 @@
 {{$forall functions}}
 
 extern "C" {
-  GLAPI {{$=type}} GLAPIENTRY {{$=name}}({{$list params ctype}});
+  GLAPI {{$=ctype}} GLAPIENTRY {{$=name}}({{$list params ctype}});
 }
 
 Handle<Value>
@@ -20,8 +20,10 @@ Handle<Value>
   
   {{$if type == "void"}}
   {{$=name}}({{$list params name}});
+  {{$elsif type == "p.void"}}
+  {{$=ctype}} object = {{$=name}}({{$list params input_expr}});
   {{$else}}
-  {{$=type}} result = {{$=name}}({{$list params input_expr}});
+  {{$=ctype}} result = {{$=name}}({{$list params input_expr}});
   {{$end}}
 
   {{$if map_outparams_to_retval}}

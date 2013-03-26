@@ -18,6 +18,8 @@ function postProcess(intf) {
 
   _.each(intf.functions, function(func, fname) {
     
+    console.log(fname, func.type);
+    
     if      (func.type === 'int'   ) func.returns_error_code  = true;
     else if (func.type === 'p.void') func.returns_object_ptr  = true;
     

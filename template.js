@@ -158,11 +158,11 @@ function(       fs ,  _           ) {
     var pos = 0;
     while ((m = scanner.exec(code)) !== null) {
       // Inline if lacking a newline at the end
-      //var inline  = (typeof m[4] === 'undefined');
+      var inline  = (typeof m[4] === 'undefined');
       //console.log('inline:', inline, m[2], '"'+m[1]+'"', '"'+m[4]+'"');
       var command = m[2], params = m[3].trim();
       // Text between last marked position and beginning of tag becomes new child (text) block
-      addChild( new Text(pos, m.index) );
+      addChild( new Text(pos, m.index + (inline && m[1] ? m[1].length : 0) ) );
       // Tag type dependent actions
       if      (command === '='      ) addChild( new Placeholder(params) );
       else if (command === 'if'     ) stack.push( addChild(new Conditional(params)) );
@@ -174,7 +174,7 @@ function(       fs ,  _           ) {
       else if (command === 'list'   ) addChild( new JSList(params) );
       else                            throw new Error('Unrecognized template command "'+command+'"');
       // Advance past tag
-      pos = scanner.lastIndex;
+      pos = scanner.lastIndex - (inline && m[4] ? m[4].length : 0);
       //console.log(pos);
     }
     // Add last block of text
