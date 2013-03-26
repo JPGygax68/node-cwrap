@@ -115,8 +115,9 @@ function(  xmldom ,  xpath ,    Template  ) {
     var parts = [];
     var pointer = false;
     type.split(/\./).forEach( function(el, i) {
-      if      (el    === 'p') pointer = true;
-      else if (el[0] === 'q') parts.push( el.slice(2, el.length-1) );
+      if      (el    === 'p'   ) pointer = true;
+      else if (el    === 'a(1)') pointer = true;
+      else if (el[0] === 'q'   ) parts.push( el.slice(2, el.length-1) );
       else {
         parts.push(el);
         if (pointer) parts.push('*');

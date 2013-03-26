@@ -120,7 +120,6 @@ function(       fs ,  _           ) {
       p = pat.lastIndex;
     }
     if (p < expr.length) result += expr.slice(p);
-    console.log('adaptExpression("'+expr+'") => "'+result+'"');
     return result;
   }
   

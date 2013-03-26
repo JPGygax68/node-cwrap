@@ -38,6 +38,9 @@ extern "C" {
 #define EXPORT
 #endif
 
+#define IN
+#define OUT
+
 // OPENGL SCREENS / WINDOWS --------------------------------------------------
 
 /* OpenGLScreen/Window option flags */
@@ -53,8 +56,8 @@ EXPORT int __cdecl lsdspNumberOfScreens(void);
   *x, *y, *w, *h are filled out with the screen's position and dimensions (in
   pixels) */
 
-EXPORT int __cdecl lsdspGetScreenInfo(int screen, int * x, int * y, 
-									  unsigned * w, unsigned * h);
+EXPORT int __cdecl lsdspGetScreenInfo(int screen, OUT int x[1], OUT int y[1], 
+									  OUT unsigned w[1], OUT unsigned h[1]);
 
 /* Opens a full-screen Window for OpenGL rendering, makes it visible, and makes it
 	the current rendering context. If you wish to go back to the original context,
