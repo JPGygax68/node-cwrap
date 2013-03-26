@@ -11,8 +11,8 @@ Handle<Value>
   {{$forall params}}
   {{$if type != "void"}}
   {{$=type}} {{$=name}} = static_cast<{{$=type}}>( args[{{$=_index}}]->{{$=v8TypeWrapper(type)}}() );
-  {{$end}}
-  {{$end}}
+  {{$end if}}
+  {{$end forall}}
   
   {{$if type == "void"}}
   {{$=name}}({{$list params name}});

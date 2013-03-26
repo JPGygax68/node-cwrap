@@ -23,9 +23,7 @@ function(       fs ,  _           ) {
   Text.prototype.execute = function(data, source, emitter) { emitter(source.slice(this.start, this.end)); }
   
   function Placeholder(expr) {
-    // Create an expression evaluator function
-    var code = 'return (' + adaptExpression(expr) + ');';
-    this.exprEval = buildFunction('data', code);
+    this.exprEval = buildExpressionEvaluator(expr);
   }
   Placeholder.prototype = new Block();
   Placeholder.prototype.constructor = Placeholder;
@@ -67,12 +65,10 @@ function(       fs ,  _           ) {
   Conditional.prototype.newBranch = function(condition) {
     // TODO: check for proper sequence if .. elsif .. else
     if (condition.length > 0) {
-      var code = 'return (' + adaptExpression(condition) + ');';
-      //console.log('condition:', code);
-      var condEval = buildFunction('data', code);
+      var condEval = buildExpressionEvaluator(condition);
     }
     else {
-      var condEval = buildFunction('data', 'return true;');
+      var condEval = new Function('return true;');
     }
     this.branches.push( {condEval: condEval, first_block: this.children.length } );
   }
@@ -119,7 +115,7 @@ function(       fs ,  _           ) {
     var result = '', p = 0;
     while ((m = pat.exec(expr)) !== null) {
       result += expr.slice(p, m.index);
-      if (!context[m[1]]) result += 'data.';
+      if (!context[m[1]]) result += 'data.'; else result += 'context.';
       result += m[1];
       p = pat.lastIndex;
     }
@@ -128,13 +124,17 @@ function(       fs ,  _           ) {
     return result;
   }
   
-  function buildFunction(param, code) {
+  function buildExpressionEvaluator(expr) {
+    // Create an expression evaluator function
+    var code = 'return (' + adaptExpression(expr) + ');';
     // Make injected context available without prefix
+    /*
     var statements = _.map(context, function(elem, name) { return 'var '+name+' = context["'+name+'"];' } );
     statements.push(code);
     var code = statements.join('\n');
-    console.log(code);
-    return new Function(param, 'context', code);
+    */
+    //console.log(code);
+    return new Function('data', 'context', code);
   }
   
   //--- MAIN CLASS ---
