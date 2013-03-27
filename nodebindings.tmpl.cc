@@ -107,7 +107,7 @@ Handle<Value>
 
   {{$forall input_params}}
   {{$if type != "void"}}
-  {{$=ctype}} {{$=name}} = static_cast<{{$=ctype}}>( args[{{$=index}}]->{{$=v8TypeWrapper(type)}}() );
+  {{$call extract_parameter}}
   {{$end if}}
   {{$end forall}}
   
@@ -153,3 +153,12 @@ Handle<Value>
   {{$end if}}
   
 {{$end macro}}
+
+{{$macro extract_parameter}}
+  {{$if type == 'p.q(const).char'}}
+  Local<String> {{$=name}}_str = args[{{$=index}}]->ToString();
+  const char * {{$=name}} = * String::Utf8Value({{$=name}}_str);
+  {{$else}}
+  {{$=ctype}} {{$=name}} = static_cast<{{$=ctype}}>( args[{{$=index}}]->{{$=v8TypeWrapper(type)}}() );
+  {{$end}}
+{{$end}}

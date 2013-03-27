@@ -141,16 +141,21 @@ function(       fs ,  _           ) {
   
   //--- Utilities ---
   
+  // Prepend the "data" parameter to all identifiers except register functions
+  
   function adaptExpression(expr) {
-    // prepend the "data" parameter to all identifiers except register functions
-    //return expr.replace(/(\b(\w+)\b)/, 'data.$1')
-    var pat = /("?\b\w+\b(?:\.(?:\b\w+\b))*"?)/gm, m;
+    // The following regex is not perfect, it cannot properly handle member
+    // specifiers using square brackets instead of dots! (that would require nesting)
+    //            >               <--- catches strings
+    //                              >               <--- catches strings (")
+    //                                                >                     <--- member specifier
+    var pat = /(?:('(?:[^']|\\')*')|("(?:[^"]|\\")*")|(\b\w+\b(?:\.\b\w+\b)*))/gm, m;
     var result = '', p = 0;
     while ((m = pat.exec(expr)) !== null) {
-      if (m[1][0] !== '"') {
+      if (m[3]) {
         result += expr.slice(p, m.index);
-        if (!context[m[1]]) result += 'data.'; else result += 'context.';
-        result += m[1];
+        if (!context[m[3]]) result += 'data.'; else result += 'context.';
+        result += m[3];
         p = pat.lastIndex;
       }
     }
@@ -167,7 +172,7 @@ function(       fs ,  _           ) {
     statements.push(code);
     var code = statements.join('\n');
     */
-    //console.log(code);
+    console.log(code);
     return new Function('data', 'context', code);
   }
   
