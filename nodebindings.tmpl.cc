@@ -32,7 +32,8 @@ private:
   {{$end forall }}
 
   ~{{$=name}}() {
-    {{$=factory.name}}(_ptr);
+    {{$if factory}}{{$=factory.name}}(_ptr);
+    {{$end}}
   }
   
   void * handle() const { return _ptr; }
@@ -128,9 +129,9 @@ Handle<Value>
   {{$end if}}
 
   {{$--- If this is a factory function, wrap the resulting pointer ---}}
-  {{$if is_factory }}
-  {{$=class_name}} *wrapper = new {{$=class_name}}(object);  
-  return scope.Close( {{$=class_name}}::NewInstance(wrapper) );
+  {{$if output_class }}
+  {{$=output_class}} *wrapper = new {{$=output_class}}(object);  
+  return scope.Close( {{$=output_class}}::NewInstance(wrapper) );
 
   {{$elsif map_outparams_to_retval}}
   Local<Object> r = Object::New();
@@ -159,6 +160,7 @@ Handle<Value>
   const char * {{$=name}} = * String::Utf8Value({{$=name}}_str);
   {{$elsif wrapper_class}}
   void * {{$=name}} = ObjectWrap::Unwrap<{{$=wrapper_class}}>(args[{{$=index}}])->handle();
+  void * 
   {{$elsif type == 'p.void'}}
   {{$else}}
   {{$=ctype}} {{$=name}} = static_cast<{{$=ctype}}>( args[{{$=index}}]->{{$=v8TypeWrapper(type)}}() );

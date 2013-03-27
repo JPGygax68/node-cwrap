@@ -70,18 +70,18 @@ EXPORT void * __cdecl lsdspOpenGLScreen(int screen, unsigned options);
  * the way frames are composited and sent to the monitor.
  */
 EXPORT int __cdecl
-lsdspSetSourceRate(void *handle, unsigned num, unsigned denom);
+lsdspSetSourceRate(void *disp, unsigned num, unsigned denom);
 
 /* Closes the OpenGL full-screen window and makes current the DC and RC that were
   current before the first call to lsdsOpenGLScreen(). If have opened several
   GL screens and want to use one of the remaining ones afterwards, you will have to
   call lsdspSelectGLScreen(). */
 
-EXPORT int __cdecl lsdspCloseGLScreen(void * handle);
+EXPORT int __cdecl lsdspCloseGLScreen(void * disp);
 
 /* Equivalent to lsdspCloseGLScreen, provided for grammatical consistency. */
 
-EXPORT int __cdecl lsdspCloseGLWindow(void * handle);
+EXPORT int __cdecl lsdspCloseGLWindow(void * disp);
 
 /* Similar to lsdspOpenGLScreen, but opens a "normal" instead of a full-screen
   window. The position is relative to the screen's origin (top-left corner). */
@@ -92,28 +92,28 @@ EXPORT void * __cdecl lsdspOpenGLWindow2(unsigned screen, int x, int y,
 /*  Returns 1 if the screen or window is ready for use, 0 otherwise (which usually
     means the user has closed the window).
  */
-EXPORT int __cdecl lsdspDisplayGood(void *handle);
+EXPORT int __cdecl lsdspDisplayGood(void *disp);
 
 /**	As the name says....
 	*/
-EXPORT int __cdecl lsdspGetWindowInnerSize(void *handle, unsigned *width, unsigned *height);
+EXPORT int __cdecl lsdspGetWindowInnerSize(void *disp, unsigned *width, unsigned *height);
 
 /** Change the title of an open window 
 	*/
-EXPORT int __cdecl lsdspChangeWindowTitle(void *handle, const char *title);
+EXPORT int __cdecl lsdspChangeWindowTitle(void *disp, const char *title);
 
 /** Change the title of an open screen (not displayed on the screen, but still
 	useful when flipping between screens using Alt-TAB, etc.)
 	*/
-EXPORT int __cdecl lsdspChangeScreenTitle(void *handle, const char *title);
+EXPORT int __cdecl lsdspChangeScreenTitle(void *disp, const char *title);
 
 /**	Make the specified screen the current OpenGL context.
 	*/
-EXPORT int __cdecl lsdspSelectGLScreen(void * handle);
+EXPORT int __cdecl lsdspSelectGLScreen(void * disp);
 
 /**	Equivalent to lsdspSelectGLScreen, provided for grammatical consistency. 
 	*/
-EXPORT int __cdecl lsdspSelectGLWindow(void * handle);
+EXPORT int __cdecl lsdspSelectGLWindow(void * disp);
 
 /** De-selects any currently selected GL screen, making current (if any) the
 	one that was current before the first call to lsdspOpenGLScreen(). */
@@ -126,16 +126,16 @@ EXPORT int __cdecl lsdspRestoreOriginalContext();
   current again the context that was current before the last call to
   lsdspSelectGLScreen. */
 
-EXPORT int __cdecl lsdspSwapBuffers(void * handle);
+EXPORT int __cdecl lsdspSwapBuffers(void * disp);
 
-EXPORT int __cdecl lsdspSharingContexts(void *handle, void *handle2);
+EXPORT int __cdecl lsdspSharingContexts(void *disp, void *disp2);
 
 /*
-EXPORT void * __cdecl lsdspCreateExtraContext(void *handle);
+EXPORT void * __cdecl lsdspCreateExtraContext(void *disp);
 
-EXPORT int __cdecl lsdspSelectExtraContext(void *handle, void *context);
+EXPORT int __cdecl lsdspSelectExtraContext(void *disp, void *context);
 
-EXPORT int __cdecl lsdspDeleteExtraContext(void *handle, void *context);
+EXPORT int __cdecl lsdspDeleteExtraContext(void *disp, void *context);
 */
 
 // MOUSE AND KEYBOARD --------------------------------------------------------
@@ -325,7 +325,7 @@ EXPORT int __cdecl lsdspDrawTextA(void *disp, void *font, int x, int y, const ch
 
 /** Draw Unicode (UTF-16) text. */
 
-EXPORT int __cdecl lsdspDrawTextW(void *disp, void *font, int x, int y, const wchar_t *text);
+//EXPORT int __cdecl lsdspDrawTextW(void *disp, void *font, int x, int y, const wchar_t *text);
 
 /** Wie lsdspDrawTextA(), rechnet aber die Y-Koordinate nicht um - diese wird somit immer nach 
 	dem Windows-Standard interpretiert (Ursprung oben links, positiv Y = abwärts).

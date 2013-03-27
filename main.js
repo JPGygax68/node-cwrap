@@ -16,7 +16,7 @@ fs.read(input_path)
 
 function postProcess(intf) {
 
-  intf.classes = { Display: { name: 'Display', methods: {} } };
+  intf.classes = { };
     
   _.each(intf.functions, function(func, fname) {
     
@@ -34,7 +34,7 @@ function postProcess(intf) {
     _.each(func.params, function(param, pname) {
       if (beginsWith(param.type, 'a(1)') || param.type === 'p.unsigned int' || param.type === 'p.int') {
         func.output_params[pname] = param; 
-        param.out_type = param.type.slice(5);
+        param.out_type = beginsWith(param.type, 'p.') ? param.type.slice(2) : param.type.slice(5);
         param.input_expr = '&' + pname;
         count ++;
       }
@@ -50,21 +50,43 @@ function postProcess(intf) {
       intf.classes['Display'].factory = func;
       delete intf.functions[fname];
     }
-    else if (func.params.handle && func.params.handle.type === 'p.void' && func.params.handle.index === 0) {
-      intf.classes['Display'].methods[func.name] = func;
-      func.class_name = 'Display';
-      func.params['handle'].is_self = true;
-      _.each(func.params, function(param) { param.index --; });
-      if (func.params['handle2']) func.params['handle2'].wrapper_class = 'Display';
-      delete intf.functions[fname];
+    else if (func.params.disp && func.params.disp.type === 'p.void' && func.params.disp.index === 0) {
+      functionToMethod(func, 'Display', fname, 'disp');
+      if (func.params['disp2']) func.params['disp2'].wrapper_class = 'Display';
     }
     else if (['lsdspOpenGLScreen', 'lsdspOpenGLWindow2'].indexOf(fname) >= 0) {
-      func.is_factory = true;
-      func.class_name = 'Display';
+      func.output_class = 'Display';
     }
+    
+    if (fname === 'lsdspGetFont') {
+      func.output_class = 'Font';
+    }
+    
+    if (fname === 'lsdspCreateButton' || fname === 'lsdspDirectoryListBoxCreate') {
+      func.output_class = 'Control';
+    }
+    
+    if (fname === 'lsdspGetNextEvent') {
+      func.output_class = 'Event';
+    }
+    else if (func.params.evt && func.params.evt.type === 'p.void' && func.params.evt.index === 0) {
+      functionToMethod(func, 'Event', fname, 'evt');
+    }
+    
   });
   
   return intf;
+
+  //---------
   
   function beginsWith(s1, start) { return s1.slice(0, start.length) === start; }
+  
+  function functionToMethod(func, class_name, fname, self_name) {
+    if (!intf.classes[class_name]) intf.classes[class_name] = { name: class_name, methods: {} };
+    intf.classes[class_name].methods[func.name] = func;
+    func.class_name = class_name;
+    func.params[self_name].is_self = true;
+    _.each(func.params, function(param) { param.index --; });
+    delete intf.functions[fname];
+  }
 }
