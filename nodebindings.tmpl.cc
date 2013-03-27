@@ -1,5 +1,4 @@
-
-{{$--- ERROR HANDLING ---}}
+//--- ERROR HANDLING ---
 
 static Handle<Value>
 lastError(const char *context = nullptr) {
@@ -69,6 +68,20 @@ Handle<Value>
   return scope.Close(instance);
 }
 
+{{$forall methods}}
+
+Handle<Value> 
+{{$=class_name}}::{{$=name}}(const Arguments& args) {
+  HandleScope scope;
+  {{$=class_name}} *wrapper = ObjectWrap::Unwrap<{{$=class_name}}>(args.This());
+  {{$- TODO: implement sub-templates (so that methods can re-use the template code used by functions) }}
+  lsdspChangeWindowTitle(display->_disp, * String::Utf8Value(args[0]));
+  // TODO: check for errors
+  return scope.Close(Undefined());
+}
+
+{{$end forall methods}}
+  
 {{$end forall classes}}
 
 {{$--- FUNCTIONS ---}}
@@ -82,6 +95,15 @@ extern "C" {
 Handle<Value>
 {{$=name}}(const Arguments& args) {
   HandleScope scope;
+
+  {{$call function_body}}
+}
+
+{{$end forall functions}}
+
+{{$--------------------------------------------------------------------------------------------}}
+
+{{$macro function_body}}
 
   {{$forall input_params}}
   {{$if type != "void"}}
@@ -104,7 +126,7 @@ Handle<Value>
   {{$--- With return value type int, negative values signal errors ---}}
   {{$=ctype}} result = lsdsp{{$=name}}({{$list params input_expr}});
   if (result < 0) return lastError();
-  {{$end}}
+  {{$end if}}
 
   {{$--- If this is a factory object, wrap the resulting pointer ---}}
   {{$if is_factory }}
@@ -128,6 +150,6 @@ Handle<Value>
   
   return scope.Close({{$=v8TypeWrapper(type)}}::New(result));
   
-  {{$end}}
-}
-{{$end}}
+  {{$end if}}
+  
+{{$end macro}}

@@ -100,6 +100,39 @@ function(       fs ,  _           ) {
     emitter( list.join(', ') );
   }
   
+  function Macro(params) {
+    Structure.call(this); // we need our own children map!
+    var params = params.split(' ').map( function(el) { return el.trim(); } );
+    // Register ourselves in the macro library
+    this.name = params[0];
+    Macro.lib[this.name] = this;
+  }
+  
+  Macro.prototype = new Structure();
+  Macro.prototype.constructor = Macro;
+  
+  Macro.lib = {};
+  
+  Macro.prototype.execute = function(data, source, emitter, go) {
+    // A macro does nothing upon first "execution", must get "go" param from Call execution
+    if (go) Structure.prototype.execute.call(this, data, source, emitter);
+  }
+  
+  function Call(params) {
+    var params = params.split(' ').map( function(el) { return el.trim(); } );
+    this.macro = params[0];
+  }
+  
+  Call.prototype = new Block();
+  Call.prototype.constructor = Call;
+  
+  Call.prototype.execute = function(data, source, emitter) {
+    // Look up the macro in the library
+    if (!(this.macro instanceof Macro)) this.macro = Macro.lib[this.macro];
+    // Execute the called macro
+    this.macro.execute(data, source, emitter, true);
+  }
+  
   //--- Functions and stuff usable from within the template ---
   
   var context = {};
@@ -153,9 +186,8 @@ function(       fs ,  _           ) {
     this.code = code;
     
     var stack = [ new Structure() ];
-    function current()       { return stack[stack.length-1]; }
-    function addChild(child) { current().children.push(child); return child; }
     
+    // Analyze the template, breaking it up into a tree
     var m;
     var pos = 0;
     while ((m = scanner.exec(code)) !== null) {
@@ -170,10 +202,12 @@ function(       fs ,  _           ) {
       else if (command === 'if'     ) stack.push( addChild(new Conditional(params)) );
       else if (command === 'foreach') stack.push( addChild(new Repeater   (params)) );
       else if (command === 'forall' ) stack.push( addChild(new Repeater   (params)) );
+      else if (command === 'macro'  ) stack.push( addChild(new Macro      (params)) );
       else if (command === 'elsif'  ) current().newBranch(params);
       else if (command === 'else'   ) current().newBranch(params);
       else if (command === 'end'    ) stack.pop();
       else if (command === 'list'   ) addChild( new JSList(params) );
+      else if (command === 'call'   ) addChild( new Call  (params) );
       else if (command[0] === '-'   ) ; // comment introducer, do nothing
       else                            throw new Error('Unrecognized template command "'+command+'"');
       // Advance past tag
@@ -184,9 +218,13 @@ function(       fs ,  _           ) {
     addChild( new Text(pos, code.length) );
     
     // Done!
-    if (stack.length !== 1) throw new Error('Opening/closing tag inbalance');
+    if (stack.length !== 1) throw new Error('Opening/closing tag inbalance: closing depth at '+stack.length+' instead of 1');
     this.root_block = stack[0];
     //console.log( JSON.stringify(stack[0], null, "    ") );
+
+    //---
+    function current()       { if (stack.length < 1) throw new Error('Block nesting error: too many $end\'s'); return stack[stack.length-1]; }
+    function addChild(child) { current().children.push(child); return child; }
   }
   
   Template.registerFunction = registerFunction;

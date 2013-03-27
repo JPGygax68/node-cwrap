@@ -52,6 +52,7 @@ function postProcess(intf) {
     }
     else if (func.params.handle && func.params.handle.type === 'p.void' && func.params.handle.index === 0) {
       intf.classes['Display'].methods[func.name] = func;
+      func.class_name = 'Display';
       delete intf.functions[fname];
     }
     else if (fname === 'lsdspOpenGLScreen') {
