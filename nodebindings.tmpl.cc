@@ -74,10 +74,8 @@ Handle<Value>
 {{$=class_name}}::{{$=name}}(const Arguments& args) {
   HandleScope scope;
   {{$=class_name}} *wrapper = ObjectWrap::Unwrap<{{$=class_name}}>(args.This());
-  {{$- TODO: implement sub-templates (so that methods can re-use the template code used by functions) }}
-  lsdspChangeWindowTitle(display->_disp, * String::Utf8Value(args[0]));
-  // TODO: check for errors
-  return scope.Close(Undefined());
+  
+  {{$call function_body}}
 }
 
 {{$end forall methods}}
@@ -106,7 +104,7 @@ Handle<Value>
 {{$macro function_body}}
 
   {{$forall input_params}}
-  {{$if type != "void"}}
+  {{$if type != "void" && !is_self}}
   {{$call extract_parameter}}
   {{$end if}}
   {{$end forall}}
@@ -128,7 +126,7 @@ Handle<Value>
   if (result < 0) return lastError();
   {{$end if}}
 
-  {{$--- If this is a factory object, wrap the resulting pointer ---}}
+  {{$--- If this is a factory function, wrap the resulting pointer ---}}
   {{$if is_factory }}
   {{$=class_name}} *wrapper = new {{$=class_name}}(object);  
   return scope.Close( {{$=class_name}}::NewInstance(wrapper) );

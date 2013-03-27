@@ -146,9 +146,9 @@ function(       fs ,  _           ) {
   function adaptExpression(expr) {
     // The following regex is not perfect, it cannot properly handle member
     // specifiers using square brackets instead of dots! (that would require nesting)
-    //            >               <--- catches strings
-    //                              >               <--- catches strings (")
-    //                                                >                     <--- member specifier
+    //            >...............<--- catches strings
+    //             ...............  >...............<--- catches strings (")
+    //             ...............   ...............  >.....................<--- member specifier
     var pat = /(?:('(?:[^']|\\')*')|("(?:[^"]|\\")*")|(\b\w+\b(?:\.\b\w+\b)*))/gm, m;
     var result = '', p = 0;
     while ((m = pat.exec(expr)) !== null) {

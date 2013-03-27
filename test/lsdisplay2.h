@@ -92,7 +92,7 @@ EXPORT void * __cdecl lsdspOpenGLWindow2(unsigned screen, int x, int y,
 /*  Returns 1 if the screen or window is ready for use, 0 otherwise (which usually
     means the user has closed the window).
  */
-EXPORT int __cdecl lsdspDisplayGood(void *disp);
+EXPORT int __cdecl lsdspDisplayGood(void *handle);
 
 /**	As the name says....
 	*/

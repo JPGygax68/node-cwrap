@@ -32,7 +32,7 @@ function postProcess(intf) {
     func.output_params = {}, func.input_params = {};
     var count = 0;
     _.each(func.params, function(param, pname) {
-      if (beginsWith(param.type, 'a(1)')) {
+      if (beginsWith(param.type, 'a(1)') || param.type === 'p.unsigned int' || param.type === 'p.int') {
         func.output_params[pname] = param; 
         param.out_type = param.type.slice(5);
         param.input_expr = '&' + pname;
@@ -46,16 +46,17 @@ function postProcess(intf) {
     if (count > 0 && !func.returns_object_ptr) func.map_outparams_to_retval = true;
     
     // Convert functions to methods
-    if (fname === 'lsdspCloseGLWindow') {
+    if (['lsdspCloseGLWindow', 'lsdspCloseGLScreen'].indexOf(fname) >= 0) {
       intf.classes['Display'].factory = func;
       delete intf.functions[fname];
     }
     else if (func.params.handle && func.params.handle.type === 'p.void' && func.params.handle.index === 0) {
       intf.classes['Display'].methods[func.name] = func;
       func.class_name = 'Display';
+      func.params['handle'].is_self = true;
       delete intf.functions[fname];
     }
-    else if (fname === 'lsdspOpenGLScreen') {
+    else if (['lsdspOpenGLScreen', 'lsdspOpenGLWindow2'].indexOf(fname) >= 0) {
       func.is_factory = true;
       func.class_name = 'Display';
     }
