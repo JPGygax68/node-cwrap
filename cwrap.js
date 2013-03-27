@@ -33,8 +33,8 @@ function(  xmldom ,  xpath ,    Template  ) {
   //--- Public interface ---
   
   return {
-    parseXml: parseXml,
-    generate: generate
+    parseSwigXml: parseXml,
+    generate    : generate
   };
   
   //--- Implementation ---
@@ -70,6 +70,7 @@ function(  xmldom ,  xpath ,    Template  ) {
       func.decl = xpath.select('./attribute[@name="decl"]/@value', attrib_list)[0].value;
       if (func.decl.slice(-3) === '.p.') func.type = 'p.' + func.type; // APPEARS TO BE A BUG IN SWIG
       func.ctype = convertTypeToC(func.type);
+      //console.log(func.name, func.type);
       var param_nodes = xpath.select('./parmlist/parm', attrib_list);
       var count = 0;
       param_nodes.forEach( function(param_node, i) {

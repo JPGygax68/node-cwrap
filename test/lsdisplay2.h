@@ -70,7 +70,7 @@ EXPORT void * __cdecl lsdspOpenGLScreen(int screen, unsigned options);
  * the way frames are composited and sent to the monitor.
  */
 EXPORT int __cdecl
-lsdspSetSourceRate(void *screen, unsigned num, unsigned denom);
+lsdspSetSourceRate(void *handle, unsigned num, unsigned denom);
 
 /* Closes the OpenGL full-screen window and makes current the DC and RC that were
   current before the first call to lsdsOpenGLScreen(). If have opened several
@@ -96,7 +96,7 @@ EXPORT int __cdecl lsdspDisplayGood(void *disp);
 
 /**	As the name says....
 	*/
-EXPORT int __cdecl lsdspGetWindowInnerSize(void *_win, unsigned *width, unsigned *height);
+EXPORT int __cdecl lsdspGetWindowInnerSize(void *handle, unsigned *width, unsigned *height);
 
 /** Change the title of an open window 
 	*/
@@ -128,13 +128,13 @@ EXPORT int __cdecl lsdspRestoreOriginalContext();
 
 EXPORT int __cdecl lsdspSwapBuffers(void * handle);
 
-EXPORT int __cdecl lsdspSharingContexts(void *disp1, void *disp2);
+EXPORT int __cdecl lsdspSharingContexts(void *handle, void *disp2);
 
 EXPORT void * __cdecl lsdspCreateExtraContext(void *handle);
 
-EXPORT int __cdecl lsdspSelectExtraContext(void *disp, void *context);
+EXPORT int __cdecl lsdspSelectExtraContext(void *handle, void *context);
 
-EXPORT int __cdecl lsdspDeleteExtraContext(void *disp, void *context);
+EXPORT int __cdecl lsdspDeleteExtraContext(void *handle, void *context);
 
 // MOUSE AND KEYBOARD --------------------------------------------------------
 

@@ -111,13 +111,15 @@ function(       fs ,  _           ) {
   function adaptExpression(expr) {
     // prepend the "data" parameter to all identifiers except register functions
     //return expr.replace(/(\b(\w+)\b)/, 'data.$1')
-    var pat = /(?!")(\b(\w+)\b)(?!")/gm, m;
+    var pat = /("?\b\w+\b(?:\.(?:\b\w+\b))*"?)/gm, m;
     var result = '', p = 0;
     while ((m = pat.exec(expr)) !== null) {
-      result += expr.slice(p, m.index);
-      if (!context[m[1]]) result += 'data.'; else result += 'context.';
-      result += m[1];
-      p = pat.lastIndex;
+      if (m[1][0] !== '"') {
+        result += expr.slice(p, m.index);
+        if (!context[m[1]]) result += 'data.'; else result += 'context.';
+        result += m[1];
+        p = pat.lastIndex;
+      }
     }
     if (p < expr.length) result += expr.slice(p);
     return result;
@@ -140,11 +142,11 @@ function(       fs ,  _           ) {
   
   //          -->          <--- 1: block/inline discrimination
   //                    -->    <--- introducer: "{{$"
-  //                       --->           <--- 2: command
-  //                                  --->       <--- 3: parameters
-  //                                         --->  <--- terminator: "}}"
-  //                                           --->                            <--- 4: optional newline
-  var scanner = /(^[ \t]*)?{{\$(\b\w+\b|=)([^}]*)}}([ \t]*(?:\r\n?|\l\n?))?/gm;
+  //                       --->              <--- 2: command
+  //                                     --->       <--- 3: parameters
+  //                                            --->  <--- terminator: "}}"
+  //                                              --->                            <--- 4: optional newline
+  var scanner = /(^[ \t]*)?{{\$(\b\w+\b|=|\-)([^}]*)}}([ \t]*(?:\r\n?|\l\n?))?/gm;
   
   function Template(code) {
 
@@ -172,6 +174,7 @@ function(       fs ,  _           ) {
       else if (command === 'else'   ) current().newBranch(params);
       else if (command === 'end'    ) stack.pop();
       else if (command === 'list'   ) addChild( new JSList(params) );
+      else if (command[0] === '-'   ) ; // comment introducer, do nothing
       else                            throw new Error('Unrecognized template command "'+command+'"');
       // Advance past tag
       pos = scanner.lastIndex - (inline && m[4] ? m[4].length : 0);
