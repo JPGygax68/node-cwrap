@@ -128,13 +128,15 @@ EXPORT int __cdecl lsdspRestoreOriginalContext();
 
 EXPORT int __cdecl lsdspSwapBuffers(void * handle);
 
-EXPORT int __cdecl lsdspSharingContexts(void *handle, void *disp2);
+EXPORT int __cdecl lsdspSharingContexts(void *handle, void *handle2);
 
+/*
 EXPORT void * __cdecl lsdspCreateExtraContext(void *handle);
 
 EXPORT int __cdecl lsdspSelectExtraContext(void *handle, void *context);
 
 EXPORT int __cdecl lsdspDeleteExtraContext(void *handle, void *context);
+*/
 
 // MOUSE AND KEYBOARD --------------------------------------------------------
 

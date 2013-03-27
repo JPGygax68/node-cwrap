@@ -73,7 +73,8 @@ Handle<Value>
 Handle<Value> 
 {{$=class_name}}::{{$=name}}(const Arguments& args) {
   HandleScope scope;
-  {{$=class_name}} *wrapper = ObjectWrap::Unwrap<{{$=class_name}}>(args.This());
+  
+  void * handle = ObjectWrap::Unwrap<{{$=class_name}}>(args.This())->handle();
   
   {{$call function_body}}
 }
@@ -156,6 +157,9 @@ Handle<Value>
   {{$if type == 'p.q(const).char'}}
   Local<String> {{$=name}}_str = args[{{$=index}}]->ToString();
   const char * {{$=name}} = * String::Utf8Value({{$=name}}_str);
+  {{$elsif wrapper_class}}
+  void * {{$=name}} = ObjectWrap::Unwrap<{{$=wrapper_class}}>(args[{{$=index}}])->handle();
+  {{$elsif type == 'p.void'}}
   {{$else}}
   {{$=ctype}} {{$=name}} = static_cast<{{$=ctype}}>( args[{{$=index}}]->{{$=v8TypeWrapper(type)}}() );
   {{$end}}

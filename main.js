@@ -54,6 +54,8 @@ function postProcess(intf) {
       intf.classes['Display'].methods[func.name] = func;
       func.class_name = 'Display';
       func.params['handle'].is_self = true;
+      _.each(func.params, function(param) { param.index --; });
+      if (func.params['handle2']) func.params['handle2'].wrapper_class = 'Display';
       delete intf.functions[fname];
     }
     else if (['lsdspOpenGLScreen', 'lsdspOpenGLWindow2'].indexOf(fname) >= 0) {
