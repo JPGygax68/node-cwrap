@@ -22,12 +22,55 @@ function postProcess(intf) {
     
     //console.log(fname, func.type);
     
+    if (['lsdspGetLastError', 'lsdspGetErrorText'].indexOf(fname) >= 0) { delete intf.functions[fname]; return; }
+    
     if      (func.type === 'int'   ) func.returns_error_code  = true;
     else if (func.type === 'p.void') func.returns_object_ptr  = true;
     
+    // Convert functions to methods, pointers to wrapper objects
+    
+    if (['lsdspCloseGLWindow', 'lsdspCloseGLScreen'].indexOf(fname) >= 0) {
+      intf.classes['Display'].factory = func;
+      delete intf.functions[fname];
+    }
+    else if (func.params.disp && func.params.disp.type === 'p.void' && func.params.disp.index === 0) {
+      functionToMethod(func, 'Display', fname, 'disp');
+      if (func.params['disp2']) func.params['disp2'].wrapper_class = 'Display';
+    }
+    else if (['lsdspOpenGLScreen', 'lsdspOpenGLWindow2'].indexOf(fname) >= 0) {
+      func.output_class = 'Display';
+    }
+    else if (/^lsdsp.*Control.*$/.test(fname)) {
+      // These functions must be mapped as methods of more than one wrapper class
+      functionToMethod(func, 'Button', fname, 'ctl');
+      functionToMethod(func, 'DirectoryListBox', fname, 'ctl');
+    }
+    else if (fname === 'lsdspCreateButton' || fname === 'lsdspDirectoryListBoxCreate') {
+      func.output_class = 'Control';
+    }
+    else if (beginsWith(fname, 'lsdspDirectoryListBox')) {
+      functionToMethod(func, 'Control', fname, 'dlb');
+    }
+    else if (fname === 'lsdspGetNextEvent') {
+      func.output_class = 'Event';
+    }
+    else if (func.params.evt && func.params.evt.type === 'p.void' && func.params.evt.index === 0) {
+      functionToMethod(func, 'Event', fname, 'evt');
+    }
+    
+    // Map returned pointers to wrapper classes
+    
+    if      (fname === 'lsdspEventTarget'           ) func.output_class = 'Display';
+    else if (fname === 'lsdspGetFont'               ) func.output_class = 'Font';
+    else if (fname === 'lsdspCreateButton'          ) func.output_class = 'Button';
+    else if (fname === 'lsdspDirectoryListBoxCreate') func.output_class = 'DirectoryListBox';
+
     // Remove the namespacing prefix from the function name
+    
     if (beginsWith(func.name, 'lsdsp')) func.name = func.name.slice(5);
     else console.warn('Function "'+func.name+'" does not have the "lsdsp" namespacing prefix');
+    
+    // Classify parameters as input or output
     
     func.output_params = {}, func.input_params = {};
     var count = 0;
@@ -44,33 +87,18 @@ function postProcess(intf) {
       }
     });
     if (count > 0 && !func.returns_object_ptr) func.map_outparams_to_retval = true;
-    
-    // Convert functions to methods
-    if (['lsdspCloseGLWindow', 'lsdspCloseGLScreen'].indexOf(fname) >= 0) {
-      intf.classes['Display'].factory = func;
-      delete intf.functions[fname];
-    }
-    else if (func.params.disp && func.params.disp.type === 'p.void' && func.params.disp.index === 0) {
-      functionToMethod(func, 'Display', fname, 'disp');
-      if (func.params['disp2']) func.params['disp2'].wrapper_class = 'Display';
-    }
-    else if (['lsdspOpenGLScreen', 'lsdspOpenGLWindow2'].indexOf(fname) >= 0) {
-      func.output_class = 'Display';
-    }
-    
-    if (fname === 'lsdspGetFont') {
-      func.output_class = 'Font';
-    }
-    
-    if (fname === 'lsdspCreateButton' || fname === 'lsdspDirectoryListBoxCreate') {
-      func.output_class = 'Control';
-    }
-    
-    if (fname === 'lsdspGetNextEvent') {
-      func.output_class = 'Event';
-    }
-    else if (func.params.evt && func.params.evt.type === 'p.void' && func.params.evt.index === 0) {
-      functionToMethod(func, 'Event', fname, 'evt');
+
+    // Specific adjustments to parameters
+    if (fname === 'lsdspDirectoryListBoxGetSelectedFilePath') {
+      var param1 = func.input_params['buffer'], param2 = func.input_params['bsize'];
+      param1.out_type = 'char', param1.out_dim = '[1024]';
+      param2.input_expr = '1024';
+      func.output_params['buffer'] = param1;
+      func.return_charbuf_on_success = true;
+      func.return_charbuf_name = 'buffer';
+      func.return_charbuf_size = 1024;
+      delete func.input_params['buffer'];
+      delete func.input_params['bsize'];
     }
     
   });
@@ -87,6 +115,6 @@ function postProcess(intf) {
     func.class_name = class_name;
     func.params[self_name].is_self = true;
     _.each(func.params, function(param) { param.index --; });
-    delete intf.functions[fname];
+    if (intf.functions[fname]) delete intf.functions[fname];
   }
 }

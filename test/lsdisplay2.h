@@ -274,9 +274,9 @@ EXPORT int __cdecl lsdspTextExtentsA(void *font, const char * text, unsigned len
 
 /** Same as lsdspTextExtentsA() but for wide characters.
 	*/
-EXPORT int __cdecl
+/* EXPORT int __cdecl
 lsdspTextExtentsW(void *font, const wchar_t * text, unsigned len, int *ascent, int *descent, 
-    unsigned * width);
+    unsigned * width); */
 
 /** lsdspPrepareFor2D() schaltet den angegebenen Display in den "2D-Modus", in welchem 
 	das Koordinatensystem direkt auf das Pixelraster abgebildet wird. In diesem Modus
@@ -350,27 +350,27 @@ EXPORT int __cdecl lsdspDeleteControl(void *ctl);
 
 EXPORT int __cdecl lsdspMoveControl(void *ctl, int x, int y);
 
+EXPORT int __cdecl lsdspControlSetFocus(void *ctl);
+
 EXPORT void * __cdecl lsdspCreateButton(void *disp, int x, int y, int w, int h, const char *caption,
 	int *click_counter);
 
 EXPORT int __cdecl lsdspRetrieveButtonClicks(void *btn);
 
-EXPORT int __cdecl lsdspSetButtonCaption(void *button, const char *caption);
+EXPORT int __cdecl lsdspSetButtonCaption(void *btn, const char *caption);
 
 /*	TODO: data provider...
 	*/
 EXPORT void * __cdecl lsdspDirectoryListBoxCreate(void *disp, int x, int y, int w, int h,
 	const char *folder_path, const char *filters, int *select_accum);
 
-EXPORT int __cdecl lsdspDirectoryListBoxRetrieveCloseCount(void *_dlb);
+EXPORT int __cdecl lsdspDirectoryListBoxRetrieveCloseCount(void *dlb);
 
 /**	Returns 1 if a path is selected, 0 if none, and < 0 if an error occurred.
 	*/
-EXPORT int __cdecl lsdspDirectoryListBoxGetSelectedFilePath(void *lbx, char *buffer, int bsize);
+EXPORT int __cdecl lsdspDirectoryListBoxGetSelectedFilePath(void *dlb, char *buffer, int bsize);
 
-EXPORT int __cdecl lsdspControlSetFocus(void *wid);
-
-EXPORT int __cdecl lsdspRenderUI(void *_disp);
+EXPORT int __cdecl lsdspRenderUI(void * disp);
 
 // FRAMEBUFFER OBJECTS
 
@@ -460,7 +460,7 @@ EXPORT int __cdecl lsdspGetLastError(char * databuf, unsigned bufsize);
 	yourself, based on the constants defined above. */
 EXPORT int __cdecl lsdspGetErrorText(int code, char * textbuf, unsigned bufsize);
 
-EXPORT int __cdecl lsdspDummy();
+//EXPORT int __cdecl lsdspDummy();
 
 #ifdef __cplusplus
 

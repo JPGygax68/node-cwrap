@@ -69,6 +69,10 @@ Handle<Value>
   return scope.Close(instance);
 }
 
+{{$end forall classes}}
+
+{{$forall classes}}
+
 {{$forall methods}}
 
 Handle<Value> 
@@ -112,10 +116,10 @@ Handle<Value>
   {{$end forall}}
   
   {{$forall output_params}}
-  {{$=out_type}} {{$=name}};
+  {{$=out_type}} {{$=name}}{{$=out_dim ||''}};
   {{$end forall}}
   
-  {{$--- We support void, void *, and int return values ---}}
+  {{$--- Call the function: we support void, void *, and int return values ---}}
   {{$if type == "void"}}
   lsdsp{{$=name}}({{$list params name}});
   {{$elsif type == "p.void"}}
@@ -128,19 +132,23 @@ Handle<Value>
   if (result < 0) return lastError();
   {{$end if}}
 
-  {{$--- If this is a factory function, wrap the resulting pointer ---}}
   {{$if output_class }}
+  {{$--- If this is a factory function, wrap the resulting pointer ---}}
   {{$=output_class}} *wrapper = new {{$=output_class}}(object);  
   return scope.Close( {{$=output_class}}::NewInstance(wrapper) );
 
   {{$elsif map_outparams_to_retval}}
+  {{$--- Combine several output parameters into a result object ---}}
   Local<Object> r = Object::New();
-  
   {{$forall output_params}}
   r->Set(String::NewSymbol("{{$=name}}"), Integer::New({{$=name}}));  
-  {{$end forall}}
-  
-  return scope.close(r);
+  {{$end forall}}  
+  return scope.Close(r);
+
+  {{$elsif return_charbuf_on_success}}
+  {{$--- Integer return code indicates success or failure, output parameter is string ---}}
+  if (result > 0) return scope.Close(String::New({{$=return_charbuf_name}}, {{$=return_charbuf_size}});
+  else            return scope.Close(Undefined());
   
   {{$elsif type == "void"}}
   
@@ -160,7 +168,6 @@ Handle<Value>
   const char * {{$=name}} = * String::Utf8Value({{$=name}}_str);
   {{$elsif wrapper_class}}
   void * {{$=name}} = ObjectWrap::Unwrap<{{$=wrapper_class}}>(args[{{$=index}}])->handle();
-  void * 
   {{$elsif type == 'p.void'}}
   {{$else}}
   {{$=ctype}} {{$=name}} = static_cast<{{$=ctype}}>( args[{{$=index}}]->{{$=v8TypeWrapper(type)}}() );
