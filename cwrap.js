@@ -48,9 +48,9 @@ function(  xmldom ,  xpath ,    Template  ) {
     return extractInterface(doc);  
   }
 
-  function generate(intf) {
+  function generate(intf, writer) {
     return Template.read('nodebindings.tmpl.cc')
-      .then( function(template) { return template.exec(intf); } );
+      .then( function(template) { return template.exec(intf, writer); } );
   }
 
   function extractInterface(doc) {

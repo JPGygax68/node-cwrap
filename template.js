@@ -172,7 +172,7 @@ function(       fs ,  _           ) {
     statements.push(code);
     var code = statements.join('\n');
     */
-    console.log(code);
+    //console.log(code);
     return new Function('data', 'context', code);
   }
   
@@ -239,11 +239,11 @@ function(       fs ,  _           ) {
       .then( function(code) { return new Template(code); } );
   }
   
-  Template.prototype.exec = function(data) {
+  Template.prototype.exec = function(data, emit) {
   
-    this.root_block.execute(data, this.code, emit);
+    this.root_block.execute(data, this.code, emit || dbg_emit);
     
-    function emit(text) { process.stdout.write(text); }
+    function dbg_emit(text) { process.stdout.write(text); }
   }
   
   return Template;
