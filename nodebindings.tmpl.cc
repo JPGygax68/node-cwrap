@@ -2,6 +2,8 @@
 #include <node_buffer.h>
 #include <v8.h>
 
+using namespace v8;
+
 //--- ERROR HANDLING ---
 
 static Handle<Value>

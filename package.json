@@ -2,7 +2,7 @@
   "name": "cwrap",
   "version": "0.0.0",
   "description": "Wrap software modules with a C interface",
-  "main": "main.js",
+  "main": "cwrap.js",
   "directories": {
     "test": "test"
   },

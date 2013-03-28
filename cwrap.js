@@ -12,8 +12,8 @@ function(  xmldom ,  xpath ,    Template  ) {
    */
   Template.registerFunction( 'v8TypeWrapper', function(ctype) {
     var MAP = {
-      'int'          : 'Int32Value',
-      'unsigned int' : 'Uint32Value' /*,
+      'int'          : 'Int32',
+      'unsigned int' : 'Uint32' /*,
       GLenum         : 'Uint32Value',
       GLint          : 'Int32Value',
       GLuint         : 'Uint32Value',
@@ -25,6 +25,15 @@ function(  xmldom ,  xpath ,    Template  ) {
       GLdouble       : 'NumberValue',
       GLclampf       : 'NumberValue',
       GLclampd       : 'NumberValue' */
+    };
+    console.assert(MAP[ctype], ctype);
+    return MAP[ctype];
+  });
+
+  Template.registerFunction( 'v8TypeAccessor', function(ctype) {
+    var MAP = {
+      'int'          : 'Int32Value',
+      'unsigned int' : 'Uint32Value'
     };
     console.assert(MAP[ctype], ctype);
     return MAP[ctype];
