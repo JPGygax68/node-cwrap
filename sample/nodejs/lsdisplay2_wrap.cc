@@ -1102,5 +1102,5 @@ static void init (v8::Handle<Object> target)
   NODE_SET_METHOD(target, "RecordDwmTiming", RecordDwmTiming);
 }
 
-NODE_MODULE(lsdisplay, init);
+NODE_MODULE(lsdisplay2, init);
 

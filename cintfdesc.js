@@ -1,3 +1,11 @@
+/** THIS MODULE HAS BEEN SCRAPPED. INCLUDED FOR REFERENCE ONLY.
+ *
+ *  Though it may be re-activated at a later date, this module is not currently in use,
+ *  having been replaced with SWIG.
+ *  It represents an attempt (somewhat successful but not complete enough) to extract
+ *  an interface model from a C header file using regular expressions.
+ */
+ 
 "use strict";
 
 /** Data model types for C module interfaces.

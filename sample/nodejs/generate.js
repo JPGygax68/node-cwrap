@@ -1,11 +1,12 @@
 "use strict";
 
 var fs    = require('q-io/fs');
-var cwrap = require('./cwrap');
 var _     = require('underscore');
+var cwrap = require('../../cwrap');
 
-var input_path  = process.argv[2];
-var output_path = process.argv[3];
+var module_name = process.argv[2];
+var input_path  = process.argv[3];
+var output_path = process.argv[4];
 
 fs.read(input_path)
   .then( function(xml ) { return cwrap.parseSwigXml(xml );              } )
@@ -17,6 +18,8 @@ fs.read(input_path)
 
 function postProcess(intf) {
 
+  intf.name = module_name;
+  
   intf.classes = { };
     
   _.each(intf.functions, function(func, fname) {
@@ -42,9 +45,8 @@ function postProcess(intf) {
       func.output_class = 'Display';
     }
     else if (/^lsdsp.*Control.*$/.test(fname)) {
-      // These functions must be mapped as methods of more than one wrapper class
-      functionToMethod(func, 'Button', fname, 'ctl');
-      functionToMethod(func, 'DirectoryListBox', fname, 'ctl');
+      functionToMethod(func, 'Button', fname, 'ctl'); // TODO: control hierarchy
+      //functionToMethod(func, 'DirectoryListBox', fname, 'ctl');
     }
     else if (fname === 'lsdspCreateButton' || fname === 'lsdspDirectoryListBoxCreate') {
       func.output_class = 'Control';
@@ -58,20 +60,26 @@ function postProcess(intf) {
     else if (func.params.evt && func.params.evt.type === 'p.void' && func.params.evt.index === 0) {
       functionToMethod(func, 'Event', fname, 'evt');
     }
+    else if (func.params.font && func.params.font.type === 'p.void' && func.params.font.index === 0) {
+      functionToMethod(func, 'Font', fname, 'font');
+    }
+    else if (func.params.btn && func.params.btn.type === 'p.void' && func.params.btn.index === 0) {
+      functionToMethod(func, 'Button', fname, 'btn');
+    }
     
     // Map returned pointers to wrapper classes
     
-    if      (fname === 'lsdspEventTarget'           ) func.output_class = 'Display';
-    else if (fname === 'lsdspGetFont'               ) func.output_class = 'Font';
-    else if (fname === 'lsdspCreateButton'          ) func.output_class = 'Button';
-    else if (fname === 'lsdspDirectoryListBoxCreate') func.output_class = 'DirectoryListBox';
+    if      (fname === 'lsdspEventTarget'           ) getClass((func.output_class = 'Display'));
+    else if (fname === 'lsdspGetFont'               ) getClass((func.output_class = 'Font'));
+    else if (fname === 'lsdspCreateButton'          ) getClass((func.output_class = 'Button'));
+    else if (fname === 'lsdspDirectoryListBoxCreate') getClass((func.output_class = 'DirectoryListBox'));
 
     // Remove the namespacing prefix from the function name
     
     if (beginsWith(func.name, 'lsdsp')) func.name = func.name.slice(5);
     else console.warn('Function "'+func.name+'" does not have the "lsdsp" namespacing prefix');
     
-    // Classify parameters as input or output
+    // Classify parameters as input or output; other adjustments
     
     func.output_params = {}, func.input_params = {};
     var count = 0;
@@ -79,21 +87,23 @@ function postProcess(intf) {
       if (beginsWith(param.type, 'a(1)') || param.type === 'p.unsigned int' || param.type === 'p.int') {
         func.output_params[pname] = param; 
         param.out_type = beginsWith(param.type, 'p.') ? param.type.slice(2) : param.type.slice(5);
-        param.input_expr = '&' + pname;
+        if (!param.value_expr) param.value_expr = '&' + pname;
         count ++;
       }
       else {
         func.input_params[pname] = param;
-        param.input_expr = pname;
+        if (!param.value_expr) param.value_expr = pname;
       }
+      if (param.name === 'font') param.wrapper_class = 'Font';
     });
     if (count > 0 && !func.returns_object_ptr) func.map_outparams_to_retval = true;
 
     // Specific adjustments to parameters
+    
     if (fname === 'lsdspDirectoryListBoxGetSelectedFilePath') {
       var param1 = func.input_params['buffer'], param2 = func.input_params['bsize'];
       param1.out_type = 'char', param1.out_dim = '[1024]';
-      param2.input_expr = '1024';
+      param2.value_expr = '1024';
       func.output_params['buffer'] = param1;
       func.return_charbuf_on_success = true;
       func.return_charbuf_name = 'buffer';
@@ -111,12 +121,18 @@ function postProcess(intf) {
   function beginsWith(s1, start) { return s1.slice(0, start.length) === start; }
   
   function functionToMethod(func, class_name, fname, self_name) {
-    if (!intf.classes[class_name]) intf.classes[class_name] = { name: class_name, methods: {} };
-    intf.classes[class_name].methods[func.name] = func;
+    var theclass = getClass(class_name);
     func.class_name = class_name;
     func.params[self_name].is_self = true;
-    _.each(func.params, function(param) { param.index --; });
+    _.each(func.params, function(param) { if (param.index === 0) { param.value_expr = 'self'; } param.index --; } );
     if (intf.functions[fname]) delete intf.functions[fname];
+    theclass.methods[func.name] = func;
+  }
+  
+  function getClass(class_name) {
+    var theclass = intf.classes[class_name];
+    if (!theclass) theclass = intf.classes[class_name] = { name: class_name, methods: {} };
+    return theclass;
   }
 }
 
