@@ -38,14 +38,17 @@ extern "C" {
 #define EXPORT
 #endif
 
+#define IN
+#define OUT
+
 // OPENGL SCREENS / WINDOWS --------------------------------------------------
 
 /* OpenGLScreen/Window option flags */
 
-const static int WITH_FRAME = (1 << 0);				// screen/window will have a border
-const static int SINGLE_BUFFERED = (1 << 1);		// single-buffered display
-const static int FORCE_FRAME = (1 << 2);
-const static int DISABLE_COMPOSITION = (1 << 3);	// disable DWM (starting with Vista)
+static const int WITH_FRAME = (1 << 0);				// screen/window will have a border
+static const int SINGLE_BUFFERED = (1 << 1);		// single-buffered display
+static const int FORCE_FRAME = (1 << 2);
+static const int DISABLE_COMPOSITION = (1 << 3);	// disable DWM (starting with Vista)
 
 EXPORT int __cdecl lsdspNumberOfScreens(void);
 
@@ -53,8 +56,8 @@ EXPORT int __cdecl lsdspNumberOfScreens(void);
   *x, *y, *w, *h are filled out with the screen's position and dimensions (in
   pixels) */
 
-EXPORT int __cdecl lsdspGetScreenInfo(int screen, int * x, int * y, 
-									  unsigned * w, unsigned * h);
+EXPORT int __cdecl lsdspGetScreenInfo(int screen, OUT int x[1], OUT int y[1], 
+									  OUT unsigned w[1], OUT unsigned h[1]);
 
 /* Opens a full-screen Window for OpenGL rendering, makes it visible, and makes it
 	the current rendering context. If you wish to go back to the original context,
@@ -67,18 +70,18 @@ EXPORT void * __cdecl lsdspOpenGLScreen(int screen, unsigned options);
  * the way frames are composited and sent to the monitor.
  */
 EXPORT int __cdecl
-lsdspSetSourceRate(void *screen, unsigned num, unsigned denom);
+lsdspSetSourceRate(void *disp, unsigned num, unsigned denom);
 
 /* Closes the OpenGL full-screen window and makes current the DC and RC that were
   current before the first call to lsdsOpenGLScreen(). If have opened several
   GL screens and want to use one of the remaining ones afterwards, you will have to
   call lsdspSelectGLScreen(). */
 
-EXPORT int __cdecl lsdspCloseGLScreen(void * handle);
+EXPORT int __cdecl lsdspCloseGLScreen(void * disp);
 
 /* Equivalent to lsdspCloseGLScreen, provided for grammatical consistency. */
 
-EXPORT int __cdecl lsdspCloseGLWindow(void * handle);
+EXPORT int __cdecl lsdspCloseGLWindow(void * disp);
 
 /* Similar to lsdspOpenGLScreen, but opens a "normal" instead of a full-screen
   window. The position is relative to the screen's origin (top-left corner). */
@@ -93,24 +96,24 @@ EXPORT int __cdecl lsdspDisplayGood(void *disp);
 
 /**	As the name says....
 	*/
-EXPORT int __cdecl lsdspGetWindowInnerSize(void *_win, unsigned *width, unsigned *height);
+EXPORT int __cdecl lsdspGetWindowInnerSize(void *disp, unsigned *width, unsigned *height);
 
 /** Change the title of an open window 
 	*/
-EXPORT int __cdecl lsdspChangeWindowTitle(void *handle, const char *title);
+EXPORT int __cdecl lsdspChangeWindowTitle(void *disp, const char *title);
 
 /** Change the title of an open screen (not displayed on the screen, but still
 	useful when flipping between screens using Alt-TAB, etc.)
 	*/
-EXPORT int __cdecl lsdspChangeScreenTitle(void *handle, const char *title);
+EXPORT int __cdecl lsdspChangeScreenTitle(void *disp, const char *title);
 
 /**	Make the specified screen the current OpenGL context.
 	*/
-EXPORT int __cdecl lsdspSelectGLScreen(void * handle);
+EXPORT int __cdecl lsdspSelectGLScreen(void * disp);
 
 /**	Equivalent to lsdspSelectGLScreen, provided for grammatical consistency. 
 	*/
-EXPORT int __cdecl lsdspSelectGLWindow(void * handle);
+EXPORT int __cdecl lsdspSelectGLWindow(void * disp);
 
 /** De-selects any currently selected GL screen, making current (if any) the
 	one that was current before the first call to lsdspOpenGLScreen(). */
@@ -123,15 +126,17 @@ EXPORT int __cdecl lsdspRestoreOriginalContext();
   current again the context that was current before the last call to
   lsdspSelectGLScreen. */
 
-EXPORT int __cdecl lsdspSwapBuffers(void * handle);
+EXPORT int __cdecl lsdspSwapBuffers(void * disp);
 
-EXPORT int __cdecl lsdspSharingContexts(void *disp1, void *disp2);
+EXPORT int __cdecl lsdspSharingContexts(void *disp, void *disp2);
 
-EXPORT void * __cdecl lsdspCreateExtraContext(void *handle);
+/*
+EXPORT void * __cdecl lsdspCreateExtraContext(void *disp);
 
 EXPORT int __cdecl lsdspSelectExtraContext(void *disp, void *context);
 
 EXPORT int __cdecl lsdspDeleteExtraContext(void *disp, void *context);
+*/
 
 // MOUSE AND KEYBOARD --------------------------------------------------------
 
@@ -228,7 +233,7 @@ EXPORT int __cdecl lsdspGetMouseEventCoords(void *evt, int * x, int * y);
 
 /** Obtains the details of a mouse button action. 
 	*/
-EXPORT int __cdecl lsdspGetMouseButtonAction(void *_evt, int * button, int * dir);
+EXPORT int __cdecl lsdspGetMouseButtonAction(void *evt, int * button, int * dir);
 
 // TEXT RENDERING  -----------------------------------------------------------
 
@@ -269,9 +274,9 @@ EXPORT int __cdecl lsdspTextExtentsA(void *font, const char * text, unsigned len
 
 /** Same as lsdspTextExtentsA() but for wide characters.
 	*/
-EXPORT int __cdecl
+/* EXPORT int __cdecl
 lsdspTextExtentsW(void *font, const wchar_t * text, unsigned len, int *ascent, int *descent, 
-    unsigned * width);
+    unsigned * width); */
 
 /** lsdspPrepareFor2D() schaltet den angegebenen Display in den "2D-Modus", in welchem 
 	das Koordinatensystem direkt auf das Pixelraster abgebildet wird. In diesem Modus
@@ -320,7 +325,7 @@ EXPORT int __cdecl lsdspDrawTextA(void *disp, void *font, int x, int y, const ch
 
 /** Draw Unicode (UTF-16) text. */
 
-EXPORT int __cdecl lsdspDrawTextW(void *disp, void *font, int x, int y, const wchar_t *text);
+//EXPORT int __cdecl lsdspDrawTextW(void *disp, void *font, int x, int y, const wchar_t *text);
 
 /** Wie lsdspDrawTextA(), rechnet aber die Y-Koordinate nicht um - diese wird somit immer nach 
 	dem Windows-Standard interpretiert (Ursprung oben links, positiv Y = abwärts).
@@ -343,29 +348,29 @@ EXPORT int __cdecl lsdspSetControlDisabled(void *ctl, int state);
 
 EXPORT int __cdecl lsdspDeleteControl(void *ctl);
 
-EXPORT int __cdecl lsdspMoveControl(void *ctl, int x, int y);
+//EXPORT int __cdecl lsdspMoveControl(void *ctl, int x, int y);
+
+//EXPORT int __cdecl lsdspControlSetFocus(void *ctl);
 
 EXPORT void * __cdecl lsdspCreateButton(void *disp, int x, int y, int w, int h, const char *caption,
 	int *click_counter);
 
 EXPORT int __cdecl lsdspRetrieveButtonClicks(void *btn);
 
-EXPORT int __cdecl lsdspSetButtonCaption(void *button, const char *caption);
+EXPORT int __cdecl lsdspSetButtonCaption(void *btn, const char *caption);
 
 /*	TODO: data provider...
 	*/
 EXPORT void * __cdecl lsdspDirectoryListBoxCreate(void *disp, int x, int y, int w, int h,
 	const char *folder_path, const char *filters, int *select_accum);
 
-EXPORT int __cdecl lsdspDirectoryListBoxRetrieveCloseCount(void *_dlb);
+EXPORT int __cdecl lsdspDirectoryListBoxRetrieveCloseCount(void *dlb);
 
 /**	Returns 1 if a path is selected, 0 if none, and < 0 if an error occurred.
 	*/
-EXPORT int __cdecl lsdspDirectoryListBoxGetSelectedFilePath(void *lbx, char *buffer, int bsize);
+EXPORT int __cdecl lsdspDirectoryListBoxGetSelectedFilePath(void *dlb, char *buffer, int bsize);
 
-EXPORT int __cdecl lsdspControlSetFocus(void *wid);
-
-EXPORT int __cdecl lsdspRenderUI(void *_disp);
+EXPORT int __cdecl lsdspRenderUI(void * disp);
 
 // FRAMEBUFFER OBJECTS
 
@@ -380,7 +385,7 @@ EXPORT int __cdecl lsdspCreateAndSelectFBO(int id, unsigned width, unsigned heig
 	*/
 EXPORT int __cdecl lsdspDoneFBO(int id);
 
-EXPORT int __cdecl lsdspReactivateFBO(int id);
+//EXPORT int __cdecl lsdspReactivateFBO(int id);
 
 // PERFORMANCE ANALYSIS ------------------------------------------------------
 
@@ -416,8 +421,8 @@ EXPORT int __cdecl lsdspSampleAndRenderStats();
 
 // DEBUGGING -----------------------------------------------------------------
 
-EXPORT int __cdecl
-lsdspLogDwmTimingInfo(void *disp, const char *path);
+/* EXPORT int __cdecl
+lsdspLogDwmTimingInfo(void *disp, const char *path); */
 
 EXPORT int __cdecl lsdspDrawTestBitmap(void *disp, int x, int y);
 
@@ -430,7 +435,8 @@ EXPORT int __cdecl lsdspRenderDebugOutput();
 	1 = an die Debug-Ausgabe schicken (sichtbar im Debugger)
 	2 = an das Debug-Fenster schicken (Ausgabe mit lsdspRenderDebugOutput)
 	*/
-EXPORT int __cdecl lsdspOpenGLErrorReporting(int option);
+EXPORT int __cdecl 
+lsdspOpenGLErrorReporting(int option);
 
 // DESKTOP WINDOW MANAGER TIMING ---------------------------------------------
 
@@ -454,7 +460,7 @@ EXPORT int __cdecl lsdspGetLastError(char * databuf, unsigned bufsize);
 	yourself, based on the constants defined above. */
 EXPORT int __cdecl lsdspGetErrorText(int code, char * textbuf, unsigned bufsize);
 
-EXPORT int __cdecl lsdspDummy();
+//EXPORT int __cdecl lsdspDummy();
 
 #ifdef __cplusplus
 
