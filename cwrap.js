@@ -5,44 +5,31 @@ if (typeof define !== 'function') { var define = require('amdefine')(module); }
 define( [ 'xmldom', 'xpath', './template' ],
 function(  xmldom ,  xpath ,    Template  ) {
 
-  // Extend the template system
+  /** Extending the template system with custom functions. */
 
-  /** These are class names, but the same names can also be used as methods on
-      generic Value instances to cast to a specific type.
+  /** Maps C types to V8 wrapper classes and type-casting accessor methods of 
+   *  the V8::Value class.
    */
-  Template.registerFunction( 'v8TypeWrapper', function(ctype) {
-    var MAP = {
-      'int'          : 'Int32',
-      'unsigned int' : 'Uint32' /*,
-      GLenum         : 'Uint32Value',
-      GLint          : 'Int32Value',
-      GLuint         : 'Uint32Value',
-      GLsizei        : 'Int32Value',
-      GLbitfield     : 'Uint32Value',
-      GLboolean      : 'BooleanValue',
-      GLsizeiptr     : 'Int32Value',
-      GLfloat        : 'NumberValue',
-      GLdouble       : 'NumberValue',
-      GLclampf       : 'NumberValue',
-      GLclampd       : 'NumberValue' */
-    };
-    console.assert(MAP[ctype], ctype);
-    return MAP[ctype];
-  });
+  var type_map = {
+    'int'          : { v8_class: 'Int32' , accessor: 'Int32Value'  },
+    'unsigned int' : { v8_class: 'Uint32', accessor: 'Uint32Value' }
+  };
 
-  Template.registerFunction( 'v8TypeAccessor', function(ctype) {
-    var MAP = {
-      'int'          : 'Int32Value',
-      'unsigned int' : 'Uint32Value'
-    };
-    console.assert(MAP[ctype], ctype);
-    return MAP[ctype];
-  });
+  function findType(type) {
+    var entry = type_map[type];
+    if (!entry) throw new Error('CWrap: unknown type "'+type+'"');
+    if (entry.aliasFor) return findType(entry.aliasFor);
+    return entry;
+  }
+  
+  Template.registerFunction( 'v8TypeWrapper' , function(ctype) { return findType(ctype).v8_class; } );
+  Template.registerFunction( 'v8TypeAccessor', function(ctype) { return findType(ctype).accessor; } );
 
   //--- Public interface ---
   
   return {
     parseSwigXml: parseXml,
+    registerType: registerType,
     generate    : generate
   };
   
@@ -57,8 +44,12 @@ function(  xmldom ,  xpath ,    Template  ) {
     return extractInterface(doc);  
   }
 
-  function generate(intf, writer) {
-    return Template.read('nodebindings.tmpl.cc')
+  function registerType(type, v8_class, v8_accessor) {
+    type_map[type] = { v8_class: v8_class, accessor: v8_accessor };
+  }
+  
+  function generate(tmpl_file, intf, writer) {
+    return Template.read(tmpl_file)
       .then( function(template) { return template.exec(intf, writer); } );
   }
 

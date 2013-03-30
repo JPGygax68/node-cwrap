@@ -393,9 +393,8 @@ Display::ChangeWindowTitle(const Arguments& args) {
   
   void * self = ObjectWrap::Unwrap<Display>(args.This())->handle();
   
-  Local<String> title_str = args[0]->ToString();
-  const char * title = * String::Utf8Value(title_str);
-  int result = lsdspChangeWindowTitle(self, title);
+  Local<String> title = args[0]->ToString();
+  int result = lsdspChangeWindowTitle(self, * String::Utf8Value(title));
   if (result < 0) return lastError("ChangeWindowTitle");
   return scope.Close(Int32::New(result));
   
@@ -407,9 +406,8 @@ Display::ChangeScreenTitle(const Arguments& args) {
   
   void * self = ObjectWrap::Unwrap<Display>(args.This())->handle();
   
-  Local<String> title_str = args[0]->ToString();
-  const char * title = * String::Utf8Value(title_str);
-  int result = lsdspChangeScreenTitle(self, title);
+  Local<String> title = args[0]->ToString();
+  int result = lsdspChangeScreenTitle(self, * String::Utf8Value(title));
   if (result < 0) return lastError("ChangeScreenTitle");
   return scope.Close(Int32::New(result));
   
@@ -471,11 +469,10 @@ Display::GetFont(const Arguments& args) {
   void * self = ObjectWrap::Unwrap<Display>(args.This())->handle();
   
   int type = static_cast<int>( args[0]->Int32Value() );
-  Local<String> family_str = args[1]->ToString();
-  const char * family = * String::Utf8Value(family_str);
+  Local<String> family = args[1]->ToString();
   unsigned int height = static_cast<unsigned int>( args[2]->Uint32Value() );
   unsigned int attribs = static_cast<unsigned int>( args[3]->Uint32Value() );
-  void * object = lsdspGetFont(self, type, family, height, attribs);
+  void * object = lsdspGetFont(self, type, * String::Utf8Value(family), height, attribs);
   if (object == nullptr) return lastError("GetFont");
   Font *wrapper = new Font(object);  
   return scope.Close( Font::NewInstance(wrapper) );
@@ -527,9 +524,8 @@ Display::DrawTextA(const Arguments& args) {
   void * font = ObjectWrap::Unwrap<Font>(args[0]->ToObject())->handle();
   int x = static_cast<int>( args[1]->Int32Value() );
   int y = static_cast<int>( args[2]->Int32Value() );
-  Local<String> text_str = args[3]->ToString();
-  const char * text = * String::Utf8Value(text_str);
-  int result = lsdspDrawTextA(self, font, x, y, text);
+  Local<String> text = args[3]->ToString();
+  int result = lsdspDrawTextA(self, font, x, y, * String::Utf8Value(text));
   if (result < 0) return lastError("DrawTextA");
   return scope.Close(Int32::New(result));
   
@@ -544,10 +540,9 @@ Display::DrawText2(const Arguments& args) {
   void * font = ObjectWrap::Unwrap<Font>(args[0]->ToObject())->handle();
   int x = static_cast<int>( args[1]->Int32Value() );
   int y = static_cast<int>( args[2]->Int32Value() );
-  Local<String> text_str = args[3]->ToString();
-  const char * text = * String::Utf8Value(text_str);
+  Local<String> text = args[3]->ToString();
   unsigned int options = static_cast<unsigned int>( args[4]->Uint32Value() );
-  int result = lsdspDrawText2(self, font, x, y, text, options);
+  int result = lsdspDrawText2(self, font, x, y, * String::Utf8Value(text), options);
   if (result < 0) return lastError("DrawText2");
   return scope.Close(Int32::New(result));
   
@@ -563,10 +558,9 @@ Display::CreateButton(const Arguments& args) {
   int y = static_cast<int>( args[1]->Int32Value() );
   int w = static_cast<int>( args[2]->Int32Value() );
   int h = static_cast<int>( args[3]->Int32Value() );
-  Local<String> caption_str = args[4]->ToString();
-  const char * caption = * String::Utf8Value(caption_str);
+  Local<String> caption = args[4]->ToString();
   int click_counter;
-  void * object = lsdspCreateButton(self, x, y, w, h, caption, &click_counter);
+  void * object = lsdspCreateButton(self, x, y, w, h, * String::Utf8Value(caption), &click_counter);
   if (object == nullptr) return lastError("CreateButton");
   Button *wrapper = new Button(object);  
   return scope.Close( Button::NewInstance(wrapper) );
@@ -583,12 +577,10 @@ Display::DirectoryListBoxCreate(const Arguments& args) {
   int y = static_cast<int>( args[1]->Int32Value() );
   int w = static_cast<int>( args[2]->Int32Value() );
   int h = static_cast<int>( args[3]->Int32Value() );
-  Local<String> folder_path_str = args[4]->ToString();
-  const char * folder_path = * String::Utf8Value(folder_path_str);
-  Local<String> filters_str = args[5]->ToString();
-  const char * filters = * String::Utf8Value(filters_str);
+  Local<String> folder_path = args[4]->ToString();
+  Local<String> filters = args[5]->ToString();
   int select_accum;
-  void * object = lsdspDirectoryListBoxCreate(self, x, y, w, h, folder_path, filters, &select_accum);
+  void * object = lsdspDirectoryListBoxCreate(self, x, y, w, h, * String::Utf8Value(folder_path), * String::Utf8Value(filters), &select_accum);
   if (object == nullptr) return lastError("DirectoryListBoxCreate");
   DirectoryListBox *wrapper = new DirectoryListBox(object);  
   return scope.Close( DirectoryListBox::NewInstance(wrapper) );
@@ -705,13 +697,12 @@ Font::TextExtentsA(const Arguments& args) {
   
   void * self = ObjectWrap::Unwrap<Font>(args.This())->handle();
   
-  Local<String> text_str = args[0]->ToString();
-  const char * text = * String::Utf8Value(text_str);
+  Local<String> text = args[0]->ToString();
   unsigned int len = static_cast<unsigned int>( args[1]->Uint32Value() );
   int ascent;
   int descent;
   unsigned int width;
-  int result = lsdspTextExtentsA(self, text, len, &ascent, &descent, &width);
+  int result = lsdspTextExtentsA(self, * String::Utf8Value(text), len, &ascent, &descent, &width);
   if (result < 0) return lastError("TextExtentsA");
   Local<Object> r = Object::New();
   r->Set(String::NewSymbol("ascent"), Integer::New(ascent));
@@ -764,9 +755,8 @@ Button::SetButtonCaption(const Arguments& args) {
   
   void * self = ObjectWrap::Unwrap<Button>(args.This())->handle();
   
-  Local<String> caption_str = args[0]->ToString();
-  const char * caption = * String::Utf8Value(caption_str);
-  int result = lsdspSetButtonCaption(self, caption);
+  Local<String> caption = args[0]->ToString();
+  int result = lsdspSetButtonCaption(self, * String::Utf8Value(caption));
   if (result < 0) return lastError("SetButtonCaption");
   return scope.Close(Int32::New(result));
   
@@ -850,9 +840,8 @@ OpenGLWindow2(const Arguments& args) {
   int y = static_cast<int>( args[2]->Int32Value() );
   unsigned int w = static_cast<unsigned int>( args[3]->Uint32Value() );
   unsigned int h = static_cast<unsigned int>( args[4]->Uint32Value() );
-  Local<String> caption_str = args[5]->ToString();
-  const char * caption = * String::Utf8Value(caption_str);
-  void * object = lsdspOpenGLWindow2(screen, x, y, w, h, caption);
+  Local<String> caption = args[5]->ToString();
+  void * object = lsdspOpenGLWindow2(screen, x, y, w, h, * String::Utf8Value(caption));
   if (object == nullptr) return lastError("OpenGLWindow2");
   Display *wrapper = new Display(object);  
   return scope.Close( Display::NewInstance(wrapper) );
@@ -906,9 +895,8 @@ Handle<Value>
 SaveFontCache(const Arguments& args) {
   HandleScope scope;
 
-  Local<String> path_str = args[0]->ToString();
-  const char * path = * String::Utf8Value(path_str);
-  int result = lsdspSaveFontCache(path);
+  Local<String> path = args[0]->ToString();
+  int result = lsdspSaveFontCache(* String::Utf8Value(path));
   if (result < 0) return lastError("SaveFontCache");
   return scope.Close(Int32::New(result));
   
@@ -918,9 +906,8 @@ Handle<Value>
 LoadFontCache(const Arguments& args) {
   HandleScope scope;
 
-  Local<String> path_str = args[0]->ToString();
-  const char * path = * String::Utf8Value(path_str);
-  int result = lsdspLoadFontCache(path);
+  Local<String> path = args[0]->ToString();
+  int result = lsdspLoadFontCache(* String::Utf8Value(path));
   if (result < 0) return lastError("LoadFontCache");
   return scope.Close(Int32::New(result));
   
@@ -1027,9 +1014,8 @@ Handle<Value>
 DebugWrite(const Arguments& args) {
   HandleScope scope;
 
-  Local<String> line_str = args[0]->ToString();
-  const char * line = * String::Utf8Value(line_str);
-  int result = lsdspDebugWrite(line);
+  Local<String> line = args[0]->ToString();
+  int result = lsdspDebugWrite(* String::Utf8Value(line));
   if (result < 0) return lastError("DebugWrite");
   return scope.Close(Int32::New(result));
   
@@ -1061,9 +1047,8 @@ RecordDwmTiming(const Arguments& args) {
   HandleScope scope;
 
   int quantity = static_cast<int>( args[0]->Int32Value() );
-  Local<String> path_str = args[1]->ToString();
-  const char * path = * String::Utf8Value(path_str);
-  int result = lsdspRecordDwmTiming(quantity, path);
+  Local<String> path = args[1]->ToString();
+  int result = lsdspRecordDwmTiming(quantity, * String::Utf8Value(path));
   if (result < 0) return lastError("RecordDwmTiming");
   return scope.Close(Int32::New(result));
   

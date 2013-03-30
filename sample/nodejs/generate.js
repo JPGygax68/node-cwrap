@@ -2,16 +2,17 @@
 
 var fs    = require('q-io/fs');
 var _     = require('underscore');
-var cwrap = require('cwrap');
+var cwrap = require('../../cwrap');
 
 var module_name = process.argv[2];
 var input_path  = process.argv[3];
-var output_path = process.argv[4];
+var tmpl_path   = process.argv[4];
+var output_path = process.argv[5];
 
 fs.read(input_path)
-  .then( function(xml ) { return cwrap.parseSwigXml(xml );              } )
-  .then( function(intf) { return postProcess       (intf);              } )
-  .then( function(intf) { return generateToFile    (intf, output_path); } )
+  .then( function(xml ) { return cwrap.parseSwigXml(xml ); } )
+  .then( function(intf) { return postProcess       (intf); } )
+  .then( function(intf) { return generateToFile    (tmpl_path, intf, output_path); } )
   .done();
 
 //---------
@@ -137,9 +138,9 @@ function postProcess(intf) {
   }
 }
 
-function generateToFile(intf, path) {
-  return fs.open(path, 'w')
+function generateToFile(tmpl_path, intf, out_path) {
+  return fs.open(out_path, 'w')
     .then( function(writer) { 
-      return cwrap.generate(intf, function(frag) { writer.write(frag); } ); 
+      return cwrap.generate(tmpl_path, intf, function(frag) { writer.write(frag); } ); 
     });
 }

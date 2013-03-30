@@ -5,4 +5,4 @@
 :: template).
 ::
 swig -xml lsdisplay2.i
-node generate.js lsdisplay2 lsdisplay2_wrap.xml lsdisplay2_wrap.cc
+node generate.js lsdisplay2 lsdisplay2_wrap.xml nodebindings.tmpl.cc lsdisplay2_wrap.cc
