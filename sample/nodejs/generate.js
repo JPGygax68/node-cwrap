@@ -2,7 +2,7 @@
 
 var fs    = require('q-io/fs');
 var _     = require('underscore');
-var cwrap = require('../../cwrap');
+var cwrap = require('cwrap');
 
 var module_name = process.argv[2];
 var input_path  = process.argv[3];
@@ -82,21 +82,22 @@ function postProcess(intf) {
     // Classify parameters as input or output; other adjustments
     
     func.output_params = {}, func.input_params = {};
-    var count = 0;
+    var remapped = 0;
     _.each(func.params, function(param, pname) {
       if (beginsWith(param.type, 'a(1)') || param.type === 'p.unsigned int' || param.type === 'p.int') {
         func.output_params[pname] = param; 
         param.out_type = beginsWith(param.type, 'p.') ? param.type.slice(2) : param.type.slice(5);
         if (!param.value_expr) param.value_expr = '&' + pname;
-        count ++;
+        remapped ++;
       }
       else {
         func.input_params[pname] = param;
+        if (param.type === 'p.q(const).char') param.value_expr = '* String::Utf8Value('+param.name+')';
         if (!param.value_expr) param.value_expr = pname;
       }
       if (param.name === 'font') param.wrapper_class = 'Font';
     });
-    if (count > 0 && !func.returns_object_ptr) func.map_outparams_to_retval = true;
+    if (remapped > 0 && !func.returns_object_ptr) func.map_outparams_to_retval = true;
 
     // Specific adjustments to parameters
     

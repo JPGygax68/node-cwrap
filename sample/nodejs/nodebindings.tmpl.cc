@@ -190,8 +190,7 @@ NODE_MODULE({{$=name}}, init);
 
 {{$macro extract_parameter}}
   {{$if type == 'p.q(const).char'}}
-  Local<String> {{$=name}}_str = args[{{$=index}}]->ToString();
-  const char * {{$=name}} = * String::Utf8Value({{$=name}}_str);
+  Local<String> {{$=name}} = args[{{$=index}}]->ToString();
   {{$elsif wrapper_class}}
   void * {{$=name}} = ObjectWrap::Unwrap<{{$=wrapper_class}}>(args[{{$=index}}]->ToObject())->handle();
   {{$elsif type == 'p.void'}}
