@@ -6,8 +6,8 @@
  
 if (typeof define !== 'function') { var define = require('amdefine')(module); }
 
-define( [ 'q-io/fs', 'underscore' ],
-function(       fs ,  _           ) {
+define( [ 'q', 'q-io/fs', 'underscore' ],
+function(  Q ,       fs ,  _           ) {
 
   //--- Hierarchy of template elements clases ("Blocks") ---
   
@@ -20,16 +20,19 @@ function(       fs ,  _           ) {
   }
   Text.prototype = new Block();
   Text.prototype.constructor = Text;
-  Text.prototype.execute = function(data, source, emitter) { emitter(source.slice(this.start, this.end)); }
+  Text.prototype.execute = function(data, source, emitter) { return emitter(source.slice(this.start, this.end)); }
   
   function Placeholder(expr) {
+    this.expr = expr;
     this.exprEval = buildExpressionEvaluator(expr);
   }
   Placeholder.prototype = new Block();
   Placeholder.prototype.constructor = Placeholder;
   Placeholder.prototype.execute = function(data, source, emitter) { 
     //console.log('Placeholder data:', data);
-    emitter(this.exprEval(data, context).toString() );
+    var value = this.exprEval(data, context);
+    if (typeof value === 'undefined') throw new Error('Cannot evaluate expression "'+this.expr+'"');
+    return emitter(value.toString() );
   }
   
   function Structure() { this.children = []; }
@@ -37,7 +40,9 @@ function(       fs ,  _           ) {
   Structure.prototype.constructor = Structure;
   Structure.prototype.execute = function(data, source, emitter) { 
     // This implementation can be used 1:1 by root block
-    this.children.forEach( function(child) { child.execute(data, source, emitter); } );
+    var seq = Q.resolve();
+    this.children.forEach( function(child) { seq = seq.then( child.execute.bind(child, data, source, emitter) ); } );
+    return seq;
   }
   
   function Repeater(set) {
@@ -49,10 +54,12 @@ function(       fs ,  _           ) {
   Repeater.prototype.execute = function(data, source, emitter) {
     this.set.split('.').forEach( function(key) { data = data[key]; } );
     //console.log('Repeater outer data:', data);
+    var seq = Q.resolve();
     _.each(data, function(data_item, key) { 
       //console.log('Repeater inner data:', data_item, '(key = '+key+')');
-      Structure.prototype.execute.call(this, data_item, source, emitter); 
+      seq = seq.then( Structure.prototype.execute.bind(this, data_item, source, emitter) );
     }, this);
+    return seq;
   }
   
   function Conditional(condition) {
@@ -73,6 +80,7 @@ function(       fs ,  _           ) {
     this.branches.push( {condEval: condEval, first_block: this.children.length } );
   }
   Conditional.prototype.execute = function(data, source, emitter) {
+    var seq = Q.resolve();
     for (var i = 0; i < this.branches.length; i++) {
       var branch = this.branches[i];
       //console.log('Data for Conditional:', data);
@@ -80,24 +88,27 @@ function(       fs ,  _           ) {
         var to_block = i < (this.branches.length-1) ? this.branches[i+1].first_block : this.children.length;
         for (var j = branch.first_block; j < to_block; j++) {
           var block = this.children[j];
-          block.execute(data, source, emitter);
+          seq = seq.then( block.execute.bind(block, data, source, emitter) );
         }
         break; // first if / elsif wins, rest are not considered
       }
     }
+    return seq;
   }
   
   function JSList(params) {
     var params = params.split(' ').map( function(el) { return el.trim(); } );
     if (params.length < 1) throw new Error('List element needs at minimum the name of the list, and optionally the name of an element member');
     this.list = params[0];
-    if (params.length > 1) this.member = params[1];
+    if (params.length > 1) this.memberEval = buildExpressionEvaluator(params[1]);
   }
   JSList.prototype = new Structure();
   JSList.prototype.constructor = JSList;
   JSList.prototype.execute = function(data, source, emitter) { 
-    var list = this.member ? _.pluck(data[this.list], this.member) : data[this.list];
-    emitter( list.join(', ') );
+    var list = this.memberEval 
+      ? _.map( data[this.list], function(el) { return this.memberEval(el, context); }, this )
+      : data[this.list];
+    return emitter( list.join(', ') );
   }
   
   function Macro(params) {
@@ -115,7 +126,7 @@ function(       fs ,  _           ) {
   
   Macro.prototype.execute = function(data, source, emitter, go) {
     // A macro does nothing upon first "execution", must get "go" param from Call execution
-    if (go) Structure.prototype.execute.call(this, data, source, emitter);
+    if (go) return Structure.prototype.execute.call(this, data, source, emitter);
   }
   
   function Call(params) {
@@ -130,7 +141,7 @@ function(       fs ,  _           ) {
     // Look up the macro in the library
     if (!(this.macro instanceof Macro)) this.macro = Macro.lib[this.macro];
     // Execute the called macro
-    this.macro.execute(data, source, emitter, true);
+    return this.macro.execute(data, source, emitter, true);
   }
   
   //--- Functions and stuff usable from within the template ---
@@ -240,8 +251,10 @@ function(       fs ,  _           ) {
   }
   
   Template.prototype.exec = function(data, emit) {
-  
-    this.root_block.execute(data, this.code, emit || dbg_emit);
+    //console.log('context:');
+    //console.log(context);
+    
+    return this.root_block.execute(data, this.code, emit || dbg_emit);
     
     function dbg_emit(text) { process.stdout.write(text); }
   }
