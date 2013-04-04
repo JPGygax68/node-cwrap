@@ -40,7 +40,7 @@ function(  Q ,       fs ,  _           ) {
   Structure.prototype.constructor = Structure;
   Structure.prototype.execute = function(data, source, emitter) { 
     // This implementation can be used 1:1 by root block
-    var seq = Q.resolve();
+    var seq = Q();
     this.children.forEach( function(child) { seq = seq.then( child.execute.bind(child, data, source, emitter) ); } );
     return seq;
   }
@@ -54,10 +54,10 @@ function(  Q ,       fs ,  _           ) {
   Repeater.prototype.execute = function(data, source, emitter) {
     this.set.split('.').forEach( function(key) { data = data[key]; } );
     //console.log('Repeater outer data:', data);
-    var seq = Q.resolve();
+    var seq = Q();
     _.each(data, function(data_item, key) { 
       //console.log('Repeater inner data:', data_item, '(key = '+key+')');
-      seq = seq.then( Structure.prototype.execute.bind(this, data_item, source, emitter) );
+      seq = seq.delay(1).then( Structure.prototype.execute.bind(this, data_item, source, emitter) );
     }, this);
     return seq;
   }
@@ -80,7 +80,7 @@ function(  Q ,       fs ,  _           ) {
     this.branches.push( {condEval: condEval, first_block: this.children.length } );
   }
   Conditional.prototype.execute = function(data, source, emitter) {
-    var seq = Q.resolve();
+    var seq = Q();
     for (var i = 0; i < this.branches.length; i++) {
       var branch = this.branches[i];
       //console.log('Data for Conditional:', data);
@@ -189,13 +189,12 @@ function(  Q ,       fs ,  _           ) {
   
   //--- MAIN CLASS ---
   
-  //             >........<--- 1: block/inline discrimination
-  //              ........>....<--- introducer: "{{$"
-  //              ........ ....>............<--- 2: command
-  //              ........ .... ............ >....<--- 3: parameters
-  //              ........ .... ............  .... >..<--- terminator: "}}"
-  //              ........ .... ............  ....  ..>...........................................<--- 4: optional newline (or two)
-  var scanner = /(^[ \t]*)?{{\$(\b\w+\b|=|\-)([^}]*)}}((?:[ \t]*(?:\r\n?|\r\n?)){1,2})?/gm;
+  //             >................<--- 1: block/inline discrimination
+  //              ................   >............<--- 2: command
+  //              ................    ............ >....<--- 3: parameters
+  //              ................    ............  .... >..<--- terminator: "}}"
+  //              ................    ............  ....  ..>...............................<--- 4: optional newline (or two)
+  var scanner = /(?:(^[ \t]*{{)|{{)\$(\b\w+\b|=|\-)([^}]*)}}((?:[ \t]*(?:\r\n?|\r\n?)){1,2})?/gm;
   
   function Template(code) {
 
@@ -208,13 +207,14 @@ function(  Q ,       fs ,  _           ) {
     var pos = 0;
     while ((m = scanner.exec(code)) !== null) {
       // Inline if lacking a newline at the end
-      var inline  = (typeof m[4] === 'undefined');
-      //console.log('inline:', inline, m[2], '"'+m[1]+'"', '"'+m[4]+'"');
+      var start_of_line = !!m[1], has_newline = !!m[4];
+      var inline = (!start_of_line) || (!has_newline);
+      //console.log('inline:', inline, 'beginning of line:', start_of_line, 'has newline:', has_newline, m[0]);
       var command = m[2], params = m[3].trim();
       // Text between last marked position and beginning of tag becomes new child (text) block
-      addChild( new Text(pos, m.index + (inline && m[1] ? m[1].length : 0) ) );
+      addChild( new Text(pos, m.index + (inline && m[1] ? (m[1].length - 2) : 0) ) );
       // Tag type dependent actions
-      if      (command === '='      ) addChild( new Placeholder(params) );
+      if      (command === '='      ) { addChild( new Placeholder(params) ); inline = true; }
       else if (command === 'if'     ) stack.push( addChild(new Conditional(params)) );
       else if (command === 'foreach') stack.push( addChild(new Repeater   (params)) );
       else if (command === 'forall' ) stack.push( addChild(new Repeater   (params)) );
@@ -222,12 +222,12 @@ function(  Q ,       fs ,  _           ) {
       else if (command === 'elsif'  ) current().newBranch(params);
       else if (command === 'else'   ) current().newBranch(params);
       else if (command === 'end'    ) stack.pop();
-      else if (command === 'list'   ) addChild( new JSList(params) );
+      else if (command === 'list'   ) { addChild( new JSList(params) ); inline = true; }
       else if (command === 'call'   ) addChild( new Call  (params) );
       else if (command[0] === '-'   ) ; // comment introducer, do nothing
       else                            throw new Error('Unrecognized template command "'+command+'"');
-      // Advance past tag
-      pos = scanner.lastIndex - (inline && m[4] ? m[4].length : 0);
+      // Advance past tag (but keep the newline if the tag was inline and there was one)
+      pos = scanner.lastIndex - ((inline && m[4]) ? m[4].length : 0);
       //console.log(pos);
     }
     // Add last block of text
