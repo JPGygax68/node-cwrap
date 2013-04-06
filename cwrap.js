@@ -2,8 +2,8 @@
 
 if (typeof define !== 'function') { var define = require('amdefine')(module); }
 
-define( [ 'xmldom', 'xpath', './template' ],
-function(  xmldom ,  xpath ,    Template  ) {
+define( [ 'xmldom', 'xpath', 'gpc-template', './type' ],
+function(  xmldom ,  xpath ,  Template     ,    Type  ) {
 
   /** Maps C types to V8 wrapper classes and type-casting accessor methods of 
    *  the V8::Value class.
