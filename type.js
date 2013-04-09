@@ -12,9 +12,9 @@ function() {
   
   function Type(arg) { 
     Array.call(this); 
-    if      (arg instanceof Type    ) arg.each( function(el) { this.push(el.clone()); } );
-    else if (arg instanceof Operator) Array.prototype.push.call(this, arg);
-    else                              Array.prototype.push.call(this, new Operator(undefined, arg.toString()) );
+    if      (arg instanceof Type       ) arg.each( function(el) { this.push(el.clone()); } );
+    else if (arg instanceof Operator   ) Array.prototype.push.call(this, arg);
+    else if (typeof arg !== 'undefined') Array.prototype.push.call(this, new Operator(undefined, arg.toString()) );
   }
   
   Type.prototype = new Array();
@@ -39,14 +39,22 @@ function() {
   //Type.prototype.addFunction      = function(type, parms) { }
   //Type.prototype.addTemplate ...
   Type.prototype.pop              = function()            { return new Type(this.shift()); }
+  Type.prototype.popFunction      = function()            { return popOperator(this, 'f'); } 
   Type.prototype.push             = function(other)       { this.unshift( other.shift() ); }
-  Type.prototype.popArrays        = function()            { for (var i = 0; i < this.length && this[i].type === 'q' || this[i].type === 'a'; i ++);
-                                                            if (i >= 0) return new Type(this.slice(0, i)); }
-  Type.prototype.popFunction      = function()            { var i = skipQualifiers(this);
-                                                            if (i >= this.length) throw new Error('Type "'+this+'" is not a function');
-                                                            return new Type(this.slice(0, i)); }
-  Type.prototype.base             = function()            { for (var i = this.length -1; i > 0 && this[--i].type === 'q'; ); 
-                                                            if (i >= 0) return new Type(this.slice(i)); }
+  
+  Type.prototype.popArrays = function() { 
+    for (var i = skipQualifiers(this); i < this.length && this[i].type === 'a'; i = skipQualifiers(this, i+1));
+    if (i > 0 && this[i-1].type === 'a') {
+      var popped = new Type();
+      for (; i > 0; i --) popped.push( this.shift() );
+      return popped;
+    }
+  }
+  
+  Type.prototype.base = function() { 
+    for (var i = this.length -1; i > 0 && this[--i].type === 'q'; );  
+    return new Type(this.slice(i)); 
+  }
   
   // Tests
   
@@ -60,6 +68,14 @@ function() {
   Type.prototype.isTemplatized   = function() { return this[skipQualifiers(this)].value.match(/^\w+<[^>]*>$/); }
   Type.prototype.isConst         = function() { return checkAllQualifiers(this, 'const'); }
 
+  // Misc
+  
+  Type.prototype.toC = function() {
+    var parts = [];
+    for (var i = this.length; i-- > 0; ) parts.push( this[i].toC() );
+    return parts.join(' ');
+  }
+  
   // Operator class
   
   function Operator(type, value) { this.type = type; this.value = value; }
@@ -69,6 +85,13 @@ function() {
     if      (typeof this.type  === 'undefined') return this.value; // simple type
     else if (typeof this.value !== 'undefined') return this.type + '(' + this.value + ')';
     else                                        return this.type;
+  }
+  
+  Operator.prototype.toC = function() {
+    if      (this.type === 'p') return '*';
+    else if (this.type === 'r') return '&';
+    else                        return this.value; 
+     // TODO: make this work for all types (function pointers!)
   }
   
   // Internal helper functions
@@ -89,8 +112,9 @@ function() {
     return i;
   }
   
-  function skipQualifiers(type) { 
-    for (var i = 0; ; i ++) {
+  function skipQualifiers(type, start) { 
+    start = start || 0;
+    for (var i = start; ; i ++) {
       if (i >= type.length  ) throw new Error('Type "'+type+'" is empty or consists of qualifiers only');
       if (type[i].type !== 'q') break;
     }

@@ -9,17 +9,18 @@ function(  xmldom ,  xpath ,  Template     ,    Type  ) {
    *  the V8::Value class.
    */
   var type_map = {
-    'char'              : { v8_class: 'Int32'    , accessor: 'Int32Value'   },
-    'unsigned char'     : { v8_class: 'Uint32'   , accessor: 'Uint32Value'  },
-    'short'             : { v8_class: 'Int32'    , accessor: 'Int32Value'   },
-    'unsigned short'    : { v8_class: 'Uint32'   , accessor: 'Uint32Value'  },
-    'int'               : { v8_class: 'Int32'    , accessor: 'Int32Value'   },
-    'unsigned int'      : { v8_class: 'Uint32'   , accessor: 'Uint32Value'  },
-    'float'             : { v8_class: 'Number'   , accessor: 'NumberValue'  },
-    'double'            : { v8_class: 'Number'   , accessor: 'NumberValue'  },
-    'bool'              : { v8_class: 'Boolean'  , accessor: 'BooleanValue' },
-    'long long'         : { v8_class: 'Int64'    , accessor: 'Int64Value'   },
-    'unsigned long long': { v8_class: 'Uint64'   , accessor: 'Uint64Value'  },
+    'void'              : {                                                  buffer_ctor: 'ArrayBuffer' , ext_array_type: 'kExternalByteArray'          },
+    'char'              : { v8_class: 'Int32'    , accessor: 'Int32Value'  , buffer_ctor: 'Int8Array'   , ext_array_type: 'kExternalByteArray'          },
+    'unsigned char'     : { v8_class: 'Uint32'   , accessor: 'Uint32Value' , buffer_ctor: 'Uint8Array'  , ext_array_type: 'kExternalUnsignedByteArray'  },
+    'short'             : { v8_class: 'Int32'    , accessor: 'Int32Value'  , buffer_ctor: 'Int16Array'  , ext_array_type: 'kExternalShortArray'         },
+    'unsigned short'    : { v8_class: 'Uint32'   , accessor: 'Uint32Value' , buffer_ctor: 'Uint16Array' , ext_array_type: 'kExternalUnsignedShortArray' },
+    'int'               : { v8_class: 'Int32'    , accessor: 'Int32Value'  , buffer_ctor: 'Int32Array'  , ext_array_type: 'kExternalIntArray'           },
+    'unsigned int'      : { v8_class: 'Uint32'   , accessor: 'Uint32Value' , buffer_ctor: 'Uint32Array' , ext_array_type: 'kExternalUnsignedIntArray'   },
+    'float'             : { v8_class: 'Number'   , accessor: 'NumberValue' , buffer_ctor: 'Float32Array', ext_array_type: 'kExternalFloatArray'         },
+    'double'            : { v8_class: 'Number'   , accessor: 'NumberValue' , buffer_ctor: 'Float64Array', ext_array_type: 'kExternalDoubleArray'        },
+    'bool'              : { v8_class: 'Boolean'  , accessor: 'BooleanValue', buffer_ctor: 'Uint8Array'  , ext_array_type: 'kExternalByteArray'          },
+    'long long'         : { v8_class: 'Int64'    , accessor: 'Int64Value'  },
+    'unsigned long long': { v8_class: 'Uint64'   , accessor: 'Uint64Value' },
     //'void *'            : { v8_class: 'External' , accessor: ''  } // TODO: THIS IS SPECIAL
   };
 
@@ -32,8 +33,10 @@ function(  xmldom ,  xpath ,  Template     ,    Type  ) {
   
   /** Extend the template system with custom functions. */
 
-  Template.registerFunction( 'v8TypeWrapper' , function(ctype) { return findType(ctype).v8_class; } );
-  Template.registerFunction( 'v8TypeAccessor', function(ctype) { return findType(ctype).accessor; } );
+  Template.registerFunction( 'v8TypeWrapper'      , function(ctype) { return findType(ctype).v8_class      ; } );
+  Template.registerFunction( 'v8TypeAccessor'     , function(ctype) { return findType(ctype).accessor      ; } );
+  Template.registerFunction( 'v8BufferType'       , function(ctype) { return findType(ctype).buffer_ctor   ; } );
+  Template.registerFunction( 'v8ExternalArrayType', function(ctype) { return findType(ctype).ext_array_type; } );
 
   //--- Public interface ---
   
