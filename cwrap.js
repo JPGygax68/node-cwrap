@@ -21,7 +21,7 @@ function(  xmldom ,  xpath ,  _          ,  Template     ,    Type  ) {
     'bool'              : { v8_class: 'Boolean'  , accessor: 'BooleanValue', buffer_ctor: 'Uint8Array'  , ext_array_type: 'kExternalByteArray'          },
     'long long'         : { v8_class: 'Int64'    , accessor: 'Int64Value'  },
     'unsigned long long': { v8_class: 'Uint64'   , accessor: 'Uint64Value' },
-    //'void *'            : { v8_class: 'External' , accessor: ''  } // TODO: THIS IS SPECIAL
+    'p.void'            : { v8_class: 'External' , accessor: ''  } // TODO: THIS IS SPECIAL
   };
 
   function findType(type) {
@@ -115,17 +115,23 @@ function(  xmldom ,  xpath ,  _          ,  Template     ,    Type  ) {
     this.classes   = {};
   }
   
-  Interface.prototype.newFunction = function(name) { return (this.functions[name] = new CFunction(this, name)); }
+  Interface.prototype.newFunction = function(cdecl_name) { 
+    var func = new CFunction(this, cdecl_name);
+    this.functions[cdecl_name] = func;
+    return func;
+  }
 
-  Interface.prototype.removeFunction = function(name) { if (this.functions[name]) delete this.functions[name]; }
+  Interface.prototype.removeFunction = function(func) { if (this.functions[func.cdecl_name]) delete this.functions[func.cdecl_name]; }
   
   Interface.prototype.getClass = function(name) {
     var theclass = this.classes[name];
-    if (!theclass) theclass = this.classes[name] = new ClassOrStruct(name);
+    if (!theclass) theclass = this.classes[name] = new ClassOrStruct(name, this);
     return theclass;
   }
   
-  function ClassOrStruct(name) {
+  function ClassOrStruct(name, intf) {
+    if (!intf) throw new Error('INTERNAL: ClassOrStruct constructor needs 2 parameters: name and interface object');
+    this['interface'] = intf;
     this.name    = name;
     this.methods = {};
   }
@@ -135,23 +141,50 @@ function(  xmldom ,  xpath ,  _          ,  Template     ,    Type  ) {
     func.parent = func['class'] = this;
   }
   
-  function CFunction(intf, name) {
+  ClassOrStruct.prototype.setParentClass = function(parent) {
+    console.assert(typeof parent === 'string');
+    this['interface'].getClass(parent); // make sure it's in the list of classes
+    this.derivedFrom = parent;
+  }
+  
+  function CFunction(intf, cdecl_name) {
     this['interface'] = intf;
-    this.name         = name;
+    this.cdecl_name   = cdecl_name;
+    this.name         = cdecl_name;
     this.params       = {};
   }
 
+  CFunction.prototype.setBindingName = function(binding_name) {
+    this.name = binding_name;
+  }
+  
+  CFunction.prototype.removePrefix = function(prefix) {
+    if (this.cdecl_name.slice(0, prefix.length) === prefix) this.setBindingName(this.cdecl_name.slice(prefix.length));
+    else console.warn('Function "'+func.name+'" does not have the "'+prefix+'" prefix');
+  }    
+
   CFunction.prototype.toMethod = function(class_name, fname, self_name) {
     var the_class = this['class'] = this['interface'].getClass(class_name);
-    //this.class_name = class_name;
     // Shift parameters to the left, leftmost becomes "this" reference
     this.params[self_name].is_self = true;
     _.each(this.params, function(param) { if (param.index === 0) { param.value_expr = 'self'; } param.index --; } );
     // Remove function from the interface and add it to the class
-    this['interface'].removeFunction(fname);
+    this['interface'].removeFunction(this);
+    // TODO: use a clone so that the method can be assigned to more than one class?
     the_class.addMethod(this);
   }
   
+  CFunction.prototype.setRetValWrapper = function(class_name) {
+    this.retval_wrapper = class_name;
+  }
+
+  // TODO: this does not support more than one factory function
+  
+  CFunction.prototype.toFactory = function(class_name) {
+    this['interface'].classes[class_name].factory = this;
+    this['interface'].removeFunction(this);
+  }
+
   function Parameter(index, name, type) {
     this.index = index;
     this.name  = name;
