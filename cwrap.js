@@ -2,8 +2,8 @@
 
 if (typeof define !== 'function') { var define = require('amdefine')(module); }
 
-define( [ 'xmldom', 'xpath', 'gpc-template', './type' ],
-function(  xmldom ,  xpath ,  Template     ,    Type  ) {
+define( [ 'xmldom', 'xpath', 'underscore', 'gpc-template', './type' ],
+function(  xmldom ,  xpath ,  _          ,  Template     ,    Type  ) {
 
   /** Maps C types to V8 wrapper classes and type-casting accessor methods of 
    *  the V8::Value class.
@@ -38,14 +38,6 @@ function(  xmldom ,  xpath ,  Template     ,    Type  ) {
   Template.registerFunction( 'v8BufferType'       , function(ctype) { return findType(ctype).buffer_ctor   ; } );
   Template.registerFunction( 'v8ExternalArrayType', function(ctype) { return findType(ctype).ext_array_type; } );
 
-  //--- Public interface ---
-  
-  return {
-    parseSwigXml     : parseXml,
-    registerTypeAlias: registerTypeAlias,
-    generate         : generate
-  };
-  
   //--- Implementation ---
 
   function parseXml(xml) {
@@ -68,7 +60,7 @@ function(  xmldom ,  xpath ,  Template     ,    Type  ) {
 
   function extractInterface(doc) {
 
-    var intf = { functions: {}, constants: {} };
+    var intf = new Interface();
     
     // Get the functions
     var attrib_lists = xpath.select('//cdecl/attributelist/attribute[@name="kind"][@value="function"]/..', doc);
@@ -76,8 +68,7 @@ function(  xmldom ,  xpath ,  Template     ,    Type  ) {
       // Extract the function name
       var name = xpath.select('./attribute[@name="name"]/@value', attrib_list)[0].value;
       // Create and add a new function descriptor
-      var func = new CFunction(name);
-      intf.functions[name] = func;
+      var func = intf.newFunction(name);
       // Extract and store the data
       func.type = xpath.select('./attribute[@name="type"]/@value', attrib_list)[0].value;
       func.decl = xpath.select('./attribute[@name="decl"]/@value', attrib_list)[0].value;
@@ -118,11 +109,49 @@ function(  xmldom ,  xpath ,  Template     ,    Type  ) {
 
   //--- Data types ---
 
-  function CFunction(name) {
-    this.name = name;
-    this.params = {};
+  function Interface() {
+    this.functions = {};
+    this.constants = {};
+    this.classes   = {};
+  }
+  
+  Interface.prototype.newFunction = function(name) { return (this.functions[name] = new CFunction(this, name)); }
+
+  Interface.prototype.removeFunction = function(name) { if (this.functions[name]) delete this.functions[name]; }
+  
+  Interface.prototype.getClass = function(name) {
+    var theclass = this.classes[name];
+    if (!theclass) theclass = this.classes[name] = new ClassOrStruct(name);
+    return theclass;
+  }
+  
+  function ClassOrStruct(name) {
+    this.name    = name;
+    this.methods = {};
+  }
+  
+  ClassOrStruct.prototype.addMethod = function(func) {
+    this.methods[func.name] = func;
+    func.parent = func['class'] = this;
+  }
+  
+  function CFunction(intf, name) {
+    this['interface'] = intf;
+    this.name         = name;
+    this.params       = {};
   }
 
+  CFunction.prototype.toMethod = function(class_name, fname, self_name) {
+    var the_class = this['class'] = this['interface'].getClass(class_name);
+    //this.class_name = class_name;
+    // Shift parameters to the left, leftmost becomes "this" reference
+    this.params[self_name].is_self = true;
+    _.each(this.params, function(param) { if (param.index === 0) { param.value_expr = 'self'; } param.index --; } );
+    // Remove function from the interface and add it to the class
+    this['interface'].removeFunction(fname);
+    the_class.addMethod(this);
+  }
+  
   function Parameter(index, name, type) {
     this.index = index;
     this.name  = name;
@@ -161,4 +190,12 @@ function(  xmldom ,  xpath ,  Template     ,    Type  ) {
     console.warn.apply(this, arguments);
   }
 
+  //--- Public interface ---
+  
+  return {
+    parseSwigXml     : parseXml,
+    registerTypeAlias: registerTypeAlias,
+    generate         : generate
+  };
+  
 }); // define
