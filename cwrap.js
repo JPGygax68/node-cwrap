@@ -150,16 +150,12 @@ function(  xmldom ,  xpath ,  _          ,  Template     ,    Type  ) {
   function CFunction(intf, cdecl_name) {
     this['interface'] = intf;
     this.cdecl_name   = cdecl_name;
-    this.name         = cdecl_name;
+    this.name         = cdecl_name; // initially the same as cdecl name
     this.params       = {};
   }
 
-  CFunction.prototype.setBindingName = function(binding_name) {
-    this.name = binding_name;
-  }
-  
   CFunction.prototype.removePrefix = function(prefix) {
-    if (this.cdecl_name.slice(0, prefix.length) === prefix) this.setBindingName(this.cdecl_name.slice(prefix.length));
+    if (this.cdecl_name.slice(0, prefix.length) === prefix) this.name = this.cdecl_name.slice(prefix.length);
     else console.warn('Function "'+func.name+'" does not have the "'+prefix+'" prefix');
   }    
 
