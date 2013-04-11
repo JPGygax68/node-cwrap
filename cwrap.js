@@ -107,7 +107,7 @@ function(  xmldom ,  xpath ,  _          ,  Template     ,    Type  ) {
     return intf;
   }
 
-  //--- Data types ---
+  //--- Interface class ---
 
   function Interface() {
     this.functions = {};
@@ -129,6 +129,8 @@ function(  xmldom ,  xpath ,  _          ,  Template     ,    Type  ) {
     return theclass;
   }
   
+  //--- ClassOrStruct ---
+  
   function ClassOrStruct(name, intf) {
     if (!intf) throw new Error('INTERNAL: ClassOrStruct constructor needs 2 parameters: name and interface object');
     this['interface'] = intf;
@@ -146,6 +148,8 @@ function(  xmldom ,  xpath ,  _          ,  Template     ,    Type  ) {
     this['interface'].getClass(parent); // make sure it's in the list of classes
     this.derivedFrom = parent;
   }
+  
+  //--- CFunction ---
   
   function CFunction(intf, cdecl_name) {
     this['interface'] = intf;
@@ -180,7 +184,16 @@ function(  xmldom ,  xpath ,  _          ,  Template     ,    Type  ) {
     this['interface'].classes[class_name].factory = this;
     this['interface'].removeFunction(this);
   }
+  
+  CFunction.prototype.toDestructor = function(class_name) {
+    this['interface'].classes[class_name].destructor = this;
+    this['interface'].removeFunction(this);
+  }
+  
+  // TODO: destructor function
 
+  //--- Parameter ---
+  
   function Parameter(index, name, type) {
     this.index = index;
     this.name  = name;
