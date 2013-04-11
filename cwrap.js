@@ -1,9 +1,10 @@
 "use strict";
 
 if (typeof define !== 'function') { var define = require('amdefine')(module); }
+console.log('define:', define);
 
-define( [ 'xmldom', 'xpath', 'underscore', 'gpc-template', './type' ],
-function(  xmldom ,  xpath ,  _          ,  Template     ,    Type  ) {
+define( [ 'xmldom', 'xpath', 'underscore', 'gpc-template', './type', './nodebindings.tmpl' ],
+function(  xmldom ,  xpath ,  _          ,  Template     ,    Type ,    tmpl_code          ) {
 
   /** Maps C types to V8 wrapper classes and type-casting accessor methods of 
    *  the V8::Value class.
@@ -56,6 +57,11 @@ function(  xmldom ,  xpath ,  _          ,  Template     ,    Type  ) {
   function generate(tmpl_file, intf, writer) {
     return Template.read(tmpl_file)
       .then( function(template) { return template.exec(intf, writer); } );
+  }
+  
+  function generateNodeJS(intf, writer) {
+    var tpl = new Template(tmpl_code, 'DEFAULT NODEJS TEMPLATE');
+    return tpl.exec(intf, writer);
   }
 
   function extractInterface(doc) {
@@ -237,7 +243,8 @@ function(  xmldom ,  xpath ,  _          ,  Template     ,    Type  ) {
   return {
     parseSwigXml     : parseXml,
     registerTypeAlias: registerTypeAlias,
-    generate         : generate
+    generate         : generate,
+    generateNodeJS   : generateNodeJS
   };
   
 }); // define
