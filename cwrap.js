@@ -1,10 +1,11 @@
 "use strict";
 
 if (typeof define !== 'function') { var define = require('amdefine')(module); }
-console.log('define:', define);
 
-define( [ 'xmldom', 'xpath', 'underscore', 'gpc-template', './type', './nodebindings.tmpl' ],
-function(  xmldom ,  xpath ,  _          ,  Template     ,    Type ,    tmpl_code          ) {
+console.log('cwrap.js define:', define);
+
+define( [ 'xmldom', 'xpath', 'underscore', 'gpc-template', './type', 'nodebindings.tmpl.cc' ],
+function(  xmldom ,  xpath ,  _          ,  Template     ,    Type ,  tmpl_code             ) {
 
   /** Maps C types to V8 wrapper classes and type-casting accessor methods of 
    *  the V8::Value class.

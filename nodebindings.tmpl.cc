@@ -222,3 +222,4 @@ NODE_MODULE({{$=name}}, init);
   {{$=ctype}} {{$=name}} = static_cast<{{$=ctype}}>( args[{{$=index}}]->{{$=v8TypeAccessor(type)}}() );
   {{$end}}
 {{$end}}
+});
