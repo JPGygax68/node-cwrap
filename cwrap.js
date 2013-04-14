@@ -2,8 +2,8 @@
 
 if (typeof define !== 'function') { var define = require('amdefine')(module); }
 
-define( [ 'xmldom', 'xpath', 'underscore', 'gpc-template', './type', './nodebindings.tmpl.cc.js' ],
-function(  xmldom ,  xpath ,  _          ,  Template     ,    Type ,    tmpl_code                ) {
+define( [ 'q-io/fs', 'xmldom', 'xpath', 'underscore', 'gpc-template', './type' ],
+function(       fs ,  xmldom ,  xpath ,  _          ,  Template     ,    Type  ) {
 
   /** Maps C types to V8 wrapper classes and type-casting accessor methods of 
    *  the V8::Value class.
@@ -59,8 +59,9 @@ function(  xmldom ,  xpath ,  _          ,  Template     ,    Type ,    tmpl_cod
   }
   
   function generateNodeJS(intf, writer) {
-    var tpl = new Template(tmpl_code, 'DEFAULT NODEJS TEMPLATE');
-    return tpl.exec(intf, writer);
+    return fs.read('./node_modules/cwrap/resources/nodebindings.tmpl.cc')
+      .then( function(tmpl_code) { return new Template(tmpl_code, 'DEFAULT NODEJS TEMPLATE'); } )
+      .then( function(tpl)       { return tpl.exec(intf, writer); } );
   }
 
   function extractInterface(doc) {
@@ -152,7 +153,7 @@ function(  xmldom ,  xpath ,  _          ,  Template     ,    Type ,    tmpl_cod
   ClassOrStruct.prototype.addStaticMethod = function(func) {
     this.static_methods[func.name] = func;
     func.parent = func['class'] = this;
-    setExposed();
+    this.setExposed();
   }
   
   ClassOrStruct.prototype.setExposed = function(exposed) {
