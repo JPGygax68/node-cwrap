@@ -57,6 +57,10 @@ public:
   {{$end static_methods }}
 
 private:
+
+  {{$if constructors.length > 0}}
+  static Handle<Value> NewHandler(const Arguments& args);
+  {{$end}}
   
   {{$forall methods}}
   static Handle<Value> {{$=name}}(const Arguments& args);
@@ -84,7 +88,7 @@ void
     {{$=derivedFrom}}::Init();
     {{$end}}
     // Prepare ctor template
-    Local<FunctionTemplate> t = FunctionTemplate::New();
+    Local<FunctionTemplate> t = FunctionTemplate::New({{$if constructors.length > 0}}NewHandler{{$end}});
     tpl = Persistent<FunctionTemplate>::New(t);
     tpl->SetClassName(String::NewSymbol("{{$=name}}"));
     tpl->InstanceTemplate()->SetInternalFieldCount(1);
@@ -105,6 +109,25 @@ void
     init_done = true;
   }
 }
+
+{{$if constructors.length > 0}}
+
+{{$forall constructors}}
+
+Handle<Value> 
+Window::NewHandler(const Arguments& args) {
+
+  {{$call function_body}}
+
+  Window *wrapper = new Window(object);  
+  wrapper->Wrap(args.This());
+  
+  return args.This();
+}
+
+{{$end}}
+
+{{$end}}
 
 Handle<Value> 
 {{$=name}}::NewInstance({{$=name}} *wrapper) {
@@ -129,6 +152,7 @@ Handle<Value>
   HandleScope scope;
 
   {{$call function_body}}
+  {{$call function_retval}}
 }
 
 {{$end forall static_methods}}
@@ -142,6 +166,7 @@ Handle<Value>
   void * self = ObjectWrap::Unwrap<{{$=parent.name}}>(args.This())->handle();
   
   {{$call function_body}}
+  {{$call function_retval}}
 }
 
 {{$end forall methods}}
@@ -157,11 +182,13 @@ Handle<Value>
   HandleScope scope;
 
   {{$call function_body}}
+  {{$call function_retval}}
 }
 
 {{$end forall functions}}
 
-static void init (v8::Handle<Object> target)
+static void 
+init (v8::Handle<Object> target)
 {
   {{$forall classes}}
   {{$=name}}::Init();
@@ -203,6 +230,9 @@ NODE_MODULE({{$=name}}, init);
   {{$=ctype}} result = {{$=cdecl_name}}({{$list params value_expr}});
   if (result < 0) return lastError("{{$=name}}");
   {{$end if}}
+{{$end function_body}}
+
+{{$macro function_retval}}
 
   {{$if retval_wrapper}}
   {{$=retval_wrapper}} *wrapper = new {{$=retval_wrapper}}(object);  
@@ -231,7 +261,7 @@ NODE_MODULE({{$=name}}, init);
   
   {{$end if}}
   
-{{$end macro}}
+{{$end function_retval}}
 
 {{$macro extract_parameter}}
   {{$if type == 'p.q(const).char'}}

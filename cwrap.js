@@ -143,6 +143,7 @@ function(       fs ,  xmldom ,  xpath ,  _          ,  Template     ,    Type  )
     this.name           = name;
     this.methods        = {};
     this.static_methods = {};
+    this.constructors   = []; // TODO: there should be only one, but gpc-templates doesn't support "with" yet
   }
   
   ClassOrStruct.prototype.addMethod = function(func) {
@@ -192,6 +193,14 @@ function(       fs ,  xmldom ,  xpath ,  _          ,  Template     ,    Type  )
   
   CFunction.prototype.setRetValWrapper = function(class_name) {
     this.retval_wrapper = class_name;
+  }
+  
+  CFunction.prototype.toConstructor = function(class_name) {
+    var the_class = this['class'] = this['interface'].getClass(class_name);
+    // Remove function from the interface and add it to the class as its constructor
+    this['interface'].removeFunction(this);
+    the_class.setExposed();
+    the_class.constructors[0] = this;
   }
   
   CFunction.prototype.toStaticFactoryMethod = function(class_name) {
