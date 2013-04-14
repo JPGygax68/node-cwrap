@@ -12,4 +12,8 @@ module.exports = function(grunt) {
   }); // initConfig
   
   grunt.loadNpmTasks('grunt-text2amd');
+
+  // By default, lint and run all tests.
+  grunt.registerTask('default', ['text2amd']);
+
 }

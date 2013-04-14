@@ -50,9 +50,13 @@ public:
 
 public:
   static Persistent<FunctionTemplate> tpl;
-  
-private:
   static Persistent<Function> ctor;
+  
+  {{$forall static_methods}}
+  static Handle<Value> {{$=name}}(const Arguments& args);
+  {{$end static_methods }}
+
+private:
   
   {{$forall methods}}
   static Handle<Value> {{$=name}}(const Arguments& args);
@@ -84,14 +88,20 @@ void
     tpl = Persistent<FunctionTemplate>::New(t);
     tpl->SetClassName(String::NewSymbol("{{$=name}}"));
     tpl->InstanceTemplate()->SetInternalFieldCount(1);
+    // Static methods
+    {{$forall static_methods}}
+    tpl->Set(String::NewSymbol("{{$=name}}"), FunctionTemplate::New({{$=name}})->GetFunction());
+    {{$end}}
     // Prototype
     {{$forall methods}}
     tpl->PrototypeTemplate()->Set(String::NewSymbol("{{$=name}}"), FunctionTemplate::New({{$=name}})->GetFunction());
     {{$end}}
-    ctor = Persistent<Function>::New(tpl->GetFunction());
     {{$if derivedFrom}}
+    // Parent class
     tpl->Inherit({{$=derivedFrom}}::tpl); 
     {{$end}}
+    // Now create the constructor
+    ctor = Persistent<Function>::New(tpl->GetFunction());
     init_done = true;
   }
 }
@@ -112,6 +122,17 @@ Handle<Value>
 
 {{$forall classes}}
 
+{{$forall static_methods}}
+
+Handle<Value> 
+{{$=parent.name}}::{{$=name}}(const Arguments& args) {
+  HandleScope scope;
+
+  {{$call function_body}}
+}
+
+{{$end forall static_methods}}
+  
 {{$forall methods}}
 
 Handle<Value> 
@@ -144,6 +165,9 @@ static void init (v8::Handle<Object> target)
 {
   {{$forall classes}}
   {{$=name}}::Init();
+  {{$if exposed}}
+  target->Set(v8::String::NewSymbol("{{$=name}}"), {{$=name}}::ctor);
+  {{$end}}
   {{$end}}
   
   {{$forall functions}}
@@ -164,7 +188,7 @@ NODE_MODULE({{$=name}}, init);
   {{$end forall}}
   
   {{$forall output_params}}
-  {{$=out_type}} {{$=name}}{{$=out_dim ||''}};
+  {{$=out_type}} {{$=name}}{{$=out_dim || ''}};
   {{$end forall}}
   
   {{$--- Call the function --- }}
@@ -180,11 +204,9 @@ NODE_MODULE({{$=name}}, init);
   if (result < 0) return lastError("{{$=name}}");
   {{$end if}}
 
-  {{$if retval_wrapper }}
-  {{$--- If this is a factory function, wrap the resulting pointer ---}}
+  {{$if retval_wrapper}}
   {{$=retval_wrapper}} *wrapper = new {{$=retval_wrapper}}(object);  
   return scope.Close( {{$=retval_wrapper}}::NewInstance(wrapper) );
-
   {{$elsif map_outparams_to_retval}}
   {{$--- Combine several output parameters into a result object ---}}
   Local<Object> r = Object::New();
@@ -222,4 +244,3 @@ NODE_MODULE({{$=name}}, init);
   {{$=ctype}} {{$=name}} = static_cast<{{$=ctype}}>( args[{{$=index}}]->{{$=v8TypeAccessor(type)}}() );
   {{$end}}
 {{$end}}
-});

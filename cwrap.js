@@ -2,10 +2,8 @@
 
 if (typeof define !== 'function') { var define = require('amdefine')(module); }
 
-console.log('cwrap.js define:', define);
-
-define( [ 'xmldom', 'xpath', 'underscore', 'gpc-template', './type', 'nodebindings.tmpl.cc' ],
-function(  xmldom ,  xpath ,  _          ,  Template     ,    Type ,  tmpl_code             ) {
+define( [ 'xmldom', 'xpath', 'underscore', 'gpc-template', './type', './nodebindings.tmpl.cc.js' ],
+function(  xmldom ,  xpath ,  _          ,  Template     ,    Type ,    tmpl_code                ) {
 
   /** Maps C types to V8 wrapper classes and type-casting accessor methods of 
    *  the V8::Value class.
@@ -140,14 +138,25 @@ function(  xmldom ,  xpath ,  _          ,  Template     ,    Type ,  tmpl_code 
   
   function ClassOrStruct(name, intf) {
     if (!intf) throw new Error('INTERNAL: ClassOrStruct constructor needs 2 parameters: name and interface object');
-    this['interface'] = intf;
-    this.name    = name;
-    this.methods = {};
+    this['interface']   = intf;
+    this.name           = name;
+    this.methods        = {};
+    this.static_methods = {};
   }
   
   ClassOrStruct.prototype.addMethod = function(func) {
     this.methods[func.name] = func;
     func.parent = func['class'] = this;
+  }
+  
+  ClassOrStruct.prototype.addStaticMethod = function(func) {
+    this.static_methods[func.name] = func;
+    func.parent = func['class'] = this;
+    setExposed();
+  }
+  
+  ClassOrStruct.prototype.setExposed = function(exposed) {
+    this.exposed = exposed !== false;
   }
   
   ClassOrStruct.prototype.setParentClass = function(parent) {
@@ -177,12 +186,23 @@ function(  xmldom ,  xpath ,  _          ,  Template     ,    Type ,  tmpl_code 
     _.each(this.params, function(param) { if (param.index === 0) { param.value_expr = 'self'; } param.index --; } );
     // Remove function from the interface and add it to the class
     this['interface'].removeFunction(this);
-    // TODO: use a clone so that the method can be assigned to more than one class?
     the_class.addMethod(this);
   }
   
   CFunction.prototype.setRetValWrapper = function(class_name) {
     this.retval_wrapper = class_name;
+  }
+  
+  CFunction.prototype.toStaticFactoryMethod = function(class_name) {
+    this.setRetValWrapper(class_name);
+    this.toStaticMethod(class_name);
+  }
+  
+  CFunction.prototype.toStaticMethod = function(class_name) {
+    var the_class = this['class'] = this['interface'].getClass(class_name);
+    // Remove function from the interface and add it to the class as a static member
+    this['interface'].removeFunction(this);
+    the_class.addStaticMethod(this);
   }
 
   // TODO: this does not support more than one factory function
