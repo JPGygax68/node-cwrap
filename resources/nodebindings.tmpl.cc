@@ -293,7 +293,7 @@ private:
 {{$macro function_retval}}
 
   {{$if retval_wrapper}}
-  {{$=retval_wrapper}} *wrapper = static_cast<{{$=retval_wrapper}}*>( {{$=retval_wrapper}}::Get(object) );
+  {{$=retval_wrapper}} *wrapper = {{$=retval_wrapper}}::Get(object);
   return scope.Close( {{$=retval_wrapper}}::NewInstance(wrapper) );
   {{$elsif map_outparams_to_retval}}
   {{$--- Combine several output parameters into a result object ---}}
