@@ -32,84 +32,28 @@ lastError(const char *context = nullptr) {
   return ThrowException(Exception::Error(text));
 }
 
-{{$--- OBJECT WRAPPERS ---}}
+{{$--- CLASS DECLARATIONS ----------------------}}
 
 {{$forall classes}}
 class {{$=name}};
 {{$end classes}}
 
 {{$forall classes}}
-
-class {{$=name}} : public node::ObjectWrap {
-public:
-
-  static void          Init();
-  static Handle<Value> NewInstance({{$=name}} *);
-  static {{$=name}} *  Create(void *ptr_);
-  
-  void * handle() { return _ptr; }
-
-public:
-  static Persistent<FunctionTemplate> tpl;
-  static Persistent<Function> ctor;
-  
-  {{$forall static_methods}}
-  static Handle<Value> {{$=name}}(const Arguments& args);
-  {{$end static_methods }}
-
-private:
-
-  typedef std::map<void*, {{$=name}}*> wrapper_map_t;
-
-  static wrapper_map_t wrapper_map;
-  
-  static void         Remove({{$=name}} *wrapper);
-
-  {{$=name}}(void *ptr): _ptr(ptr) {}
-  
-  {{$if constructors.length > 0}}
-  static Handle<Value> NewHandler(const Arguments& args);
-  {{$end}}
-  
-  {{$forall methods}}
-  static Handle<Value> {{$=name}}(const Arguments& args);
-  {{$end forall }}
-
-  ~{{$=name}}() {
-    {{$if destructor}}{{$=destructor.cdecl_name}}(_ptr);{{$end}}
-    Remove(this);
-  }
-  
-  void * _ptr;
-};
-
+{{$call class_declaration}}
 {{$end forall classes }}
+
+{{$--- CLASS METHODS ---------------------------}}
 
 {{$forall classes}}
 
-{{$=name}}::wrapper_map_t {{$=name}}::wrapper_map;
-
-Persistent<FunctionTemplate> {{$=name}}::tpl;
-Persistent<Function>         {{$=name}}::ctor;
-
-{{$=name}} *
-{{$=name}}::Create(void *ptr_) {
-  {{$=name}} *wrapper = new {{$=name}}(ptr_);
-  wrapper_map[ptr_] = wrapper;
-  return wrapper;
-}
-
-void
-{{$=name}}::Remove({{$=name}} *wrapper) {
-  wrapper_map.erase(wrapper->handle());
-}
+{{$--- CLASS INITIALIZATION ---}}
 
 void
 {{$=name}}::Init() {
   static bool init_done = false;
   if (!init_done) {
-    {{$if derivedFrom}}
-    {{$=derivedFrom}}::Init();
+    {{$if derived_from}}
+    {{$=derived_from}}::Init();
     {{$end}}
     // Prepare ctor template
     Local<FunctionTemplate> t = FunctionTemplate::New({{$if constructors.length > 0}}NewHandler{{$end}});
@@ -124,9 +68,9 @@ void
     {{$forall methods}}
     tpl->PrototypeTemplate()->Set(String::NewSymbol("{{$=name}}"), FunctionTemplate::New({{$=name}})->GetFunction());
     {{$end}}
-    {{$if derivedFrom}}
+    {{$if derived_from}}
     // Parent class
-    tpl->Inherit({{$=derivedFrom}}::tpl); 
+    tpl->Inherit({{$=derived_from}}::tpl); 
     {{$end}}
     // Now create the constructor
     ctor = Persistent<Function>::New(tpl->GetFunction());
@@ -134,24 +78,44 @@ void
   }
 }
 
-{{$if constructors.length > 0}}
+{{$--- WRAPPER MAP (base classes only) ---}}
 
+{{$if !derived_from}}
+{{$=name}}::wrapper_map_t {{$=name}}::wrapper_map;
+
+void
+{{$=name}}::Remove({{$=name}} *wrapper) {
+  wrapper_map.erase(wrapper->handle());
+}
+{{$end}}
+
+{{$--- GET WRAPPER ---}}
+
+{{$=name}} *
+{{$=name}}::Get(void *ptr_) {
+  wrapper_map_t::iterator it = wrapper_map.find(ptr_);
+  if (it != wrapper_map.end()) return static_cast<{{$=name}}*>(it->second);
+  {{$=name}} *wrapper = new {{$=name}}(ptr_);
+  wrapper_map[ptr_] = static_cast<base_type*>(wrapper);
+  return wrapper;
+}
+
+Persistent<FunctionTemplate> {{$=name}}::tpl;
+Persistent<Function>         {{$=name}}::ctor;
+
+{{$if constructors.length > 0}}
 {{$forall constructors}}
 
 Handle<Value> 
 {{$=class.name}}::NewHandler(const Arguments& args) {
-
   {{$call function_body}}
-
-  Window *wrapper = Create(object);  
-  wrapper->Wrap(args.This());
-  
+  {{$=class.name}} *wrapper = static_cast<{{$=class.name}}*>( Get(object) );
+  wrapper->Wrap(args.This());  
   return args.This();
 }
 
-{{$end}}
-
-{{$end}}
+{{$end all constructors}}
+{{$end if has constructors}}
 
 Handle<Value> 
 {{$=name}}::NewInstance({{$=name}} *wrapper) {
@@ -167,6 +131,8 @@ Handle<Value>
 
 {{$end forall classes}}
 
+{{$--- STATIC METHODS -------------------------------------}}
+
 {{$forall classes}}
 
 {{$forall static_methods}}
@@ -180,7 +146,9 @@ Handle<Value>
 }
 
 {{$end forall static_methods}}
-  
+
+{{$--- METHODS --------------------------------------------}}
+
 {{$forall methods}}
 
 Handle<Value> 
@@ -197,7 +165,7 @@ Handle<Value>
   
 {{$end forall classes}}
 
-{{$--- FUNCTIONS ---}}
+{{$--- GLOBAL FUNCTIONS -----------------------------------}}
 
 {{$forall functions}}
 
@@ -229,6 +197,67 @@ init (v8::Handle<Object> target)
 NODE_MODULE({{$=name}}, init);
 
 {{$--------------------------------------------------------------------------------------------}}
+
+{{$macro class_declaration}}
+
+class {{$=name}} : public {{$if derived_from}}{{$=derived_from}}{{$else}}node::ObjectWrap{{$end}} {
+public:
+
+  static void           Init();
+  static {{$=name}} *   Get(void *ptr_);
+  static Handle<Value>  NewInstance({{$=name}} *);
+  
+  {{$if !derived_from}}
+  void * handle() { return _ptr; }
+  {{$end}}
+
+public:
+  static Persistent<FunctionTemplate> tpl;
+  static Persistent<Function> ctor;
+  
+  {{$forall static_methods}}
+  static Handle<Value> {{$=name}}(const Arguments& args);
+  {{$end static_methods }}
+
+protected:
+
+  {{$if !derived_from}}
+  typedef {{$=name}} base_type;
+  static void Remove({{$=name}} *wrapper);
+  {{$end}}
+  
+  virtual ~{{$=name}}() {
+    {{$if destructor}}
+    {{$=destructor.cdecl_name}}(handle());
+    {{$end}}
+    {{$if !derived_from}}
+    Remove(this);
+    {{$end}}
+  }
+  
+  {{$if !derived_from}}
+  typedef std::map<void*, {{$=name}}*> wrapper_map_t;
+  static wrapper_map_t wrapper_map;
+  {{$end}}
+
+  {{$=name}}(void *ptr): {{$if derived_from}}{{$=derived_from}}(ptr){{$else}}node::ObjectWrap(), _ptr(ptr){{$end}} { }
+  
+private:
+
+  {{$if constructors.length > 0}}
+  static Handle<Value> NewHandler(const Arguments& args);
+  {{$end}}
+  
+  {{$forall methods}}
+  static Handle<Value> {{$=name}}(const Arguments& args);
+  {{$end forall }}
+
+  {{$if !derived_from}}
+  void * _ptr;
+  {{$end}}
+};
+
+{{$end class_declaration}}
 
 {{$macro function_body}}
 
@@ -264,7 +293,7 @@ NODE_MODULE({{$=name}}, init);
 {{$macro function_retval}}
 
   {{$if retval_wrapper}}
-  {{$=retval_wrapper}} *wrapper = {{$=retval_wrapper}}::Create(object);  
+  {{$=retval_wrapper}} *wrapper = static_cast<{{$=retval_wrapper}}*>( {{$=retval_wrapper}}::Get(object) );
   return scope.Close( {{$=retval_wrapper}}::NewInstance(wrapper) );
   {{$elsif map_outparams_to_retval}}
   {{$--- Combine several output parameters into a result object ---}}

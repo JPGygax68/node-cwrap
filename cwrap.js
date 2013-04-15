@@ -59,6 +59,7 @@ function(       fs ,  xmldom ,  xpath ,  _          ,  Template     ,    Type  )
   }
   
   function generateNodeJS(intf, writer) {
+    intf._orderClasses();
     return fs.read('./node_modules/cwrap/resources/nodebindings.tmpl.cc')
       .then( function(tmpl_code) { return new Template(tmpl_code, 'DEFAULT NODEJS TEMPLATE'); } )
       .then( function(tpl)       { return tpl.exec(intf, writer); } );
@@ -135,6 +136,18 @@ function(       fs ,  xmldom ,  xpath ,  _          ,  Template     ,    Type  )
     return theclass;
   }
   
+  Interface.prototype._orderClasses = function() {
+    var self = this, classes = {};
+    _.each(this.classes, addClass);
+    this.classes = classes;
+
+    function addClass(cls) {
+      if (!classes[cls]) { 
+        if (cls.derived_from) addClass(self.classes[cls.derived_from]); classes[cls.name] = cls; 
+      }
+    }
+  }
+  
   //--- ClassOrStruct ---
   
   function ClassOrStruct(name, intf) {
@@ -164,7 +177,7 @@ function(       fs ,  xmldom ,  xpath ,  _          ,  Template     ,    Type  )
   ClassOrStruct.prototype.setParentClass = function(parent) {
     console.assert(typeof parent === 'string');
     this['interface'].getClass(parent); // make sure it's in the list of classes
-    this.derivedFrom = parent;
+    this.derived_from = parent;
   }
   
   //--- CFunction ---
