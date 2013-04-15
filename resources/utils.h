@@ -1,6 +1,7 @@
 #ifndef __UTILS_H
 #define __UTILS_H
 
+#include <map>
 #include <node.h>
 #include <node_buffer.h>
 #include <v8.h>

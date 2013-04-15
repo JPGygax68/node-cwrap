@@ -1,6 +1,8 @@
+#include <map>
 #include <node.h>
 #include <node_buffer.h>
 #include <v8.h>
+#include <utils.h>
 
 #include <lsdisplay2/lsdisplay2.h>
 
@@ -43,8 +45,7 @@ public:
 
   static void          Init();
   static Handle<Value> NewInstance({{$=name}} *);
-  
-  {{$=name}}(void *ptr): _ptr(ptr) {}
+  static {{$=name}} *  Create(void *ptr_);
   
   void * handle() { return _ptr; }
 
@@ -58,6 +59,14 @@ public:
 
 private:
 
+  typedef std::map<void*, {{$=name}}*> wrapper_map_t;
+
+  static wrapper_map_t wrapper_map;
+  
+  static void         Remove({{$=name}} *wrapper);
+
+  {{$=name}}(void *ptr): _ptr(ptr) {}
+  
   {{$if constructors.length > 0}}
   static Handle<Value> NewHandler(const Arguments& args);
   {{$end}}
@@ -68,6 +77,7 @@ private:
 
   ~{{$=name}}() {
     {{$if destructor}}{{$=destructor.cdecl_name}}(_ptr);{{$end}}
+    Remove(this);
   }
   
   void * _ptr;
@@ -77,8 +87,22 @@ private:
 
 {{$forall classes}}
 
+{{$=name}}::wrapper_map_t {{$=name}}::wrapper_map;
+
 Persistent<FunctionTemplate> {{$=name}}::tpl;
 Persistent<Function>         {{$=name}}::ctor;
+
+{{$=name}} *
+{{$=name}}::Create(void *ptr_) {
+  {{$=name}} *wrapper = new {{$=name}}(ptr_);
+  wrapper_map[ptr_] = wrapper;
+  return wrapper;
+}
+
+void
+{{$=name}}::Remove({{$=name}} *wrapper) {
+  wrapper_map.erase(wrapper->handle());
+}
 
 void
 {{$=name}}::Init() {
@@ -115,11 +139,11 @@ void
 {{$forall constructors}}
 
 Handle<Value> 
-Window::NewHandler(const Arguments& args) {
+{{$=class.name}}::NewHandler(const Arguments& args) {
 
   {{$call function_body}}
 
-  Window *wrapper = new Window(object);  
+  Window *wrapper = Create(object);  
   wrapper->Wrap(args.This());
   
   return args.This();
@@ -224,18 +248,23 @@ NODE_MODULE({{$=name}}, init);
   {{$elsif type == "p.void"}}
   {{$--- With return value type void *, nullptr signals error ---}}
   {{$=ctype}} object = {{$=cdecl_name}}({{$list params value_expr}});
+  {{$if nullptr_retval_allowed}}
+  if (object == nullptr) return scope.Close(Undefined());
+  {{$else}}
   if (object == nullptr) return lastError("{{$=name}}");
+  {{$end}}
   {{$else}}
   {{$--- With return value type int, negative values signal errors ---}}
   {{$=ctype}} result = {{$=cdecl_name}}({{$list params value_expr}});
   if (result < 0) return lastError("{{$=name}}");
   {{$end if}}
+  
 {{$end function_body}}
 
 {{$macro function_retval}}
 
   {{$if retval_wrapper}}
-  {{$=retval_wrapper}} *wrapper = new {{$=retval_wrapper}}(object);  
+  {{$=retval_wrapper}} *wrapper = {{$=retval_wrapper}}::Create(object);  
   return scope.Close( {{$=retval_wrapper}}::NewInstance(wrapper) );
   {{$elsif map_outparams_to_retval}}
   {{$--- Combine several output parameters into a result object ---}}
