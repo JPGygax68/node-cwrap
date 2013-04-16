@@ -1,4 +1,5 @@
 #include <map>
+#include <cassert>
 #include <node.h>
 #include <node_buffer.h>
 #include <v8.h>
@@ -92,11 +93,11 @@ void
 {{$--- GET WRAPPER ---}}
 
 {{$=name}} *
-{{$=name}}::Get(void *ptr_) {
-  wrapper_map_t::iterator it = wrapper_map.find(ptr_);
+{{$=name}}::GetWrapper(void *object) {
+  wrapper_map_t::iterator it = wrapper_map.find(object);
   if (it != wrapper_map.end()) return static_cast<{{$=name}}*>(it->second);
-  {{$=name}} *wrapper = new {{$=name}}(ptr_);
-  wrapper_map[ptr_] = static_cast<base_type*>(wrapper);
+  {{$=name}} *wrapper = new {{$=name}}(object);
+  wrapper_map[object] = static_cast<base_type*>(wrapper);
   return wrapper;
 }
 
@@ -108,8 +109,11 @@ Persistent<Function>         {{$=name}}::ctor;
 
 Handle<Value> 
 {{$=class.name}}::NewHandler(const Arguments& args) {
+  // std::cerr << "{{$=class.name}}::NewHandler" << std::endl;
   {{$call function_body}}
-  {{$=class.name}} *wrapper = static_cast<{{$=class.name}}*>( Get(object) );
+  assert(wrapper_map.find(object) == wrapper_map.end());
+  {{$=class.name}} *wrapper = new {{$=class.name}}(object);
+  wrapper_map[object] = wrapper;
   wrapper->Wrap(args.This());  
   return args.This();
 }
@@ -118,15 +122,23 @@ Handle<Value>
 {{$end if has constructors}}
 
 Handle<Value> 
-{{$=name}}::NewInstance({{$=name}} *wrapper) {
+{{$=name}}::GetInstance(void *object) {
   HandleScope scope;
 
-  const unsigned argc = 1;
-  Handle<Value> argv[argc] = { External::New(wrapper) };
-  Local<Object> instance = ctor->NewInstance(argc, argv);
-  wrapper->Wrap(instance);
-
-  return scope.Close(instance);
+  if (wrapper_map.find(object) != wrapper_map.end()) {
+    // std::cerr << "{{$=name}}::GetInstance: object already wrapped" << std::endl;
+    return wrapper_map[object]->handle_;
+  }
+  else {  
+    // std::cerr << "{{$=name}}::GetInstance: creating new wrapper" << std::endl;
+    {{$=name}} *wrapper = new {{$=name}}(object);
+    wrapper_map[object] = wrapper;
+    const unsigned argc = 1;
+    Handle<Value> argv[argc] = { External::New(wrapper) };
+    Local<Object> instance = ctor->NewInstance(argc, argv);
+    wrapper->Wrap(instance);
+    return scope.Close(instance);
+  }
 }
 
 {{$end forall classes}}
@@ -203,9 +215,9 @@ NODE_MODULE({{$=name}}, init);
 class {{$=name}} : public {{$if derived_from}}{{$=derived_from}}{{$else}}node::ObjectWrap{{$end}} {
 public:
 
-  static void           Init();
-  static {{$=name}} *   Get(void *ptr_);
-  static Handle<Value>  NewInstance({{$=name}} *);
+  static void Init();
+  static {{$=name}} * GetWrapper(void *object);
+  static Handle<Value> GetInstance(void *object);
   
   {{$if !derived_from}}
   void * handle() { return _ptr; }
@@ -293,9 +305,11 @@ private:
 {{$macro function_retval}}
 
   {{$if retval_wrapper}}
-  {{$=retval_wrapper}} *wrapper = {{$=retval_wrapper}}::Get(object);
-  return scope.Close( {{$=retval_wrapper}}::NewInstance(wrapper) );
+  
+  return scope.Close( {{$=retval_wrapper}}::GetInstance(object) );
+  
   {{$elsif map_outparams_to_retval}}
+  
   {{$--- Combine several output parameters into a result object ---}}
   Local<Object> r = Object::New();
   {{$forall output_params}}
@@ -305,6 +319,7 @@ private:
   return scope.Close(r);
 
   {{$elsif return_charbuf_on_success}}
+  
   {{$--- Integer return code indicates success or failure, output parameter is string ---}}
   if (result > 0) return scope.Close(String::New({{$=return_charbuf_name}}, {{$=return_charbuf_size}}));
   else            return scope.Close(Undefined());
