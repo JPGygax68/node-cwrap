@@ -177,7 +177,7 @@ Handle<Value>
   
 {{$end forall classes}}
 
-{{$--- GLOBAL FUNCTIONS -----------------------------------}}
+//--- GLOBAL FUNCTIONS --------------------------------------
 
 {{$forall functions}}
 
@@ -218,7 +218,7 @@ public:
   static void Init();
   static {{$=name}} * GetWrapper(void *object);
   static Handle<Value> GetInstance(void *object);
-  
+
   {{$if !derived_from}}
   void * handle() { return _ptr; }
   {{$end}}
@@ -226,7 +226,7 @@ public:
 public:
   static Persistent<FunctionTemplate> tpl;
   static Persistent<Function> ctor;
-  
+
   {{$forall static_methods}}
   static Handle<Value> {{$=name}}(const Arguments& args);
   {{$end static_methods }}
@@ -237,7 +237,7 @@ protected:
   typedef {{$=name}} base_type;
   static void Remove({{$=name}} *wrapper);
   {{$end}}
-  
+
   virtual ~{{$=name}}() {
     {{$if destructor}}
     {{$=destructor.cdecl_name}}(handle());
@@ -246,20 +246,20 @@ protected:
     Remove(this);
     {{$end}}
   }
-  
+
   {{$if !derived_from}}
   typedef std::map<void*, {{$=name}}*> wrapper_map_t;
   static wrapper_map_t wrapper_map;
   {{$end}}
 
   {{$=name}}(void *ptr): {{$if derived_from}}{{$=derived_from}}(ptr){{$else}}node::ObjectWrap(), _ptr(ptr){{$end}} { }
-  
+
 private:
 
   {{$if constructors.length > 0}}
   static Handle<Value> NewHandler(const Arguments& args);
   {{$end}}
-  
+
   {{$forall methods}}
   static Handle<Value> {{$=name}}(const Arguments& args);
   {{$end forall }}
@@ -271,18 +271,18 @@ private:
 
 {{$end class_declaration}}
 
-{{$macro function_body}}
+{{$macro function_body ------------------------------------}}
 
   {{$forall input_params}}
   {{$if type != "void" && !is_self}}
   {{$call extract_parameter}}
   {{$end if}}
   {{$end forall}}
-  
+
   {{$forall output_params}}
   {{$=out_type}} {{$=name}}{{$=out_dim || ''}};
   {{$end forall}}
-  
+
   {{$--- Call the function --- }}
   {{$if type == "void"}}
   {{$=cdecl_name}}({{$list params value_expr}});
@@ -299,18 +299,18 @@ private:
   {{$=ctype}} result = {{$=cdecl_name}}({{$list params value_expr}});
   if (result < 0) return lastError("{{$=name}}");
   {{$end if}}
-  
-{{$end function_body}}
 
-{{$macro function_retval}}
+{{$end macro function_body}}
+
+{{$macro function_retval ----------------------------------}}
 
   {{$if retval_wrapper}}
-  
+
   return scope.Close( {{$=retval_wrapper}}::GetInstance(object) );
-  
+
   {{$elsif map_outparams_to_retval}}
-  
-  {{$--- Combine several output parameters into a result object ---}}
+
+  // Combine several output parameters into a result object
   Local<Object> r = Object::New();
   {{$forall output_params}}
   r->Set(String::NewSymbol("{{$=name}}"), Integer::New({{$=name}}));
@@ -319,24 +319,25 @@ private:
   return scope.Close(r);
 
   {{$elsif return_charbuf_on_success}}
-  
+
   {{$--- Integer return code indicates success or failure, output parameter is string ---}}
   if (result > 0) return scope.Close(String::New({{$=return_charbuf_name}}, {{$=return_charbuf_size}}));
   else            return scope.Close(Undefined());
-  
-  {{$elsif type == "void"}}
-  
-  return scope.Close(Undefined());
-  
-  {{$else}}
-  
-  return scope.Close({{$=v8TypeWrapper(type)}}::New(result));
-  
-  {{$end if}}
-  
-{{$end function_retval}}
 
-{{$macro extract_parameter}}
+  {{$elsif type == "void"}}
+
+  return scope.Close(Undefined());
+
+  {{$else}}
+
+  return scope.Close({{$=v8TypeWrapper(type)}}::New(result));
+
+  {{$end if}}
+
+{{$end macro function_retval}}
+
+{{$macro extract_parameter --------------------------------}}
+
   {{$if type == 'p.q(const).char'}}
   Local<String> {{$=name}} = args[{{$=index}}]->ToString();
   {{$elsif wrapper_class}}
@@ -346,4 +347,5 @@ private:
   {{$else}}
   {{$=ctype}} {{$=name}} = static_cast<{{$=ctype}}>( args[{{$=index}}]->{{$=v8TypeAccessor(type)}}() );
   {{$end}}
-{{$end}}
+
+{{$end macro extract_parameter}}
