@@ -358,7 +358,7 @@ private:
 
 {{$macro class_constant -----------------------------------}}
   {{$if type == 'int'}}
-  tpl->PrototypeTemplate()->Set(String::NewSymbol("{{$=name}}"), Integer::New({{$=value}}) );
+  tpl->Set(String::NewSymbol("{{$=name}}"), Integer::New({{$=value}}) );
   {{$end}}
 {{$end}}
 

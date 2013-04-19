@@ -111,7 +111,7 @@ function() {
   function checkPointer(type)  { if (type[skipQualifiers(type)].type !== 'p') throw new Error('Type "'+type+'" is not a pointer'); }  
   function checkArray  (type)  { if (type[skipQualifiers(type)].type !== 'a') throw new Error('Type "'+type+'" is not an array' ); }
   
-  function popQualifiers(type) { console.log(type); while (type[0].type === 'q') type.shift(); }
+  function popQualifiers(type) { while (type[0].type === 'q') type.shift(); }
   
   function checkAllQualifiers(type, value) {
     for (var i = 0; i < type.length && type[i].type === 'q'; i++) if (type[i].value === value) return true; 

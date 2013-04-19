@@ -212,6 +212,7 @@ function(       fs ,  xmldom ,  xpath ,  _          ,  Template     ,    Type  )
   ClassOrStruct.prototype.addConstant = function(constant) {
     this.constants[constant.name] = constant;
     constant.parent = constant['class'] = this;
+    this.setExposed();
   }
   
   //--- CFunction ---
