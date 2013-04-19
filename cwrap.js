@@ -96,17 +96,33 @@ function(       fs ,  xmldom ,  xpath ,  _          ,  Template     ,    Type  )
       if (count === 1 && func.params['param_0'] && func.params.param_0.type === 'void') func.params = {};
     });
     
-    // Get the constants
+    // Get the preprocessor constants
     var attrib_lists = xpath.select('//constant/attributelist/attribute[@name="storage"][@value="%constant"]/..', doc);
     attrib_lists.forEach( function(attrib_list) {
-      // Extract the function name
+      // Extract the constant name
       var name = xpath.select('./attribute[@name="name"]/@value', attrib_list)[0].value;
-      // Create and add a new function descriptor
-      var constant = { name: name };
-      intf.constants[name] = constant;
+      // Create and add a new constant descriptor
+      var constant = intf.newConstant(name);
       // Extract and store the data
       constant.type  = xpath.select('./attribute[@name="type"]/@value' , attrib_list)[0].value;
       constant.value = xpath.select('./attribute[@name="value"]/@value', attrib_list)[0].value;
+    });
+    
+    // Get the cdecl constants
+    var attrib_lists = xpath.select('//cdecl/attributelist/attribute[@name="kind"][@value="variable"]/..', doc);
+    attrib_lists.forEach( function(attrib_list) {
+      // Extract the constant name & other attributes
+      var name         = xpath.select('./attribute[@name="name"]/@value'        , attrib_list)[0].value;
+      var hasconsttype = xpath.select('./attribute[@name="hasconsttype"]/@value', attrib_list)[0].value;
+      if (hasconsttype) {
+        // Create and add a new constant descriptor
+        var constant = intf.newConstant(name);
+        // Extract and store the data
+        constant.type  = new Type( xpath.select('./attribute[@name="type"]/@value' , attrib_list)[0].value ).popQualifiers();
+        //console.log('New constant:', name, constant.type.toString() );
+        constant.value = xpath.select('./attribute[@name="value"]/@value', attrib_list)[0].value;
+      }
+      // else TODO: how to wrap global variables ?
     });
     
     // Done.
@@ -128,12 +144,24 @@ function(       fs ,  xmldom ,  xpath ,  _          ,  Template     ,    Type  )
     return func;
   }
 
-  Interface.prototype.removeFunction = function(func) { if (this.functions[func.cdecl_name]) delete this.functions[func.cdecl_name]; }
+  Interface.prototype.removeFunction = function(func) { 
+    if (this.functions[func.cdecl_name]) delete this.functions[func.cdecl_name]; 
+  }
   
   Interface.prototype.getClass = function(name) {
     var theclass = this.classes[name];
     if (!theclass) theclass = this.classes[name] = new ClassOrStruct(name, this);
     return theclass;
+  }
+  
+  Interface.prototype.newConstant = function(cdecl_name) {
+    var constant = new Constant(this, cdecl_name);
+    this.constants[cdecl_name] = constant;
+    return constant;
+  }
+  
+  Interface.prototype.removeConstant = function(constant) { 
+    if (this.constants[constant.cdecl_name]) delete this.constants[constant.cdecl_name]; 
   }
   
   Interface.prototype._orderClasses = function() {
@@ -156,7 +184,8 @@ function(       fs ,  xmldom ,  xpath ,  _          ,  Template     ,    Type  )
     this.name           = name;
     this.methods        = {};
     this.static_methods = {};
-    this.constructors   = []; // TODO: there should be only one, but gpc-templates doesn't support "with" yet
+    this.constants      = {};
+    this.constructors   = []; // TODO: there should be only one, but gpc-templates doesn't support "with" (yet?)
   }
   
   ClassOrStruct.prototype.addMethod = function(func) {
@@ -178,6 +207,11 @@ function(       fs ,  xmldom ,  xpath ,  _          ,  Template     ,    Type  )
     console.assert(typeof parent === 'string');
     this['interface'].getClass(parent); // make sure it's in the list of classes
     this.derived_from = parent;
+  }
+  
+  ClassOrStruct.prototype.addConstant = function(constant) {
+    this.constants[constant.name] = constant;
+    constant.parent = constant['class'] = this;
   }
   
   //--- CFunction ---
@@ -242,6 +276,21 @@ function(       fs ,  xmldom ,  xpath ,  _          ,  Template     ,    Type  )
   
   // TODO: destructor function
 
+  // Constant
+  
+  function Constant(intf, cdecl_name) {
+    this['interface'] = intf;
+    this.cdecl_name   = cdecl_name;
+    this.name         = cdecl_name;
+  }
+
+  Constant.prototype.toClass = function (class_name) {
+    var the_class = this['class'] = this['interface'].getClass(class_name);
+    // Remove function from the interface and add it to the class
+    this['interface'].removeConstant(this);
+    the_class.addConstant(this);
+  }
+  
   //--- Parameter ---
   
   function Parameter(index, name, type) {

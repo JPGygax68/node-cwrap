@@ -12,9 +12,9 @@ function() {
   
   function Type(arg) { 
     Array.call(this); 
-    if      (arg instanceof Type       ) arg.each( function(el) { this.push(el.clone()); } );
-    else if (arg instanceof Operator   ) Array.prototype.push.call(this, arg);
-    else if (typeof arg !== 'undefined') Array.prototype.push.call(this, new Operator(undefined, arg.toString()) );
+    if      (arg instanceof Type    ) arg.each( function(el) { this.push(el.clone()); } );
+    else if (arg instanceof Operator) Array.prototype.push.call(this, arg);
+    else if (typeof arg === 'string') arg.split('.').forEach( function(op) { Array.prototype.push.call(this, new Operator(op)); }, this);
   }
   
   Type.prototype = new Array();
@@ -31,8 +31,8 @@ function() {
   Type.prototype.addMemberPointer = function(cls)         { this.unshift( new Operator('m', cls  ) ); }
   Type.prototype.addReference     = function()            { this.unshift( new Operator('r'       ) ); }
   Type.prototype.addArray         = function(size)        { this.unshift( new operator('a', size ) ); }
-  Type.prototype.delPointer       = function()            { checkPointer(); removeQualifiers(this); this.shift(); }
-  Type.prototype.delArray         = function()            { checkArray(); removeQualifiers(); this.shift(); }
+  Type.prototype.delPointer       = function()            { checkPointer(); popQualifiers(this); this.shift(); }
+  Type.prototype.delArray         = function()            { checkArray(); popQualifiers(this); this.shift(); }
   Type.prototype.arrayNDim        = function()            { for (var i = skipQualifiers(this), n = 0; this[i+n] && this[i+n].type === 'a'; n++); return n; }
   Type.prototype.getArrayDim      = function(n)           { var i = checkHasNthDim(this, n); return this[i+n].size; }
   Type.prototype.setArrayDim      = function(n, size)     { var i = checkHasNthDim(this, n); this[i+n].size = size; }
@@ -41,6 +41,7 @@ function() {
   Type.prototype.pop              = function()            { return new Type(this.shift()); }
   Type.prototype.popFunction      = function()            { return popOperator(this, 'f'); } 
   Type.prototype.push             = function(other)       { this.unshift( other.shift() ); }
+  Type.prototype.popQualifiers    = function()            { popQualifiers(this); return this; }
   
   Type.prototype.popArrays = function() { 
     for (var i = skipQualifiers(this); i < this.length && this[i].type === 'a'; i = skipQualifiers(this, i+1));
@@ -78,11 +79,22 @@ function() {
   
   // Operator class
   
-  function Operator(type, value) { this.type = type; this.value = value; }
+  function Operator(type, value) { 
+    //console.log('Operator()', type, value); 
+    if (typeof value === 'undefined' && typeof type === 'string') {
+      var m = /^(\w)\((\w+)\)$/.exec(type);
+      if (m) { this.type = m[1].toString(); this.value = m[2].toString(); }
+      else   { this.value = type; }
+    }
+    else {
+      this.type = type; 
+      this.value = value; 
+    }
+  }
   
   Operator.prototype.toString = function() { 
     //console.log('Operator.toString()', this);
-    if      (typeof this.type  === 'undefined') return this.value; // simple type
+    if      (!this.type                       ) return this.value; // simple type
     else if (typeof this.value !== 'undefined') return this.type + '(' + this.value + ')';
     else                                        return this.type;
   }
@@ -96,10 +108,10 @@ function() {
   
   // Internal helper functions
   
-  function checkPointer(type) { if (type[skipQualifiers(type)].type !== 'p') throw new Error('Type "'+type+'" is not a pointer'); }  
-  function checkArray  (type) { if (type[skipQualifiers(type)].type !== 'a') throw new Error('Type "'+type+'" is not an array' ); }
+  function checkPointer(type)  { if (type[skipQualifiers(type)].type !== 'p') throw new Error('Type "'+type+'" is not a pointer'); }  
+  function checkArray  (type)  { if (type[skipQualifiers(type)].type !== 'a') throw new Error('Type "'+type+'" is not an array' ); }
   
-  function removeQualifiers(type) { while (type[0].type === 'q') type.shift(); }
+  function popQualifiers(type) { console.log(type); while (type[0].type === 'q') type.shift(); }
   
   function checkAllQualifiers(type, value) {
     for (var i = 0; i < type.length && type[i].type === 'q'; i++) if (type[i].value === value) return true; 

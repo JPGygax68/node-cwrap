@@ -65,9 +65,13 @@ void
     {{$forall static_methods}}
     tpl->Set(String::NewSymbol("{{$=name}}"), FunctionTemplate::New({{$=name}})->GetFunction());
     {{$end}}
-    // Prototype
+    // Methods (through prototype)
     {{$forall methods}}
     tpl->PrototypeTemplate()->Set(String::NewSymbol("{{$=name}}"), FunctionTemplate::New({{$=name}})->GetFunction());
+    {{$end}}
+    // Constants (through prototype)
+    {{$forall constants}}
+    {{$call class_constant}}
     {{$end}}
     {{$if derived_from}}
     // Parent class
@@ -199,6 +203,10 @@ init (v8::Handle<Object> target)
   {{$if exposed}}
   target->Set(v8::String::NewSymbol("{{$=name}}"), {{$=name}}::ctor);
   {{$end}}
+  {{$end}}
+  
+  {{$forall constants}}
+  {{$call global_constant}}
   {{$end}}
   
   {{$forall functions}}
@@ -337,7 +345,6 @@ private:
 {{$end macro function_retval}}
 
 {{$macro extract_parameter --------------------------------}}
-
   {{$if type == 'p.q(const).char'}}
   Local<String> {{$=name}} = args[{{$=index}}]->ToString();
   {{$elsif wrapper_class}}
@@ -347,5 +354,16 @@ private:
   {{$else}}
   {{$=ctype}} {{$=name}} = static_cast<{{$=ctype}}>( args[{{$=index}}]->{{$=v8TypeAccessor(type)}}() );
   {{$end}}
-
 {{$end macro extract_parameter}}
+
+{{$macro class_constant -----------------------------------}}
+  {{$if type == 'int'}}
+  tpl->PrototypeTemplate()->Set(String::NewSymbol("{{$=name}}"), Integer::New({{$=value}}) );
+  {{$end}}
+{{$end}}
+
+{{$macro global_constant ----------------------------------}}
+  {{$if type == 'int'}}
+  target->Set(String::NewSymbol("{{$=name}}"), Integer::New({{$=value}}) );
+  {{$end}}
+{{$end}}
