@@ -56,7 +56,7 @@ function() {
     for (var i = this.length -1; i > 0 && this[--i].type === 'q'; );  
     return new Type(this.slice(i)); 
   }
-  
+
   // Tests
   
   Type.prototype.isSimple        = function() { return ! this[skipQualifiers(this)].type; }
@@ -71,9 +71,39 @@ function() {
 
   // Misc
   
-  Type.prototype.toC = function() {
+  /* function convertTypeToC(type) {
+    // Convert type descriptor back to C/++ type specification
     var parts = [];
-    for (var i = this.length; i-- > 0; ) parts.push( this[i].toC() );
+    var pointer = false;
+    type.split(/\./).forEach( function(el, i) {
+      if      (el    === 'p'   ) pointer = true;
+      else if (el    === 'a(1)') pointer = true;
+      else if (el[0] === 'q'   ) parts.push( el.slice(2, el.length-1) );
+      else {
+        parts.push(el);
+        if (pointer) parts.push('*');
+        pointer = false;
+      }
+    });
+    return parts.join(' ');
+  } */
+    
+  // TODO: this is rudimentary, not a complete solution!
+  
+  Type.prototype.toC = function() {
+    // Convert type descriptor back to C/++ type specification
+    var parts = [];
+    var pointer = false;
+    this.forEach( function(op, i) {
+      if      (op    == 'p'   ) pointer = true;
+      else if (op    == 'a(1)') pointer = true;
+      else if (op[0] == 'q'   ) parts.push( el.slice(2, el.length-1) );
+      else {
+        parts.push(op);
+        if (pointer) parts.push('*');
+        pointer = false;
+      }
+    });
     return parts.join(' ');
   }
   
@@ -82,7 +112,7 @@ function() {
   function Operator(type, value) { 
     //console.log('Operator()', type, value); 
     if (typeof value === 'undefined' && typeof type === 'string') {
-      var m = /^(\w)\((\w+)\)$/.exec(type);
+      var m = /^(\w)\(((?:[\w ]+)(?:,[\w ]+)*)\)$/.exec(type);
       if (m) { this.type = m[1].toString(); this.value = m[2].toString(); }
       else   { this.value = type; }
     }
