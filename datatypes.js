@@ -145,6 +145,7 @@ function(  _          ,    Type  ) {
   }
   
   CFunction.prototype.hasParam = function(key) {
+    // TODO: support wildcard/omitted parameter name
     if (_.isNumber(key)) return key >= 0 && key < this.parm_list.length;
     else                 return this.params.hasOwnProperty(key);
   }
@@ -157,6 +158,10 @@ function(  _          ,    Type  ) {
       var parm = this.getParam(key);
       return parm && parm.is(descr);
     }
+  }
+  
+  CFunction.prototype.forEachParam = function(cb, ctx) {
+    _.each(this.params, cb, ctx);
   }
   
   // TODO: this does not support more than one factory function

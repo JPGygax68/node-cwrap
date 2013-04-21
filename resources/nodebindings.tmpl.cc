@@ -281,14 +281,18 @@ private:
 
 {{$macro function_body ------------------------------------}}
 
-  {{$forall input_params}}
+  {{$forall params}}
+  {{$if input}}
   {{$if type != "void" && !is_self}}
   {{$call extract_parameter}}
   {{$end if}}
+  {{$end}}
   {{$end forall}}
 
-  {{$forall output_params}}
+  {{$forall params}}
+  {{$if output}}
   {{$=out_type}} {{$=name}}{{$=out_dim || ''}};
+  {{$end}}
   {{$end forall}}
 
   {{$--- Call the function --- }}
@@ -320,10 +324,12 @@ private:
 
   // Combine several output parameters into a result object
   Local<Object> r = Object::New();
-  {{$forall output_params}}
+  {{$forall params}}
+  {{$if output}}
   r->Set(String::NewSymbol("{{$=name}}"), Integer::New({{$=name}}));
   {{$--- TODO: other types than integer ---}}
-  {{$end forall}}  
+  {{$end}}
+  {{$end forall params}}  
   return scope.Close(r);
 
   {{$elsif return_charbuf_on_success}}
