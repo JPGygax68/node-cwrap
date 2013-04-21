@@ -37,6 +37,17 @@ function(  _          ,    dt        ,    Type  ) {
     if (this.constants[constant.cdecl_name]) delete this.constants[constant.cdecl_name]; 
   }
   
+  Interface.prototype.process = function(config) {
+    
+    this._orderClasses();
+    
+    if (config.global) config.global.call(this);
+    _.each(this.functions, config.functions, this);
+    _.each(this.constants, config.constants, this);
+    
+    return this;
+  }
+  
   Interface.prototype._orderClasses = function() {
     var self = this, classes = {};
     _.each(this.classes, addClass);

@@ -50,7 +50,7 @@ function(       fs ,  _          ,  Template     ,    swig  ) {
   }
   
   function generateNodeJS(intf, writer) {
-    intf._orderClasses();
+    //intf._orderClasses();
     return fs.read('./node_modules/cwrap/resources/nodebindings.tmpl.cc')
       .then( function(tmpl_code) { return new Template(tmpl_code, 'DEFAULT NODEJS TEMPLATE'); } )
       .then( function(tpl)       { return tpl.exec(intf, writer); } );
