@@ -2,8 +2,8 @@
 
 if (typeof define !== 'function') { var define = require('amdefine')(module); }
 
-define( [ 'xmldom', 'xpath', './type', './datatypes' ],
-function(  xmldom ,  xpath ,    Type ,    dt         ) {
+define( [ 'xmldom', 'xpath', './type', './interface' ],
+function(  xmldom ,  xpath ,    Type ,    Interface  ) {
 
   //--- PUBLIC FUNCTIONALITY ---
   
@@ -20,7 +20,7 @@ function(  xmldom ,  xpath ,    Type ,    dt         ) {
   
   function extractInterface(doc) {
 
-    var intf = new dt.Interface();
+    var intf = new Interface();
     
     // Get the functions
     var attrib_lists = xpath.select('//cdecl/attributelist/attribute[@name="kind"][@value="function"]/..', doc);
@@ -49,7 +49,7 @@ function(  xmldom ,  xpath ,    Type ,    dt         ) {
         var type_attr = xpath.select('./attributelist/attribute[@name="type"]/@value', param_node)[0];      
         // Have to support unnamed parameters
         var name = name_attr ? name_attr.value : 'param_'+i;
-        func.params[name] = new dt.Parameter(count, name, type_attr.value);
+        func.addParameter(count, name, type_attr.value);
         count ++;
       });
       // Special case: if only parameter is "void", there are no parameters at all

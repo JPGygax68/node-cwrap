@@ -5,52 +5,6 @@ if (typeof define !== 'function') { var define = require('amdefine')(module); }
 define( [ 'underscore', './type' ],
 function(  _          ,    Type  ) {
 
-  //--- Interface class ---
-
-  function Interface() {
-    this.functions = {};
-    this.constants = {};
-    this.classes   = {};
-  }
-  
-  Interface.prototype.newFunction = function(cdecl_name) { 
-    var func = new CFunction(this, cdecl_name);
-    this.functions[cdecl_name] = func;
-    return func;
-  }
-
-  Interface.prototype.removeFunction = function(func) { 
-    if (this.functions[func.cdecl_name]) delete this.functions[func.cdecl_name]; 
-  }
-  
-  Interface.prototype.getClass = function(name) {
-    var theclass = this.classes[name];
-    if (!theclass) theclass = this.classes[name] = new Struct(name, this);
-    return theclass;
-  }
-  
-  Interface.prototype.newConstant = function(cdecl_name) {
-    var constant = new Constant(this, cdecl_name);
-    this.constants[cdecl_name] = constant;
-    return constant;
-  }
-  
-  Interface.prototype.removeConstant = function(constant) { 
-    if (this.constants[constant.cdecl_name]) delete this.constants[constant.cdecl_name]; 
-  }
-  
-  Interface.prototype._orderClasses = function() {
-    var self = this, classes = {};
-    _.each(this.classes, addClass);
-    this.classes = classes;
-
-    function addClass(cls) {
-      if (!classes[cls]) { 
-        if (cls.derived_from) addClass(self.classes[cls.derived_from]); classes[cls.name] = cls; 
-      }
-    }
-  }
-  
   //--- Struct ---
   
   function Struct(name, intf) {
@@ -99,6 +53,11 @@ function(  _          ,    Type  ) {
     this.params       = {};
   }
 
+  CFunction.prototype.addParameter = function(index, name, type) {
+    console.assert(!this.params[name]);
+    this.params[name] = new Parameter(index, name, type);
+  }
+  
   CFunction.prototype.removePrefix = function(prefix) {
     if (this.cdecl_name.slice(0, prefix.length) === prefix) this.name = this.cdecl_name.slice(prefix.length);
     else console.warn('Function "'+func.name+'" does not have the "'+prefix+'" prefix');
@@ -185,7 +144,6 @@ function(  _          ,    Type  ) {
   //--- EXPORTS ---
   
   return {
-    Interface:    Interface,
     Struct:       Struct,
     Function:     CFunction,
     Constant:     Constant,

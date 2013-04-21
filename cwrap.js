@@ -2,8 +2,8 @@
 
 if (typeof define !== 'function') { var define = require('amdefine')(module); }
 
-define( [ 'q-io/fs', 'underscore', 'gpc-template', './type', './datatypes', './swig' ],
-function(       fs ,  _          ,  Template     ,    Type ,    dt        ,    swig  ) {
+define( [ 'q-io/fs', 'underscore', 'gpc-template', './swig' ],
+function(       fs ,  _          ,  Template     ,    swig  ) {
 
   /** Maps C types to V8 wrapper classes and type-casting accessor methods of 
    *  the V8::Value class.
