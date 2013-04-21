@@ -85,11 +85,12 @@ function(  _          ,    Type  ) {
     return null; // intentional STOP to chaining
   }
   
-  CFunction.prototype.toMethod = function(class_name, self_name, pattern, repl) {
+  CFunction.prototype.toMethod = function(class_name, pattern, repl) {
     //console.log(fname, '-> method', class_name);
     var the_class = this['class'] = this['interface'].getClass(class_name);
     // Shift parameters to the left, leftmost becomes "this" reference
-    this.params[self_name].is_self = true;
+    //this.params[self_name].is_self = true;
+    this.getParam(0).is_self = true;
     _.each(this.params, function(param) { if (param.index === 0) { param.value_expr = 'self'; }; param.index --; } );
     // Remove function from the interface and add it to the class
     this['interface'].removeFunction(this);
