@@ -53,6 +53,12 @@ function(  _          ,    Type  ) {
     this.params       = {};
   }
 
+  CFunction.prototype.isOneOf = function(names) {
+    if      (arguments.length > 1)      names = Array.prototype.slice.call(arguments);
+    else if (typeof names === 'string') names = names.split(',');
+    return names.indexOf(this.name) >= 0 || names.indexOf(this.cdecl_name) >= 0;
+  }
+  
   CFunction.prototype.addParameter = function(index, name, type) {
     console.assert(!this.params[name]);
     this.params[name] = new Parameter(index, name, type);
@@ -68,7 +74,7 @@ function(  _          ,    Type  ) {
     var the_class = this['class'] = this['interface'].getClass(class_name);
     // Shift parameters to the left, leftmost becomes "this" reference
     this.params[self_name].is_self = true;
-    _.each(this.params, function(param) { if (param.index === 0) { param.value_expr = 'self'; }; /*param.index --;*/ } );
+    _.each(this.params, function(param) { if (param.index === 0) { param.value_expr = 'self'; }; param.index --; } );
     //console.log(this.params);
     // Remove function from the interface and add it to the class
     this['interface'].removeFunction(this);

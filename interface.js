@@ -40,8 +40,8 @@ function(  _          ,    dt        ,    Type  ) {
   Interface.prototype.process = function(config) {
     
     if (config.global) config.global.call(this);
-    _.each(this.functions, config.functions, this);
-    _.each(this.constants, config.constants, this);
+    _(this.functions).each(config.functions, this);
+    _(this.constants).each(config.constants, this);
     
     this._orderClasses();
     
