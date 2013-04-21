@@ -39,11 +39,11 @@ function(  _          ,    dt        ,    Type  ) {
   
   Interface.prototype.process = function(config) {
     
-    this._orderClasses();
-    
     if (config.global) config.global.call(this);
     _.each(this.functions, config.functions, this);
     _.each(this.constants, config.constants, this);
+    
+    this._orderClasses();
     
     return this;
   }
@@ -60,5 +60,8 @@ function(  _          ,    dt        ,    Type  ) {
     }
   }
   
+  //--- EXPORTS ---
+  
   return Interface;
+  
 });
