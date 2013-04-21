@@ -53,7 +53,7 @@ function(  xmldom ,  xpath ,    Type ,    Interface  ) {
         count ++;
       });
       // Special case: if only parameter is "void", there are no parameters at all
-      if (count === 1 && func.params['param_0'] && func.params.param_0.type == 'void') func.params = {};
+      if (count === 1 && func.params['param_0'] && func.params.param_0.type == 'void') func.clearParams();
     });
     
     // Get the preprocessor constants

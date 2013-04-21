@@ -39,7 +39,7 @@ function(  _          ,    dt        ,    Type  ) {
   
   Interface.prototype.process = function(config) {
     
-    if (config.global) config.global.call(this);
+    if (config.init) config.init.call(this);
     _(this.functions).each(config.functions, this);
     _(this.constants).each(config.constants, this);
     
