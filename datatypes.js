@@ -189,7 +189,7 @@ function(  _          ,    Type  ) {
     this.name         = cdecl_name;
   }
 
-  Constant.prototype.toClass = function (class_name) {
+  Constant.prototype.attachTo = function (class_name) {
     var the_class = this['class'] = this['interface'].getClass(class_name);
     // Remove function from the interface and add it to the class
     this['interface'].removeConstant(this);
@@ -208,6 +208,10 @@ function(  _          ,    Type  ) {
   Parameter.prototype.is = function(descr) {
     descr = descr.split(':');
     return descr[0] == this.name && (!descr[1] || descr[1] == this.type);
+  }
+  
+  Parameter.prototype.setWrapperClass = function(class_name) {
+    this.wrapper_class = class_name;
   }
   
   Parameter.IN    = 1;
