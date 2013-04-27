@@ -14,7 +14,16 @@ function() {
     Array.call(this); 
     if      (arg instanceof Type    ) Type.call(this, arg.toString());
     //else if (arg instanceof Operator) Array.prototype.push.call(this, arg);
-    else if (typeof arg === 'string') arg.split('.').forEach( function(op) { Array.prototype.push.call(this, op); }, this);
+    // TODO: the following will not work with varargs (encoded "v(...)" by SWIG)!!
+    else if (typeof arg === 'string') {
+      var ops = [];
+      for (var i = 0, ilast = 0, nesting = 0; i < arg.length; i ++) {
+        if      (arg[i] === '('                 ) nesting ++;
+        else if (arg[i] === ')'                 ) nesting --;
+        else if (nesting === 0 && arg[i] === '.') Array.prototype.push.call(this, arg.slice(ilast, i)), ilast = i + 1;
+      }
+      Array.prototype.push.call(this, arg.slice(ilast));
+    }
   }
   
   Type.prototype = new Array();

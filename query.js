@@ -64,9 +64,10 @@ function(  _          ,    Interface ,    TVParser ,    cc           ) {
         
         //------
         function parseArgDesc() {
-          for (var desc = '', parens_level = 0; !(parens_level === 0 && parser.peek() === ')') && parser.peek() !== ','; desc += parser.consume())
+          for (var desc = '', parens_level = 0; !(parens_level === 0 && parser.peek() === ')') && parser.peek() !== ','; desc += parser.consume()) {
             if      (parser.peek() === '(') parens_level ++;
             else if (parser.peek() === ')') parens_level --;
+          }
           //console.log('desc:', desc);
           if (desc === '*') return {};
           var parts = desc.split(':');            
