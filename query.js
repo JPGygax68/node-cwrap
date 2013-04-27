@@ -29,8 +29,8 @@ function(  _          ,    Interface ,    TVParser ,    cc           ) {
       var id = parser.identifier();
       if (id === 'f') {
         var filters = [];
-        if (parser.peek() === '.') parser.consume(), filters.push( makeNameFilter() );
-        if (parser.peek() === '(') parser.consume(), filters.push( makeArgumentsFilter() ), parser.consume;
+        if (parser.peek() === '.') parser.consume(), filters.push( makeNameFilter()      );
+        if (parser.peek() === '(') parser.consume(), filters.push( makeSignatureFilter() ), parser.consume;
         var filter = andCombineFilters(filters);
         return function() { return _.filter(intf.functions, function(func) { return filter(func); }); };
       }
@@ -43,17 +43,35 @@ function(  _          ,    Interface ,    TVParser ,    cc           ) {
         return function(func) { return func.name.match(pat); };
       }    
      
-      function makeArgumentsFilter() {
-        var matchers = [];
-        while (true) {
-          if (parser.peek() === '*') parser.consume(), matchers.push( '*' );
-          if (parser.peek() !== ',') break;
+      function makeSignatureFilter() {
+        var parm_descs = [];
+        while (parser.peek() !== ')') {
+          parm_descs.push( parseArgDesc() );
+          if (parser.peek() !== ',') break; else parser.consume();          
         }
         if (parser.peek() !== ')') throw new Error('Cannot parse signature pattern: expected ")", got "'+parser.peek()+'"');
         return function(func) { 
-          // TODO: serious matching!
-          return func.parm_list.length === matchers.length; 
+          if (func.parm_list.length !== parm_descs.length) return false; // TODO: varargs!
+          for (var i = 0; i < func.parm_list.length; i++) if (!checkParam(parm_descs[i], func.parm_list[i])) return false;
+          return true;
+          //------
+          function checkParam(desc, parm) {
+            if (desc.name && desc.name !== parm.name) return false;
+            if (desc.type && desc.type !=  parm.type) return false;
+            return true;
+          }
         };
+        
+        //------
+        function parseArgDesc() {
+          for (var desc = '', parens_level = 0; !(parens_level === 0 && parser.peek() === ')') && parser.peek() !== ','; desc += parser.consume())
+            if      (parser.peek() === '(') parens_level ++;
+            else if (parser.peek() === ')') parens_level --;
+          //console.log('desc:', desc);
+          if (desc === '*') return {};
+          var parts = desc.split(':');            
+          return { name: parts[0], type: parts[1] };
+        }
       }
     }
   
