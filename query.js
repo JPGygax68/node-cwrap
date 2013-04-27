@@ -29,15 +29,32 @@ function(  _          ,    Interface ,    TVParser ,    cc           ) {
       var id = parser.identifier();
       if (id === 'f') {
         var filters = [];
-        if (parser.peek() === '.') {
-          parser.consume();
-          var pat = parser.namePattern();
-          filters.push( function(func) { return func.name.match(pat); } );
-        }
+        if (parser.peek() === '.') parser.consume(), filters.push( makeNameFilter() );
+        if (parser.peek() === '(') parser.consume(), filters.push( makeArgumentsFilter() ), parser.consume;
         var filter = andCombineFilters(filters);
         return function() { return _.filter(intf.functions, function(func) { return filter(func); }); };
       }
       else throw new Error('Failed to parse selector "'+seltor+'"');
+
+      //---
+      
+      function makeNameFilter() {
+        var pat = parser.namePattern();
+        return function(func) { return func.name.match(pat); };
+      }    
+     
+      function makeArgumentsFilter() {
+        var matchers = [];
+        while (true) {
+          if (parser.peek() === '*') parser.consume(), matchers.push( '*' );
+          if (parser.peek() !== ',') break;
+        }
+        if (parser.peek() !== ')') throw new Error('Cannot parse signature pattern: expected ")", got "'+parser.peek()+'"');
+        return function(func) { 
+          // TODO: serious matching!
+          return func.parm_list.length === matchers.length; 
+        };
+      }
     }
   
     var fn = function(seltor) {
