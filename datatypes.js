@@ -52,6 +52,7 @@ function(  _          ,    Type  ) {
     this.name         = cdecl_name; // initially the same as cdecl name
     this.params       = {};
     this.parm_list    = [];
+    this.type         = null;
   }
 
   CFunction.prototype.isOneOf = function(names) {

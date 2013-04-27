@@ -29,8 +29,9 @@ function(  _          ,    Interface ,    TVParser ,    cc           ) {
       var id = parser.identifier();
       if (id === 'f') {
         var filters = [];
-        if (parser.peek() === '.') parser.consume(), filters.push( makeNameFilter()      );
-        if (parser.peek() === '(') parser.consume(), filters.push( makeSignatureFilter() ), parser.consume;
+        if (parser.peek() === '.') parser.consume(), filters.push( parseNameFilter()       );
+        if (parser.peek() === '(') parser.consume(), filters.push( parseSignatureFilter()  ), parser.consume();
+        if (parser.peek() === ':') parser.consume(), filters.push( parseReturnTypeFilter() );
         var filter = andCombineFilters(filters);
         return function() { return _.filter(intf.functions, function(func) { return filter(func); }); };
       }
@@ -38,22 +39,29 @@ function(  _          ,    Interface ,    TVParser ,    cc           ) {
 
       //---
       
-      function makeNameFilter() {
+      function parseNameFilter() {
         var pat = parser.namePattern();
         return function(func) { return func.name.match(pat); };
       }    
      
-      function makeSignatureFilter() {
-        var parm_descs = [];
+      function parseSignatureFilter() {
+        var parm_descs = [], ending_varargs = false;
         while (parser.peek() !== ')') {
-          parm_descs.push( parseArgDesc() );
-          if (parser.peek() !== ',') break; else parser.consume();          
+          if (ending_varargs) throw new Error('There can be no more argument descriptors after a "**" placeholder');
+          var desc = parseArgDesc();
+          parm_descs.push( desc );
+          ending_varargs = (desc === '**');
+          if (parser.peek() !== ',') break;
+          parser.consume();  
         }
         if (parser.peek() !== ')') throw new Error('Cannot parse signature pattern: expected ")", got "'+parser.peek()+'"');
         return function(func) { 
-          if (func.parm_list.length !== parm_descs.length) return false; // TODO: varargs!
-          for (var i = 0; i < func.parm_list.length; i++) if (!checkParam(parm_descs[i], func.parm_list[i])) return false;
-          return true;
+          for (var i = 0; i < parm_descs.length; i++) {
+            if (parm_descs[i] === '**') return true; // matches everything, including "no more parameters"
+            if (i >= func.parm_list.length) return false;
+            if (!checkParam(parm_descs[i], func.parm_list[i])) return false;
+          }
+          return func.parm_list.length === parm_descs.length;
           //------
           function checkParam(desc, parm) {
             if (desc.name && desc.name !== parm.name) return false;
@@ -69,10 +77,18 @@ function(  _          ,    Interface ,    TVParser ,    cc           ) {
             else if (parser.peek() === ')') parens_level --;
           }
           //console.log('desc:', desc);
-          if (desc === '*') return {};
+          if      (desc === '*' ) return {};
+          else if (desc === '**') return '**';
           var parts = desc.split(':');            
           return { name: parts[0], type: parts[1] };
         }
+      }
+      
+      function parseReturnTypeFilter() {
+        //console.log('parseReturnTypeFilter()');
+        for (var type = ''; !parser.atEnd(); type += parser.consume());
+        if (type === '') return function()     { return true; }
+        else             return function(func) { return func.type == type; }
       }
     }
   
