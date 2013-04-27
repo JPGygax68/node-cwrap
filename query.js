@@ -9,11 +9,11 @@ function(  _          ,    Interface ,    TVParser ,    cc           ) {
   
   Parser.prototype = new TVParser();
   
-  Parser.prototype.pattern = function() {
+  Parser.prototype.namePattern = function() {
     var pat = '';
     while (!this.atEnd()) {
       if      (cc.isAlnum(this.peek())) pat += this.consume();
-      else if (this.peek() === '*'    ) this.consume(), pat += '.*';
+      else if (this.peek() === '*'    ) this.consume(), pat += '(.*)';
       else                              break;
     }
     //console.log('regexp: ', pat);
@@ -28,10 +28,14 @@ function(  _          ,    Interface ,    TVParser ,    cc           ) {
       
       var id = parser.identifier();
       if (id === 'f') {
-        var name_pat;
-        if (parser.peek() === '.') parser.consume(), name_pat = parser.pattern();
-        if (name_pat) return function() { return _.filter(intf.functions, function(fn) { return fn.name.match(name_pat); } ); };
-        else          return function() { return intf.functions; };
+        var filters = [];
+        if (parser.peek() === '.') {
+          parser.consume();
+          var pat = parser.namePattern();
+          filters.push( function(func) { return func.name.match(pat); } );
+        }
+        var filter = andCombineFilters(filters);
+        return function() { return _.filter(intf.functions, function(func) { return filter(func); }); };
       }
       else throw new Error('Failed to parse selector "'+seltor+'"');
     }
@@ -43,6 +47,12 @@ function(  _          ,    Interface ,    TVParser ,    cc           ) {
     fn.intf = intf;
     
     return fn;
+    
+    //---
+    
+    function andCombineFilters(filters) {
+      return function(el) { for (var i = 0; i < filters.length; i ++) if (!filters[i](el)) return false; return true; };
+    }
   }
   
   return query;
