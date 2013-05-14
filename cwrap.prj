@@ -1,0 +1,18 @@
+[Project ID]
+Signature=UE Proj: v.1
+[Project Information]
+Use Relative Directory=1
+Relative to Project File=1
+Include Sub Directories=1
+Project Tagfile=
+Project Wordfile=
+Project TpFile=
+Filter=
+Create Tagfile=0
+[Files]
+0=cwrap.js
+1=test\query.js
+2=test\test_query.js
+3=test\test_parse.js
+4=swig.js
+5=interface.js

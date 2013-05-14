@@ -1,4 +1,7 @@
 node_modules
+*.pui
 *.out
 test/*
 sample/nodejs/build/*
+*.bak
+/swig.xml

@@ -72,8 +72,10 @@ function(  xmldom ,  xpath ,    Type ,    Interface  ) {
     var attrib_lists = xpath.select('//cdecl/attributelist/attribute[@name="kind"][@value="variable"]/..', doc);
     attrib_lists.forEach( function(attrib_list) {
       // Extract the constant name & other attributes
-      var name         = xpath.select('./attribute[@name="name"]/@value'        , attrib_list)[0].value;
-      var hasconsttype = xpath.select('./attribute[@name="hasconsttype"]/@value', attrib_list)[0].value;
+      //var name         = xpath.select('./attribute[@name="name"]/@value'        , attrib_list)[0].value;
+      //var hasconsttype = xpath.select('./attribute[@name="hasconsttype"]/@value', attrib_list)[0].value;
+      var name         = getAttributeValue('name'        , attrib_list);
+      var hasconsttype = getAttributeValue('hasconsttype', attrib_list);
       if (hasconsttype) {
         // Create and add a new constant descriptor
         var constant = intf.newConstant(name);
@@ -88,6 +90,13 @@ function(  xmldom ,  xpath ,    Type ,    Interface  ) {
     // Done.
     //console.log( JSON.stringify(intf.functions, null, '\t') );
     return intf;
+    
+    //------
+    
+    function getAttributeValue(name, attrib_list) {
+    	var attr = xpath.select('./attribute[@name="'+name+'"]/@value', attrib_list);
+    	if (attr && attr.length > 0) { return attr[0].value; }
+    }
   }
 
   //--- EXPORTS ---

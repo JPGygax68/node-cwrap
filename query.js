@@ -1,10 +1,20 @@
 "use strict";
 
+/** 
+
+	This module provides a "query" wrapper for Interface descriptors. It allows
+	user code to query an Interface and to execute chainable transformations on
+	result sets (somewhat similar to jQuery).
+	
+*/
+ 
 if (typeof define !== 'function') { var define = require('amdefine')(module); }
 
 define( [ 'underscore', './interface', './tvparser', './charclasses' ],
 function(  _          ,    Interface ,    TVParser ,    cc           ) {
 
+  //--- Parser --------------------------------------------
+  
   function Parser() { TVParser.apply(this, arguments); }
   
   Parser.prototype = new TVParser();
@@ -20,6 +30,7 @@ function(  _          ,    Interface ,    TVParser ,    cc           ) {
     return new RegExp('^'+pat+'$');
   }
   
+  //--- Interface wrapper ---------------------------------
   
   function query(intf) {
   
@@ -105,7 +116,10 @@ function(  _          ,    Interface ,    TVParser ,    cc           ) {
     function andCombineFilters(filters) {
       return function(el) { for (var i = 0; i < filters.length; i ++) if (!filters[i](el)) return false; return true; };
     }
-  }
+    
+  } // query()
+  
+  //--- EXPORTS -------------------------------------------
   
   return query;
 });
