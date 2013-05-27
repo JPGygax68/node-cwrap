@@ -87,6 +87,33 @@ function(  xmldom ,  xpath ,    Type ,    Interface  ) {
       // else TODO: how to wrap global variables ?
     });
     
+    // Get the enums
+    var enum_list = xpath.select('//enum', doc);
+    enum_list.forEach( function(enum_) {
+      var type = xpath.select('./attributelist/attribute[@name="type"]/@value', enum_)[0].value;
+      console.log('enum type: "'+type+'"');
+    });
+    
+    /*
+    var attrib_lists = xpath.select('//enum/attributelist/attribute[@name="kind"][@value="variable"]/..', doc);
+    attrib_lists.forEach( function(attrib_list) {
+      // Extract the constant name & other attributes
+      //var name         = xpath.select('./attribute[@name="name"]/@value'        , attrib_list)[0].value;
+      //var hasconsttype = xpath.select('./attribute[@name="hasconsttype"]/@value', attrib_list)[0].value;
+      var name         = getAttributeValue('name'        , attrib_list);
+      var hasconsttype = getAttributeValue('hasconsttype', attrib_list);
+      if (hasconsttype) {
+        // Create and add a new constant descriptor
+        var constant = intf.newConstant(name);
+        // Extract and store the data
+        constant.type  = new Type( xpath.select('./attribute[@name="type"]/@value' , attrib_list)[0].value ).popQualifiers();
+        //console.log('New constant:', name, constant.type.toString() );
+        constant.value = xpath.select('./attribute[@name="value"]/@value', attrib_list)[0].value;
+      }
+      // else TODO: how to wrap global variables ?
+    });
+    */
+    
     // Done.
     //console.log( JSON.stringify(intf.functions, null, '\t') );
     return intf;
