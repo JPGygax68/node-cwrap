@@ -91,7 +91,9 @@ function parse(filename, options) {
 		.then( function(xmldata) {
 			return fs.write('swig.xml', xmldata).then( function() { return xmldata; } );
 		})
-		.then( swig.parseSwigXml.bind(this) );
+		.then( swig.parseSwigXml.bind(this) )
+		// TODO: remove temporary file
+		;
 }
 
 //--- Helper stuff ---
