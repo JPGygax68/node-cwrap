@@ -5,7 +5,7 @@ if (typeof define !== 'function') { var define = require('amdefine')(module); }
 define( [ 'underscore', './type' ],
 function(  _          ,    Type  ) {
 
-  //--- Struct ---
+  //--- Struct / class --------
   
   function Struct(name, intf) {
     if (!intf) throw new Error('INTERNAL: Struct constructor needs 2 parameters: name and interface object');
@@ -195,6 +195,15 @@ function(  _          ,    Type  ) {
     // Remove function from the interface and add it to the class
     this['interface'].removeConstant(this);
     the_class.addConstant(this);
+  }
+  
+  //--- Enum --------
+  
+  function Enum(intf, cdecl_name) {
+    this['interface'] = intf;
+    this.cdecl_name = cdecl_name;
+    this.name       = cdecl_name;
+    this.values     = {};
   }
   
   //--- Parameter ---

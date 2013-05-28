@@ -91,7 +91,26 @@ function(  xmldom ,  xpath ,    Type ,    Interface  ) {
     var enum_list = xpath.select('//enum', doc);
     enum_list.forEach( function(enum_) {
       var type = xpath.select('./attributelist/attribute[@name="type"]/@value', enum_)[0].value;
-      console.log('enum type: "'+type+'"');
+      if (type.slice(0, 5) === 'enum ') {
+        var enum_name = type.slice(5);
+        console.log('enum type: "'+type+'"');
+        var enum_items = xpath.select('./enumitem', enum_);
+        if (enum_name === '') {
+          enum_items.forEach( function(item) {
+            var name  = xpath.select('./attributelist/attribute[@name="value"]/@value', item)[0].value;
+            var value = xpath.select('./attributelist/attribute[@name="enumvalue"]/@value', item)[0].value;
+            var type  = xpath.select('./attributelist/attribute[@name="type"]/@value', item)[0].value;
+            // An unnamed enum is treated like a constant          
+            var constant = intf.newConstant(name);
+            constant.type  = type;
+            constant.value = value;
+            //console.log('Anonymous enum treated as constant:', name, value, type);
+          });
+        }
+        else {
+          throw new Error('named enums: not implemented yet');
+        }
+      }
     });
     
     /*

@@ -36,7 +36,17 @@ function(  _          ,    dt        ,    Type  ) {
   Interface.prototype.removeConstant = function(constant) { 
     if (this.constants[constant.cdecl_name]) delete this.constants[constant.cdecl_name]; 
   }
+
+  Interface.prototype.newEnum = function(cdecl_name) {
+    var enum_ = new dt.Enum(this, cdecl_name);
+    this.enums[cdecl_name] = enum_;
+    return enum_;
+  }
   
+  Interface.prototype.removeEnum = function(enum_) {
+    if (this.enums[enum_.cdecl_name]) delete this.enums[enum_.cdecl_name];
+  }
+    
   Interface.prototype.process = function(config) {
     
     if (config.init) config.init.call(this);
