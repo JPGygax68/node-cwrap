@@ -34,6 +34,8 @@ describe('Testing with squish library; ', function() {
       it('returns all functions as an array', function() { assert( squish.functions().length > 0 ); } );
       it('can filter functions by name', function() { assert.equal( squish.functions('Compress').length, 1 ); } );
       it('can filter functions by return type', function() { assert.equal( squish.functions(':void').length, 5 ); } );
+      it('can filter functions by argument name', function() { assert.equal( squish.functions('(rgba,**)').length, 5 ); } );
+      it('can filter functions by argument type', function() { assert.equal( squish.functions('(:p.u8,**)').length, 3 ); } );
     });
   });  
 });

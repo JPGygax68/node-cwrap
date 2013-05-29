@@ -16,11 +16,13 @@ function(   cc          ) {
   
   TrivialParser.prototype.atEnd = function() { return this.index >= this.source.length; }
   
-  TrivialParser.prototype.peek  = function() { if (!this.atEnd()) return this.source[this.index]; }
+  TrivialParser.prototype.peek  = function(n) { n = n || 1; if (!this.atEnd()) return this.source.slice(this.index, this.index+n); }
   
-  TrivialParser.prototype.consume = function() {
+  TrivialParser.prototype.consume = function(n) {
     if (this.atEnd()) throw new Error('TrivialParser.consume(): trying to consume past end of input');
-    var ch = this.source[this.index++];
+    n = n || 1;
+    var ch = this.source.slice(this.index, this.index+n);
+    this.index += n;
     return ch;
   }
   

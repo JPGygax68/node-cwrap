@@ -170,10 +170,13 @@ function(  _          ,    TVParser ,    cc          ,    dt        ,    Type  )
     
     function parseNameFilter() {
       var pat = '';
-      while (!parser.atEnd() && cc.isAlnum(parser.peek()) ) {
-        if      (cc.isAlnum(parser.peek())) pat += parser.consume();
-        else if (parser.peek() === '*'    ) parser.consume(), pat += '(.*)';
-        else                                break;
+      if (cc.isIdentifierStart(parser.peek()) || parser.peek(2) === '::') {
+        while (!parser.atEnd() && (cc.isIdentifierPart(parser.peek()) || parser.peek(2) === '::')) {
+          if      (cc.isAlnum(parser.peek())) pat += parser.consume();
+          else if (parser.peek(2) === '::'  ) parser.consume(2), pat += '::';
+          else if (parser.peek()  === '*'   ) parser.consume() , pat += '(.*)';
+          else                                break;
+        }
       }
       //console.log('name filter regexp: "' + pat + '"', pat.length);
       return pat.length > 0 ? function(func) { return func.name.match(new RegExp('^'+pat+'$')); } 
@@ -200,6 +203,7 @@ function(  _          ,    TVParser ,    cc          ,    dt        ,    Type  )
         return func.parm_list.length === parm_descs.length;
         //------
         function checkParam(desc, parm) {
+          console.log('checkParam()', desc, parm);
           if (desc.name && desc.name !== parm.name) return false;
           if (desc.type && desc.type !=  parm.type) return false;
           return true;
