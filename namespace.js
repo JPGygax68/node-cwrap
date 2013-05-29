@@ -203,7 +203,7 @@ function(  _          ,    TVParser ,    cc          ,    dt        ,    Type  )
         return func.parm_list.length === parm_descs.length;
         //------
         function checkParam(desc, parm) {
-          console.log('checkParam()', desc, parm);
+          //console.log('checkParam()', desc, parm);
           if (desc.name && desc.name !== parm.name) return false;
           if (desc.type && desc.type !=  parm.type) return false;
           return true;

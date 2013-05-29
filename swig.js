@@ -132,6 +132,37 @@ function(  xmldom ,  xpath ,    Type ,    Namespace  ) {
     });
     */
     
+    // Get the types
+    /*
+    var typescopes = xpath.select('//typescope', doc);
+    typescopes.forEach( function(scope) { 
+      var name = xpath.select('./attributelist/attribute[@name="name"]/@value', scope)[0].value;
+      console.log('Typescope:', name); 
+      var types = xpath.select('./attributelist/typetab/attributelist/attribute', scope);
+      types.forEach( function(attr) {
+        if (attr.attributes.length > 0) {
+          //console.log('attr:', attr.attributes);
+          var name  = xpath.select('./@name' , attr)[0].value;
+          var value = xpath.select('./@value', attr)[0].value;
+          console.log(name, value);
+        }
+      });
+    });
+    */
+    var attrib_lists = xpath.select('//cdecl/attributelist/attribute[@name="kind"][@value="typedef"]/..', doc);
+    attrib_lists.forEach( function(attrib_list) {
+      // Extract the type name and definition
+      var name = getAttributeValue('name', attrib_list);
+      var type = getAttributeValue('type', attrib_list);
+      if (type) {
+        // Create and add a new typedef descriptor
+        // TODO
+        console.log(name + ' = ' + type);
+      }
+      // else TODO: how to wrap global variables ?
+    });
+    
+    
     // Done.
     //console.log( JSON.stringify(intf.functions, null, '\t') );
     return intf;
@@ -139,8 +170,8 @@ function(  xmldom ,  xpath ,    Type ,    Namespace  ) {
     //------
     
     function getAttributeValue(name, attrib_list) {
-    	var attr = xpath.select('./attribute[@name="'+name+'"]/@value', attrib_list);
-    	if (attr && attr.length > 0) { return attr[0].value; }
+      var attr = xpath.select('./attribute[@name="'+name+'"]/@value', attrib_list);
+      if (attr && attr.length > 0) { return attr[0].value; }
     }
   }
 
