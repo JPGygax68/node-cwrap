@@ -1,7 +1,7 @@
 var assert = require('assert');
-var cwrap = require('../cwrap');
+var cwrap  = require('../cwrap');
 
-describe('parsing', function() {
+describe('Testing with squish library; ', function() {
   
   var intf;
 
@@ -11,13 +11,28 @@ describe('parsing', function() {
       .then( function(intf_) { intf = intf_; done(); } );
   });
   
-  describe('interface object', function() {
+  /*
+  describe('Interface object', function() {
     it('should have a "functions" property', function() { assert(!!intf.functions); } );
     it('should have a "constants" property', function() { assert(!!intf.constants); } );
     it('should have a "classes" property', function() { assert(!!intf.classes); } );
-    it('should have found a function "squish::Compress"', function() { assert(!!intf.functions['squish::Compress']); } );
-    it('should have found a function "squish::Decompress"', function() { assert(!!intf.functions['squish::Compress']); } );
-    it('should have found a constant "squish::kDxt1"', function() { assert(!!intf.constants['squish::kDxt1']); } );
+    
+    var squish;
+    it('should have a namespace "squish"', function() { assert( (squish = intf.namespaces['squish']) ); } );
+    it('namespace "squish" has a function "Compress"', function() { assert( squish.functions['Compress'] ); } );
+    it('namespace "squish" has a function "Decompress"', function() { assert( squish.functions['Decompress'] ); } );
+    it('namespace "squish" has a constant "kDxt1"', function() { assert( squish.constants['kDxt1'] ); } );
   });
-  
+  */
+
+  describe('Namespace', function() {
+    var squish;
+    describe('#namespace[]', function() {
+      it('gives access to namespace objects by string index', function() { assert( typeof (squish = intf.namespace['squish']) === 'object' ); });
+    });
+    describe('#functions()', function() {
+      it('returns all functions as an array', function() { assert( squish.functions().length > 0 ); } );
+      it('can filter functions by return type', function() { assert.equal( squish.functions(':void').length, 5 ); } );
+    });
+  });  
 });

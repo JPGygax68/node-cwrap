@@ -14,7 +14,7 @@ function(   cc          ) {
     this.index  = 0;
   }
   
-  TrivialParser.prototype.atEnd = function()  { return this.index >= this.source.length; }
+  TrivialParser.prototype.atEnd = function() { return this.index >= this.source.length; }
   
   TrivialParser.prototype.peek  = function() { if (!this.atEnd()) return this.source[this.index]; }
   
@@ -27,7 +27,7 @@ function(   cc          ) {
   TrivialParser.prototype.identifier = function() {
     if (cc.isAlpha(this.peek())) {
       var id = '';
-      while (cc.isAlnum(this.peek())) { id += this.consume(); }
+      while (this.peek() !== undefined && cc.isAlnum(this.peek())) { id += this.consume(); }
       return id;
     }
   }

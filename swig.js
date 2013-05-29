@@ -2,8 +2,8 @@
 
 if (typeof define !== 'function') { var define = require('amdefine')(module); }
 
-define( [ 'xmldom', 'xpath', './type', './interface' ],
-function(  xmldom ,  xpath ,    Type ,    Interface  ) {
+define( [ 'xmldom', 'xpath', './type', './namespace' ],
+function(  xmldom ,  xpath ,    Type ,    Namespace  ) {
 
   //--- PUBLIC FUNCTIONALITY ---
   
@@ -20,7 +20,7 @@ function(  xmldom ,  xpath ,    Type ,    Interface  ) {
   
   function extractInterface(doc) {
 
-    var intf = new Interface();
+    var intf = new Namespace();
     
     // Get the functions
     var attrib_lists = xpath.select('//cdecl/attributelist/attribute[@name="kind"][@value="function"]/..', doc);
@@ -93,7 +93,6 @@ function(  xmldom ,  xpath ,    Type ,    Interface  ) {
       var type = xpath.select('./attributelist/attribute[@name="type"]/@value', enum_)[0].value;
       if (type.slice(0, 5) === 'enum ') {
         var enum_name = type.slice(5);
-        console.log('enum type: "'+type+'"');
         var enum_items = xpath.select('./enumitem', enum_);
         if (enum_name === '') {
           enum_items.forEach( function(item) {

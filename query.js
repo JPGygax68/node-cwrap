@@ -2,16 +2,16 @@
 
 /** 
 
-	This module provides a "query" wrapper for Interface descriptors. It allows
-	user code to query an Interface and to execute chainable transformations on
-	result sets (somewhat similar to jQuery).
-	
+  This module provides a "query" wrapper for namespace descriptors. It allows
+  user code to query an Interface and to execute chainable transformations on
+  result sets (somewhat similar to jQuery).
+  
 */
  
 if (typeof define !== 'function') { var define = require('amdefine')(module); }
 
-define( [ 'underscore', './interface', './tvparser', './charclasses' ],
-function(  _          ,    Interface ,    TVParser ,    cc           ) {
+define( [ 'underscore', './namespace', './tvparser', './charclasses' ],
+function(  _          ,    Namespace ,    TVParser ,    cc           ) {
 
   //--- Parser --------------------------------------------
   
@@ -45,6 +45,14 @@ function(  _          ,    Interface ,    TVParser ,    cc           ) {
         if (parser.peek() === ':') parser.consume(), filters.push( parseReturnTypeFilter() );
         var filter = andCombineFilters(filters);
         return function() { return _.filter(intf.functions, function(func) { return filter(func); }); };
+      }
+      else if (id === 'ns') {
+        /*
+        var filters = [];
+        if (parser.peek() === '.') parser.consume(), filters.push( parseNameFilter()      );
+        var filter = andCombineFilters(filters);
+        //return function() { return _.filter(intf
+        */
       }
       else throw new Error('Failed to parse selector "'+seltor+'"');
 
