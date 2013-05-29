@@ -32,6 +32,7 @@ describe('Testing with squish library; ', function() {
     });
     describe('#functions()', function() {
       it('returns all functions as an array', function() { assert( squish.functions().length > 0 ); } );
+      it('can filter functions by name', function() { assert.equal( squish.functions('Compress').length, 1 ); } );
       it('can filter functions by return type', function() { assert.equal( squish.functions(':void').length, 5 ); } );
     });
   });  

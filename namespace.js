@@ -2,25 +2,27 @@
 
 if (typeof define !== 'function') { var define = require('amdefine')(module); }
 
-define( [ 'underscore', './tvparser', './datatypes', './type' ],
-function(  _          ,    TVParser ,    dt        ,    Type  ) {
+define( [ 'underscore', './tvparser', './charclasses', './datatypes', './type' ],
+function(  _          ,    TVParser ,    cc          ,    dt        ,    Type  ) {
 
   //--- Parser --------------------------------------------
   
   function Parser() { TVParser.apply(this, arguments); }
   
   Parser.prototype = new TVParser();
-  
+
+  /*  
   Parser.prototype.namePattern = function() {
     var pat = '';
-    while (!this.atEnd()) {
+    while (!this.atEnd() && cc.isAlnum(this.peek()) ) {
       if      (cc.isAlnum(this.peek())) pat += this.consume();
       else if (this.peek() === '*'    ) this.consume(), pat += '(.*)';
       else                              break;
     }
     //console.log('regexp: ', pat);
-    return new RegExp('^'+pat+'$');
+    return pat.length > 0 ? new RegExp('^'+pat+'$') : new RegExp
   }
+  */
 
   //--- Namespace class ----------------------------------
     
@@ -155,18 +157,27 @@ function(  _          ,    TVParser ,    dt        ,    Type  ) {
 
   function parseFunctionFilter(filterspec) {  
     
-    var parser = new TVParser(filterspec);
+    var parser = new Parser(filterspec);
     
     var filters = [];
-    if (parser.peek() === '.') parser.consume(), filters.push( parseNameFilter()       );
+    if (true)                                    filters.push( parseNameFilter()       );
     if (parser.peek() === '(') parser.consume(), filters.push( parseSignatureFilter()  ), parser.consume();
     if (parser.peek() === ':') parser.consume(), filters.push( parseReturnTypeFilter() );
     
     return andCombineFilters(filters);
 
+    //----
+    
     function parseNameFilter() {
-      var pat = parser.namePattern();
-      return function(func) { return func.name.match(pat); };
+      var pat = '';
+      while (!parser.atEnd() && cc.isAlnum(parser.peek()) ) {
+        if      (cc.isAlnum(parser.peek())) pat += parser.consume();
+        else if (parser.peek() === '*'    ) parser.consume(), pat += '(.*)';
+        else                                break;
+      }
+      //console.log('name filter regexp: "' + pat + '"', pat.length);
+      return pat.length > 0 ? function(func) { return func.name.match(new RegExp('^'+pat+'$')); } 
+                            : function()     { return true; };
     }    
    
     function parseSignatureFilter() {
@@ -210,8 +221,8 @@ function(  _          ,    TVParser ,    dt        ,    Type  ) {
     }
     
     function parseReturnTypeFilter() {
-      //console.log('parseReturnTypeFilter()');
       for (var type = ''; !parser.atEnd(); type += parser.consume());
+      //console.log('parseReturnTypeFilter(), type ="'+type+'"');
       if (type === '') return function()     { return true; }
       else             return function(func) { return func.type == type; }
     }
