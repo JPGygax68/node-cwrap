@@ -61,39 +61,39 @@ function generateNodeJS(intf, writer) {
 }
 
 function parse(filename, options) {
-	var options = options || {};
-	var tmpdir, modulename, ifile, xmlfile;
-	
-	return Q.nfcall(temp.mkdir, 'cwrap')
-		.then( function(dirPath) {
-			tmpdir = dirPath;
-			module = path.basename(filename, path.extname(filename));
-			ifile  = path.join(tmpdir, modulename + '.i');
-			var data = [
-				'%module ' + modulename,
-				'%{',
-				'#include "'+path.resolve(filename)+'"',
-				'%}',
-				'%include "'+path.resolve(filename)+'"'
-			].join('\n');
-			//console.log(ifile, data);
-			return fs.write(ifile, data);
-		})
-		.then( function() {
-			xmlfile = path.join(tmpdir, module + '.xml');
-			var params = '-xml -c++ -o "'+xmlfile+'" "'+ifile+'"';
-			return Q.nfcall(exec, 'swig '+params);
-		})
-		.then( function() {
-			return fs.read(xmlfile);
-		})
-		// TODO: remove this, it's for debugging only
-		.then( function(xmldata) {
-			return fs.write('swig.xml', xmldata).then( function() { return xmldata; } );
-		})
-		.then( swig.parseSwigXml.bind(this) )
-		// TODO: remove temporary file
-		;
+  var options = options || {};
+  var tmpdir, modulename, ifile, xmlfile;
+  
+  return Q.nfcall(temp.mkdir, 'cwrap')
+    .then( function(dirPath) {
+      tmpdir = dirPath;
+      module = path.basename(filename, path.extname(filename));
+      ifile  = path.join(tmpdir, modulename + '.i');
+      var data = [
+        '%module ' + modulename,
+        '%{',
+        '#include "'+path.resolve(filename)+'"',
+        '%}',
+        '%include "'+path.resolve(filename)+'"'
+      ].join('\n');
+      //console.log(ifile, data);
+      return fs.write(ifile, data);
+    })
+    .then( function() {
+      xmlfile = path.join(tmpdir, module + '.xml');
+      var params = '-xml -c++ -o "'+xmlfile+'" "'+ifile+'"';
+      return Q.nfcall(exec, 'swig '+params);
+    })
+    .then( function() {
+      return fs.read(xmlfile);
+    })
+    // TODO: remove this, it's for debugging only
+    .then( function(xmldata) {
+      return fs.write('swig.xml', xmldata).then( function() { return xmldata; } );
+    })
+    .then( swig.parseSwigXml.bind(this) )
+    // TODO: remove temporary file
+    ;
 }
 
 //--- Helper stuff ---
@@ -108,7 +108,7 @@ function warn(msg) {
 
 //--- Public interface ---
 
-exports.parse						  = parse;
+exports.parse             = parse;
 exports.parseSwigXml      = swig.parseSwigXml;
 exports.registerTypeAlias = registerTypeAlias;
 exports.generate          = generate;

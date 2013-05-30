@@ -23,16 +23,16 @@ function(  _          ,    TVParser ,    cc          ,    dt        ,    Type  )
     this.typedef     = this.typedefs; // alias;
     this._funcs      = {};
     this.function    = this._funcs; // alias
-    this.constants   = {};
-    this.constant    = this.constants; // alias
+    this._consts     = {};
+    this.constant    = this._consts; // alias
     this.classes     = {};
     this.classByName = this.classes; // alias
     this.namespaces  = {};
     this.namespace   = this.namespaces; // alias
   }
-  
-  // TODO: newTypedef(), lookupType(); both recursive
-  
+
+  //--- Typedef's -----------
+    
   Namespace.prototype.newTypedef = function(name, value) {
     var nsn = this._getNamespace(name);
     if (nsn) {
@@ -42,6 +42,8 @@ function(  _          ,    TVParser ,    cc          ,    dt        ,    Type  )
       this.typedefs[name] = value;
     }
   }
+  
+  //--- Functions -----------
   
   Namespace.prototype.functions = function(filterspec) {
     var filter = filterspec ? parseFunctionFilter(filterspec) : function() { return true; };
@@ -66,6 +68,23 @@ function(  _          ,    TVParser ,    cc          ,    dt        ,    Type  )
     if (this._funcs[func.cdecl_name]) delete this._funcs[func.cdecl_name]; 
   }
   
+  Namespace.prototype.functions = function(filterspec) {
+    var filter = filterspec ? parseFunctionFilter(filterspec) : function() { return true; };
+    var list = [];
+    _.each(this._funcs, function(func) { if (filter(func)) list.push(func); } );
+    return list;
+  }
+  
+  //--- Constants -----------
+  
+  Namespace.prototype.constants = function(pattern, cb) {
+    if (typeof(pattern) === 'function') { cb = pattern; pattern = undefined; }
+    var filter = globbingPatternToFilter(pattern);
+    var list = [];
+    _.each(this._consts, function(const_, name) { if (filter(name)) { list.push(const_); if (cb) cb(const_, name); }  } );
+    return list;
+  }
+  
   Namespace.prototype.newConstant = function(cdecl_name) {
     var nsn = this._getNamespace(cdecl_name);
     if (nsn) {
@@ -73,15 +92,17 @@ function(  _          ,    TVParser ,    cc          ,    dt        ,    Type  )
     }
     else {
       var constant = new dt.Constant(this, cdecl_name);
-      this.constants[cdecl_name] = constant;
+      this._consts[cdecl_name] = constant;
       return constant;
     }
   }
   
   Namespace.prototype.removeConstant = function(constant) { 
-    if (this.constants[constant.cdecl_name]) delete this.constants[constant.cdecl_name]; 
+    if (this._consts[constant.cdecl_name]) delete this._consts[constant.cdecl_name]; 
   }
 
+  //--- Enums ---------------
+  
   Namespace.prototype.newEnum = function(cdecl_name) {
     var nsn = this._getNamespace(name);
     if (nsn) {
@@ -102,7 +123,7 @@ function(  _          ,    TVParser ,    cc          ,    dt        ,    Type  )
     
     if (config.init) config.init.call(this);
     _(this._funcs).each(config._funcs, this);
-    _(this.constants).each(config.constants, this);
+    _(this._consts).each(config._consts, this);
     
     this._orderClasses();
 
@@ -264,6 +285,22 @@ function(  _          ,    TVParser ,    cc          ,    dt        ,    Type  )
       return function(el) { for (var i = 0; i < filters.length; i ++) if (!filters[i](el)) return false; return true; };
     }
     
+  }
+  
+  function globbingPatternToFilter(pattern) {
+    var pattern = typeof pattern === 'undefined' ? '' : pattern;
+    var parser = new Parser(pattern);
+    var re = '';
+    if (!parser.atEnd() && cc.isIdentifierStart(parser.peek())) {      
+      while (!parser.atEnd() && (cc.isIdentifierPart(parser.peek()))) {
+        if      (cc.isAlnum(parser.peek())) re += parser.consume();
+        else if (parser.peek()  === '*'   ) parser.consume() , re += '(.*)';
+        else                                break;
+      }
+    }
+    //console.log('name filter regexp: "' + re + '"', re.length);
+    return re.length > 0 ? function(name) { return name.match(new RegExp('^'+re+'$')); } 
+                         : function()     { return true; };
   }
   
   //--- EXPORTS ---
