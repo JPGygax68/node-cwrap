@@ -10,9 +10,9 @@ Project TpFile=
 Filter=
 Create Tagfile=0
 [Files]
-0=cwrap.js
-1=test\query.js
-2=test\test_query.js
-3=test\test_parse.js
-4=swig.js
-5=interface.js
+0=.gitignore
+1=package.json
+2=swig.js
+3=cwrap.js
+4=namespace.js
+5=datatypes.js

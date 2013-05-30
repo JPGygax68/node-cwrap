@@ -11,22 +11,14 @@ function(  _          ,    TVParser ,    cc          ,    dt        ,    Type  )
   
   Parser.prototype = new TVParser();
 
-  /*  
-  Parser.prototype.namePattern = function() {
-    var pat = '';
-    while (!this.atEnd() && cc.isAlnum(this.peek()) ) {
-      if      (cc.isAlnum(this.peek())) pat += this.consume();
-      else if (this.peek() === '*'    ) this.consume(), pat += '(.*)';
-      else                              break;
-    }
-    //console.log('regexp: ', pat);
-    return pat.length > 0 ? new RegExp('^'+pat+'$') : new RegExp
-  }
-  */
-
   //--- Namespace class ----------------------------------
     
-  function Namespace() {
+  /* The top-level Namespace object represents the interface that will be wrapped.
+   */
+  function Namespace(parent) {
+    this.parent      = parent;
+    this.typedefs    = {};
+    this.typedef     = this.typedefs; // alias;
     this._funcs   = {};
     this.function    = this._funcs; // alias
     this.constants   = {};
@@ -35,6 +27,25 @@ function(  _          ,    TVParser ,    cc          ,    dt        ,    Type  )
     this.classByName = this.classes; // alias
     this.namespaces  = {};
     this.namespace   = this.namespaces; // alias
+  }
+  
+  // TODO: newTypedef(), lookupType(); both recursive
+  
+  Namespace.prototype.newTypedef = function(name, value) {
+    var nsn = this._getNamespace(name);
+    if (nsn) {
+      return nsn.namespace.newTypedef(nsn.name, value);
+    }
+    else {
+      this.typedefs[name] = value;
+    }
+  }
+  
+  Namespace.prototype.normalizeType = function(typespec) {
+    return typespec.split('.').map( function(elt) { return lookupType(elt); } ).join('.');
+    
+    function lookupType(name) {
+    }
   }
   
   Namespace.prototype.functions = function(filterspec) {
@@ -92,15 +103,6 @@ function(  _          ,    TVParser ,    cc          ,    dt        ,    Type  )
     if (this.enums[enum_.cdecl_name]) delete this.enums[enum_.cdecl_name];
   }
    
-  
-  /*
-  Namespace.prototype.newNamespace = function(name) {
-    var ns = new Namespace();
-    this.namespaces[name] = ns;
-    return ns;
-  }
-  */
-  
   Namespace.prototype.process = function(config) {
     
     if (config.init) config.init.call(this);
@@ -140,6 +142,28 @@ function(  _          ,    TVParser ,    cc          ,    dt        ,    Type  )
     }
   }
   
+  Namespace.prototype._lookupTypedef = function(name) {
+    
+    var result, value = name, key = name, ns = this, rootns;
+    
+    while (true) {      
+      //console.log(key, value, result);      
+      result = value; // current lookup (or original type) becomes result            
+      // If key refers to child ns, delegate; else lookup in present ns
+      var nsn = ns._getNamespace(key);
+      if (nsn) value = nsn.namespace._lookupTypedef(nsn.name);
+      else     value = ns.typedefs[key];     
+      // If lookup failed, current definition is final
+      if (value === undefined) break;
+      key = value; // current definition becomes key for next lookup
+      if (!rootns) ns = rootns = getRootNS(ns); // all lookups after the first are relative to the root ns
+    }
+    
+    return result;
+    
+    function getRootNS(ns) { var parent; while ((parent = ns.parent)) ns = parent; return ns; }
+  }
+
   Namespace.prototype._getNamespace = function(name) {
     var p = name.indexOf('::');
     if (p >= 0) {
@@ -147,14 +171,14 @@ function(  _          ,    TVParser ,    cc          ,    dt        ,    Type  )
       var nsname = name.slice(0, p);
       var name = name.slice(p + 2);
       if (!this.namespaces[nsname]) {
-        var ns = new Namespace();
+        var ns = new Namespace(this);
         this.namespaces[nsname] = ns;
         return { name: name, namespace: ns };
       }
       else return { name: name, namespace: this.namespaces[nsname] };
     }
   }
-
+  
   function parseFunctionFilter(filterspec) {  
     
     var parser = new Parser(filterspec);

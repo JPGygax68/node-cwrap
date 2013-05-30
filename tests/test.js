@@ -30,6 +30,10 @@ describe('Testing with squish library; ', function() {
     describe('#namespace[]', function() {
       it('gives access to namespace objects by string index', function() { assert( typeof (squish = intf.namespace['squish']) === 'object' ); });
     });
+    describe('#_lookupTypedef', function() {
+      it('correctly looks up definition of squish::u8', function() { assert.equal( intf._lookupTypedef('squish::u8'), 'unsigned char' ); } );
+      it('squish child namespace correctly looks up "u8"', function() { assert.equal( squish._lookupTypedef('u8'), 'unsigned char' ); } );
+    });
     describe('#functions()', function() {
       it('returns all functions as an array', function() { assert( squish.functions().length > 0 ); } );
       it('can filter functions by name', function() { assert.equal( squish.functions('Compress').length, 1 ); } );

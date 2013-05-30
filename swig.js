@@ -22,6 +22,20 @@ function(  xmldom ,  xpath ,    Type ,    Namespace  ) {
 
     var intf = new Namespace();
     
+    // Get the typedefs    
+    var attrib_lists = xpath.select('//cdecl/attributelist/attribute[@name="kind"][@value="typedef"]/..', doc);
+    attrib_lists.forEach( function(attrib_list) {
+      // Extract the type name and definition
+      var name = getAttributeValue('name', attrib_list);
+      var type = getAttributeValue('type', attrib_list);
+      if (type) {
+        //console.log(name + ' = ' + type);
+        // Create and add a new typedef descriptor
+        intf.newTypedef(name, type);
+      }
+      // else TODO: how to wrap global variables ?
+    });
+    
     // Get the functions
     var attrib_lists = xpath.select('//cdecl/attributelist/attribute[@name="kind"][@value="function"]/..', doc);
     attrib_lists.forEach( function(attrib_list) {
@@ -72,8 +86,6 @@ function(  xmldom ,  xpath ,    Type ,    Namespace  ) {
     var attrib_lists = xpath.select('//cdecl/attributelist/attribute[@name="kind"][@value="variable"]/..', doc);
     attrib_lists.forEach( function(attrib_list) {
       // Extract the constant name & other attributes
-      //var name         = xpath.select('./attribute[@name="name"]/@value'        , attrib_list)[0].value;
-      //var hasconsttype = xpath.select('./attribute[@name="hasconsttype"]/@value', attrib_list)[0].value;
       var name         = getAttributeValue('name'        , attrib_list);
       var hasconsttype = getAttributeValue('hasconsttype', attrib_list);
       if (hasconsttype) {
@@ -111,57 +123,6 @@ function(  xmldom ,  xpath ,    Type ,    Namespace  ) {
         }
       }
     });
-    
-    /*
-    var attrib_lists = xpath.select('//enum/attributelist/attribute[@name="kind"][@value="variable"]/..', doc);
-    attrib_lists.forEach( function(attrib_list) {
-      // Extract the constant name & other attributes
-      //var name         = xpath.select('./attribute[@name="name"]/@value'        , attrib_list)[0].value;
-      //var hasconsttype = xpath.select('./attribute[@name="hasconsttype"]/@value', attrib_list)[0].value;
-      var name         = getAttributeValue('name'        , attrib_list);
-      var hasconsttype = getAttributeValue('hasconsttype', attrib_list);
-      if (hasconsttype) {
-        // Create and add a new constant descriptor
-        var constant = intf.newConstant(name);
-        // Extract and store the data
-        constant.type  = new Type( xpath.select('./attribute[@name="type"]/@value' , attrib_list)[0].value ).popQualifiers();
-        //console.log('New constant:', name, constant.type.toString() );
-        constant.value = xpath.select('./attribute[@name="value"]/@value', attrib_list)[0].value;
-      }
-      // else TODO: how to wrap global variables ?
-    });
-    */
-    
-    // Get the types
-    /*
-    var typescopes = xpath.select('//typescope', doc);
-    typescopes.forEach( function(scope) { 
-      var name = xpath.select('./attributelist/attribute[@name="name"]/@value', scope)[0].value;
-      console.log('Typescope:', name); 
-      var types = xpath.select('./attributelist/typetab/attributelist/attribute', scope);
-      types.forEach( function(attr) {
-        if (attr.attributes.length > 0) {
-          //console.log('attr:', attr.attributes);
-          var name  = xpath.select('./@name' , attr)[0].value;
-          var value = xpath.select('./@value', attr)[0].value;
-          console.log(name, value);
-        }
-      });
-    });
-    */
-    var attrib_lists = xpath.select('//cdecl/attributelist/attribute[@name="kind"][@value="typedef"]/..', doc);
-    attrib_lists.forEach( function(attrib_list) {
-      // Extract the type name and definition
-      var name = getAttributeValue('name', attrib_list);
-      var type = getAttributeValue('type', attrib_list);
-      if (type) {
-        // Create and add a new typedef descriptor
-        // TODO
-        console.log(name + ' = ' + type);
-      }
-      // else TODO: how to wrap global variables ?
-    });
-    
     
     // Done.
     //console.log( JSON.stringify(intf.functions, null, '\t') );
