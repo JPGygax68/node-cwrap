@@ -6,7 +6,9 @@ define( [ 'underscore', './tvparser', './charclasses', './datatypes', './type' ]
 function(  _          ,    TVParser ,    cc          ,    dt        ,    Type  ) {
 
   //--- Parser --------------------------------------------
-  
+
+  /* We use a derivative of the TrivialParser to parse filters.
+   */  
   function Parser() { TVParser.apply(this, arguments); }
   
   Parser.prototype = new TVParser();
@@ -19,7 +21,7 @@ function(  _          ,    TVParser ,    cc          ,    dt        ,    Type  )
     this.parent      = parent;
     this.typedefs    = {};
     this.typedef     = this.typedefs; // alias;
-    this._funcs   = {};
+    this._funcs      = {};
     this.function    = this._funcs; // alias
     this.constants   = {};
     this.constant    = this.constants; // alias
@@ -38,13 +40,6 @@ function(  _          ,    TVParser ,    cc          ,    dt        ,    Type  )
     }
     else {
       this.typedefs[name] = value;
-    }
-  }
-  
-  Namespace.prototype.normalizeType = function(typespec) {
-    return typespec.split('.').map( function(elt) { return lookupType(elt); } ).join('.');
-    
-    function lookupType(name) {
     }
   }
   
@@ -142,6 +137,14 @@ function(  _          ,    TVParser ,    cc          ,    dt        ,    Type  )
     }
   }
   
+  /**
+    Note: _lookupTypedef() is currently() working under the assumption that SWIG
+      always uses fully qualified typenames (e.g. "squish::u8" rather than just "u8")
+      even if the type is being used within the namespace where it is defined.
+    Note 2: _lookupTypedef() attempts repeated lookups until it fails, in order to
+      support typedef chains. All but the first lookup are done against the root 
+      namespace (again based on the assumption that SWIG fully qualifies all types).
+   */
   Namespace.prototype._lookupTypedef = function(name) {
     
     var result, value = name, key = name, ns = this, rootns;
