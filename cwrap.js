@@ -25,7 +25,7 @@ var type_map = {
   'bool'              : { v8_class: 'Boolean'  , accessor: 'BooleanValue', buffer_ctor: 'Uint8Array'  , ext_array_type: 'kExternalByteArray'          },
   'long long'         : { v8_class: 'Int64'    , accessor: 'Int64Value'  },
   'unsigned long long': { v8_class: 'Uint64'   , accessor: 'Uint64Value' },
-  'p.void'            : { v8_class: 'External' , accessor: ''  } // TODO: THIS IS SPECIAL
+  'p.void'            : { v8_class: 'External' , accessor: ''            } // TODO: THIS IS SPECIAL
 };
 
 function findType(type) {
@@ -54,13 +54,14 @@ function generate(tmpl_file, intf, writer) {
 }
 
 function generateNodeJS(intf, writer) {
-  //intf._orderClasses();
+
   return fs.read('./node_modules/cwrap/resources/nodebindings.tmpl.cc')
     .then( function(tmpl_code) { return new Template(tmpl_code, 'DEFAULT NODEJS TEMPLATE'); } )
     .then( function(tpl)       { return tpl.exec(intf, writer); } );
 }
 
 function parse(filename, options) {
+  
   var options = options || {};
   var tmpdir, modulename, ifile, xmlfile;
   

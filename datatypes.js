@@ -7,8 +7,8 @@ function(  _          ,    Type  ) {
 
   //--- Struct / class --------
   
-  function Struct(name, intf) {
-    if (!intf) throw new Error('INTERNAL: Struct constructor needs 2 parameters: name and interface object');
+  function Struct(intf, name) {
+    if (!intf) throw new Error('INTERNAL: Struct constructor needs 2 parameters: interface object and name');
     this['interface']   = intf;
     this.name           = name;
     this.methods        = {};
@@ -32,10 +32,10 @@ function(  _          ,    Type  ) {
     this.exposed = exposed !== false;
   }
   
-  Struct.prototype.setParentClass = function(parent) {
-    console.assert(typeof parent === 'string');
-    this['interface'].getClass(parent); // make sure it's in the list of classes
-    this.derived_from = parent;
+  Struct.prototype.setParentClass = function(parent_name) {
+    console.assert(typeof parent_name === 'string');
+    this['interface'].getClass(parent_name); // make sure it's in the list of classes
+    this.derived_from = parent_name;
   }
   
   Struct.prototype.addConstant = function(constant) {
@@ -77,7 +77,7 @@ function(  _          ,    Type  ) {
   
   CFunction.prototype.removePrefix = function(prefix) {
     if (this.cdecl_name.slice(0, prefix.length) === prefix) this.name = this.cdecl_name.slice(prefix.length);
-    else console.warn('Function "'+func.name+'" does not have the "'+prefix+'" prefix');
+    else console.warn('Function "'+this.name+'" does not have the "'+prefix+'" prefix');
     return this;
   }    
 
