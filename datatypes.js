@@ -209,10 +209,12 @@ function(  _          ,    Type  ) {
   //--- Parameter ---
   
   function Parameter(index, name, type) {
-    this.index = index;
-    this.name  = name;
-    this.type  = typeof type === 'string' ? new Type(type) : type;
-    this.ctype = this.type.toC();
+    this.index      = index;
+    this.name       = name;
+    this.type       = typeof type === 'string' ? new Type(type) : type;
+    this.ctype      = this.type.toC();
+    this.value_expr = this.type === 'p.q(const).char' ? '* String::Utf8Value('+this.name+')' : this.name;
+    this.input      = true;
   }
   
   Parameter.prototype.is = function(descr) {
