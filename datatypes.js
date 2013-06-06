@@ -77,7 +77,7 @@ function(  _          ,    Type  ) {
   
   CFunction.prototype.removePrefix = function(prefix) {
     if (this.cdecl_name.slice(0, prefix.length) === prefix) this.name = this.cdecl_name.slice(prefix.length);
-    else console.warn('Function "'+this.name+'" does not have the "'+prefix+'" prefix');
+    else console.warn('"remove prefix" action: function "'+this.name+'" does not have the "'+prefix+'" prefix');
     return this;
   }    
 

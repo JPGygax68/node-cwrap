@@ -49,6 +49,7 @@ function registerTypeAlias(new_type, alias_for) {
 }
 
 function generate(tmpl_file, intf, writer) {
+  console.log('generate(), writer:', writer);
   return Template.read(tmpl_file)
     .then( function(template) { return template.exec(intf, writer); } );
 }
@@ -97,6 +98,12 @@ function parse(filename, options) {
     ;
 }
 
+function getDefaultTemplate() {
+  var filename = path.dirname(module.filename) + '/resources/nodebindings.tmpl.cc';
+  //console.log(filename);
+  return fs.read( filename );
+}
+
 //--- Helper stuff ---
 
 function log(msg) {
@@ -109,8 +116,9 @@ function warn(msg) {
 
 //--- Public interface ---
 
-exports.parse             = parse;
-exports.parseSwigXml      = swig.parseSwigXml;
-exports.registerTypeAlias = registerTypeAlias;
-exports.generate          = generate;
-exports.generateNodeJS    = generateNodeJS;
+exports.parse              = parse;
+exports.parseSwigXml       = swig.parseSwigXml;
+exports.registerTypeAlias  = registerTypeAlias;
+exports.generate           = generate;
+exports.generateNodeJS     = generateNodeJS;
+exports.getDefaultTemplate = getDefaultTemplate;
