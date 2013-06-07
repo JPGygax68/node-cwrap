@@ -131,7 +131,7 @@ function(  _          ,    TVParser ,    cc          ,    dt        ,    Type  )
     //console.log('getClass()', this.name, class_name);
     console.assert( class_name.indexOf('::') < 0 );
     var theclass = this.getClasses[class_name];
-    if (!theclass) theclass = this.getClasses[class_name] = new dt.Struct(this, class_name);
+    if (!theclass) theclass = this.classes[class_name] = new dt.Struct(this, class_name);
     return theclass;
   }
 
@@ -158,7 +158,7 @@ function(  _          ,    TVParser ,    cc          ,    dt        ,    Type  )
     if (config.init) config.init.call(this);
     _(this.functions).each(config.functions, this);
     _(this.constants).each(config.constants, this);
-    // TODO: getClasses
+    // TODO: classes
     // TODO: nested namespaces
     
     this._orderClasses();
