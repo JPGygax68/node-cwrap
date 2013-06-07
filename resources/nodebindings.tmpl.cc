@@ -358,7 +358,7 @@ private:
   {{$elsif type == 'p.void'}}
   // TODO: void * parameter!
   {{$else}}
-  {{$=ctype}} {{$=name}} = static_cast<{{$=ctype}}>( args[{{$=index}}]->{{$=v8TypeAccessor(type)}}() );
+  {{$=ctype}} {{$=name}} = static_cast<{{$=ctype}}>( args[{{$=index}}]->{{$=value_expr}}() );
   {{$end}}
 {{$end macro extract_parameter}}
 
