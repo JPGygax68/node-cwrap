@@ -169,13 +169,13 @@ function(  _          ,    Type  ) {
   // TODO: this does not support more than one factory function
   
   CFunction.prototype.toFactory = function(class_name) {
-    this['interface'].classes[class_name].factory = this;
+    this['interface'].getClass(class_name).factory = this;
     this['interface'].removeFunction(this);
     return this;
   }
   
   CFunction.prototype.toDestructor = function(class_name) {
-    this['interface'].classes[class_name].destructor = this;
+    this['interface'].getClass(class_name).destructor = this;
     this['interface'].removeFunction(this);
     return this;
   }

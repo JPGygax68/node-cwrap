@@ -34,12 +34,12 @@ describe('Testing with squish library; ', function() {
       it('correctly looks up definition of squish::u8', function() { assert.equal( intf._lookupTypedef('squish::u8'), 'unsigned char' ); } );
       it('squish child namespace correctly looks up "u8"', function() { assert.equal( squish._lookupTypedef('u8'), 'unsigned char' ); } );
     });
-    describe('#functions()', function() {
-      it('returns all functions as an array', function() { assert( squish.functions().length > 0 ); } );
-      it('can filter functions by name', function() { assert.equal( squish.functions('Compress').length, 1 ); } );
-      it('can filter functions by return type', function() { assert.equal( squish.functions(':void').length, 5 ); } );
-      it('can filter functions by argument name', function() { assert.equal( squish.functions('(rgba,**)').length, 5 ); } );
-      it('can filter functions by argument type', function() { assert.equal( squish.functions('(:p.u8,**)').length, 3 ); } );
+    describe('#getFunctions()', function() {
+      it('returns all functions as an array', function() { assert( squish.getFunctions().length > 0 ); } );
+      it('can filter functions by name', function() { assert.equal( squish.getFunctions('Compress').length, 1 ); } );
+      it('can filter functions by return type', function() { assert.equal( squish.getFunctions(':void').length, 5 ); } );
+      it('can filter functions by argument name', function() { assert.equal( squish.getFunctions('(rgba,**)').length, 5 ); } );
+      it('can filter functions by argument type', function() { assert.equal( squish.getFunctions('(:p.u8,**)').length, 3 ); } );
     });
   });  
 });

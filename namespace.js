@@ -21,12 +21,12 @@ function(  _          ,    TVParser ,    cc          ,    dt        ,    Type  )
     this.parent      = parent;
     this.typedefs    = {};
     this.typedef     = this.typedefs; // alias;
-    this._funcs      = {};
-    this.function    = this._funcs; // alias
-    this._consts     = {};
-    this.constant    = this._consts; // alias
-    this._classes    = {};
-    this.classByName = this._classes; // alias
+    this.functions   = {};
+    this.function    = this.functions; // alias
+    this.constants   = {};
+    this.constant    = this.constants; // alias
+    this.classes     = {};
+    this.classByName = this.classes; // alias
     this.namespaces  = {};
     this.namespace   = this.namespaces; // alias
   }
@@ -45,10 +45,10 @@ function(  _          ,    TVParser ,    cc          ,    dt        ,    Type  )
   
   //--- Functions -----------
   
-  Namespace.prototype.functions = function(filterspec) {
+  Namespace.prototype.getFunctions = function(filterspec) {
     var filter = filterspec ? parseFunctionFilter(filterspec) : function() { return true; };
     var list = [];
-    _.each(this._funcs, function(func) { if (filter(func)) list.push(func); } );
+    _.each(this.functions, function(func) { if (filter(func)) list.push(func); } );
     return list;
   }
   
@@ -59,29 +59,29 @@ function(  _          ,    TVParser ,    cc          ,    dt        ,    Type  )
     }
     else {    
       var func = new dt.Function(this, cdecl_name);
-      this._funcs[cdecl_name] = func;
+      this.functions[cdecl_name] = func;
       return func;
     }
   }
 
   Namespace.prototype.removeFunction = function(func) { 
-    if (this._funcs[func.cdecl_name]) delete this._funcs[func.cdecl_name]; 
+    if (this.functions[func.cdecl_name]) delete this.functions[func.cdecl_name]; 
   }
   
-  Namespace.prototype.functions = function(filterspec) {
+  Namespace.prototype.getFunctions = function(filterspec) {
     var filter = filterspec ? parseFunctionFilter(filterspec) : function() { return true; };
     var list = [];
-    _.each(this._funcs, function(func) { if (filter(func)) list.push(func); } );
+    _.each(this.functions, function(func) { if (filter(func)) list.push(func); } );
     return list;
   }
   
   //--- Constants -----------
   
-  Namespace.prototype.constants = function(pattern, cb) {
+  Namespace.prototype.getConstants = function(pattern, cb) {
     if (typeof(pattern) === 'function') { cb = pattern; pattern = undefined; }
     var filter = globbingPatternToFilter(pattern);
     var list = [];
-    _.each(this._consts, function(const_, name) { if (filter(name)) { list.push(const_); if (cb) cb(const_, name); }  } );
+    _.each(this.constants, function(const_, name) { if (filter(name)) { list.push(const_); if (cb) cb(const_, name); }  } );
     return list;
   }
   
@@ -92,22 +92,22 @@ function(  _          ,    TVParser ,    cc          ,    dt        ,    Type  )
     }
     else {
       var constant = new dt.Constant(this, cdecl_name);
-      this._consts[cdecl_name] = constant;
+      this.constants[cdecl_name] = constant;
       return constant;
     }
   }
   
   Namespace.prototype.removeConstant = function(constant) { 
-    if (this._consts[constant.cdecl_name]) delete this._consts[constant.cdecl_name]; 
+    if (this.constants[constant.cdecl_name]) delete this.constants[constant.cdecl_name]; 
   }
 
   //--- Classes -----------
   
-  Namespace.prototype.classes = function(pattern, cb) {
+  Namespace.prototype.getClasses = function(pattern, cb) {
     if (typeof(pattern) === 'function') { cb = pattern; pattern = undefined; }
     var filter = globbingPatternToFilter(pattern);
     var list = [];
-    _.each(this._classes, function(class_, name) { if (filter(name)) { list.push(class_); if (cb) cb(class_, name); }  } );
+    _.each(this.classes, function(class_, name) { if (filter(name)) { list.push(class_); if (cb) cb(class_, name); }  } );
     return list;
   }
   
@@ -118,7 +118,7 @@ function(  _          ,    TVParser ,    cc          ,    dt        ,    Type  )
     }
     else {
       var class_ = new dt.Struct(this, cdecl_name);
-      this._classes[cdecl_name] = class_;
+      this.classes[cdecl_name] = class_;
       return class_;
     }
   }
@@ -128,9 +128,10 @@ function(  _          ,    TVParser ,    cc          ,    dt        ,    Type  )
         may not be compounded.
    */  
   Namespace.prototype.getClass = function(class_name) {
+    //console.log('getClass()', this.name, class_name);
     console.assert( class_name.indexOf('::') < 0 );
-    var theclass = this.classes[class_name];
-    if (!theclass) theclass = this.classes[class_name] = new dt.Struct(this, class_name);
+    var theclass = this.getClasses[class_name];
+    if (!theclass) theclass = this.getClasses[class_name] = new dt.Struct(this, class_name);
     return theclass;
   }
 
@@ -155,9 +156,9 @@ function(  _          ,    TVParser ,    cc          ,    dt        ,    Type  )
   Namespace.prototype.configure = function(config) {
     
     if (config.init) config.init.call(this);
-    _(this._funcs).each(config.functions, this);
-    _(this._consts).each(config.constants, this);
-    // TODO: classes
+    _(this.functions).each(config.functions, this);
+    _(this.constants).each(config.constants, this);
+    // TODO: getClasses
     // TODO: nested namespaces
     
     this._orderClasses();
@@ -170,13 +171,13 @@ function(  _          ,    TVParser ,    cc          ,    dt        ,    Type  )
   //--- INTERNAL ROUTINES -----------------------
   
   Namespace.prototype._orderClasses = function() {
-    var self = this, _classes = {};
-    _.each(this._classes, addClass);
-    this._classes = _classes;
+    var self = this, classes = {};
+    _.each(this.classes, addClass);
+    this.classes = classes;
 
     function addClass(cls) {
-      if (!_classes[cls]) { 
-        if (cls.derived_from) addClass(self._classes[cls.derived_from]); _classes[cls.name] = cls; 
+      if (!classes[cls]) { 
+        if (cls.derived_from) addClass(self.classes[cls.derived_from]); classes[cls.name] = cls; 
       }
     }
   }
@@ -187,8 +188,8 @@ function(  _          ,    TVParser ,    cc          ,    dt        ,    Type  )
       return nsn.namespace._getClass(nsn.name);
     }
     else {
-      var theclass = this._classes[name];
-      if (!theclass) theclass = this._classes[name] = new dt.Struct(this, name);
+      var theclass = this.classes[name];
+      if (!theclass) theclass = this.classes[name] = new dt.Struct(this, name);
       return theclass;
     }
   }
