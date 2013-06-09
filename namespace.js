@@ -130,7 +130,7 @@ function(  _          ,    TVParser ,    cc          ,    dt        ,    Type  )
   Namespace.prototype.getClass = function(class_name) {
     //console.log('getClass()', this.name, class_name);
     console.assert( class_name.indexOf('::') < 0 );
-    var theclass = this.getClasses[class_name];
+    var theclass = this.classes[class_name];
     if (!theclass) theclass = this.classes[class_name] = new dt.Struct(this, class_name);
     return theclass;
   }
@@ -174,6 +174,7 @@ function(  _          ,    TVParser ,    cc          ,    dt        ,    Type  )
     var self = this, classes = {};
     _.each(this.classes, addClass);
     this.classes = classes;
+    //_.each(this.classes, function(class_) { console.log(class_.name, class_.exposed); });
 
     function addClass(cls) {
       if (!classes[cls]) { 

@@ -8,6 +8,7 @@ function(  _          ,    Type  ) {
   //--- Struct / class --------
   
   function Struct(intf, name) {
+    //console.log('new Struct "'+name+'"');
     if (!intf) throw new Error('INTERNAL: Struct constructor needs 2 parameters: interface object and name');
     this['interface']   = intf;
     this.name           = name;
@@ -30,6 +31,7 @@ function(  _          ,    Type  ) {
   
   Struct.prototype.setExposed = function(exposed) {
     this.exposed = exposed !== false;
+    //console.log(this.name+'.setExposed('+ exposed + ')', this.exposed);
   }
   
   Struct.prototype.setParentClass = function(parent_name) {
@@ -111,6 +113,7 @@ function(  _          ,    Type  ) {
     // Remove function from the interface and add it to the class as its constructor
     this['interface'].removeFunction(this);
     the_class.setExposed();
+    //console.log('Class "'+the_class.name+'" exposed ?', the_class.exposed);
     the_class.constructors[0] = this;
     return this;
   }
@@ -214,7 +217,7 @@ function(  _          ,    Type  ) {
     this.type       = typeof type === 'string' ? new Type(type) : type;
     this.ctype      = this.type.toC();
     this.value_expr = this.type === 'p.q(const).char' ? '* String::Utf8Value('+this.name+')' : this.name;
-    this.input      = true;
+    //this.input      = true;
   }
   
   Parameter.prototype.is = function(descr) {
