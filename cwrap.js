@@ -49,7 +49,7 @@ function registerTypeAlias(new_type, alias_for) {
 }
 
 function generate(tmpl_file, intf, writer) {
-  console.log('generate(), writer:', writer);
+  //console.log('generate(), writer:', writer);
   return Template.read(tmpl_file)
     .then( function(template) { return template.exec(intf, writer); } );
 }
@@ -89,10 +89,10 @@ function parse(filename, options) {
     .then( function() {
       return fs.read(xmlfile);
     })
-    // TODO: remove this, it's for debugging only
-    .then( function(xmldata) {
+    // FOR DEBUGGING
+    /* .then( function(xmldata) {
       return fs.write('swig.xml', xmldata).then( function() { return xmldata; } );
-    })
+    }) */
     .then( swig.parseSwigXml.bind(this) )
     // TODO: remove temporary file
     ;

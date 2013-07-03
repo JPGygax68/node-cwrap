@@ -6,8 +6,11 @@
 #include <node_buffer.h>
 #include <v8.h>
 
+/**
+  Use getTypeArray<type>() to convert a JS typed array to a C/C++ array.
+ */
 template <typename Elt> Elt *
-getInputArray( v8::Handle<v8::Value> arg ) {
+getTypedArray( v8::Handle<v8::Value> arg ) {
   return static_cast<Elt *>( arg->ToObject()->GetIndexedPropertiesExternalArrayData() );
 }
 

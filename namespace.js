@@ -161,6 +161,8 @@ function(  _          ,    TVParser ,    cc          ,    dt        ,    Type  )
     // TODO: classes
     // TODO: nested namespaces
     
+    if (!this.header_file) this.header_file = this.name + '.h';
+    
     this._orderClasses();
 
     // TODO: propagate to nested namespaces

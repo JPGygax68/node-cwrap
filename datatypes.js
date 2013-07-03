@@ -79,7 +79,7 @@ function(  _          ,    Type  ) {
   
   CFunction.prototype.removePrefix = function(prefix) {
     if (this.cdecl_name.slice(0, prefix.length) === prefix) this.name = this.cdecl_name.slice(prefix.length);
-    else console.warn('"remove prefix" action: function "'+this.name+'" does not have the "'+prefix+'" prefix');
+    //else console.warn('"remove prefix" action: function "'+this.name+'" does not have the "'+prefix+'" prefix');
     return this;
   }    
 
@@ -193,11 +193,22 @@ function(  _          ,    Type  ) {
     this.name         = cdecl_name;
   }
 
+  Constant.prototype.removePrefix = function(prefix) {
+    if (this.cdecl_name.slice(0, prefix.length) === prefix) this.name = this.cdecl_name.slice(prefix.length);
+    //else console.warn('"remove prefix" action: constant "'+this.name+'" does not have the "'+prefix+'" prefix');
+    return this;
+  }    
+
   Constant.prototype.attachTo = function (class_name) {
     var the_class = this['class'] = this['interface'].getClass(class_name);
     // Remove function from the interface and add it to the class
     this['interface'].removeConstant(this);
     the_class.addConstant(this);
+  }
+  
+  Constant.prototype.remove = function() {
+    this['interface'].removeConstant(this);
+    return null; // intentional STOP to chaining
   }
   
   //--- Enum --------

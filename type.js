@@ -66,10 +66,7 @@ function() {
     }
   }
   
-  Type.prototype.base = function() { 
-    for (var i = this.length -1; i > 0 && this[--i].kind === 'q'; );  
-    return new Type(this.slice(i)); 
-  }
+  Type.prototype.base = function() { return this.slice(this.length - 1); }
 
   // Tests
   

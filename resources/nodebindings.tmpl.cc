@@ -5,26 +5,18 @@
 #include <v8.h>
 #include <utils.h>
 
-#include <lsdisplay2/lsdisplay2.h>
+#include {{$=header_file}}
 
 using namespace v8;
 
 //--- ERROR HANDLING ---
 
-static int  last_error = 0;
-static char error_data[1024];
-
-static bool
-checkForError() {
-  last_error = lsdspGetLastError(error_data, 1024);
-  return last_error != 0;
-}
+{{$--- TODO: implement a routine that will report errors back to the v8 engine ---}}
 
 static Handle<Value>
 lastError(const char *context = nullptr) {
-  char buf[1024];
-  if (last_error == 0) checkForError();
-  lsdspGetErrorText(last_error, buf, 1024);
+  // char buf[1024];
+  {{$--- TODO: call error reporting functions in wrapped module to fill buf with as much info about the error as possible ---}}
   Local<String> text = String::New(buf);
   if (context) {
     text = String::Concat(text, String::New(" "));
@@ -351,14 +343,16 @@ private:
 {{$end macro function_retval}}
 
 {{$macro extract_parameter --------------------------------}}
-  {{$if type == 'p.q(const).char'}}
+  {{$if typed_array }}
+  {{$=ctype}} {{$=name}} = getTypedArray<{{$=type.base()}}>(args[{{$=index}}]);
+  {{$elsif type == 'p.q(const).char'}}
   Local<String> {{$=name}} = args[{{$=index}}]->ToString();
   {{$elsif wrapper_class}}
   void * {{$=name}} = ObjectWrap::Unwrap<{{$=wrapper_class}}>(args[{{$=index}}]->ToObject())->handle();
   {{$elsif type == 'p.void'}}
   // TODO: void * parameter!
   {{$else}}
-  {{$=ctype}} {{$=name}} = static_cast<{{$=ctype}}>( args[{{$=index}}]->{{$=value_expr}}() );
+  {{$=ctype}} {{$=name}} = static_cast<{{$=ctype}}>( args[{{$=index}}]->{{$=v8TypeAccessor(type)}}() );
   {{$end}}
 {{$end macro extract_parameter}}
 
