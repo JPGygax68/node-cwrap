@@ -1,0 +1,23 @@
+- Should the wrapper code template be split into several parts? As in: init, class declaration, function, method, class method, constant, variable, error handling? Makes it easier to customize one without touching the others (prime example: error handling code)
+
+- Or is sufficient to give users the ability to provide overrides or hooks for code that can't be completely covered by generic templates?
+
+- Can there be a generic error handling approach?
+	- For C code: 
+		- provide an expression that determines whether a function call was successful or not, based on the return value (can also discard the return value and call a polling function instead)
+			- could provide a default in the config.init() function
+		- use another expression to retrieve an error description
+		- yet another expression to decide on the JS/v8 exception type [though experts say only 2 should ever be used]
+	- For C++ code:
+		- Use a try .. catch (multiple catch clauses)
+
+
+
+		
+- Argument checking - could be a big help!
+
+- Using a template engine is starting to look more and more impractical!
+	- Replace with code generator modelling code as a tree ? (e.g. addTryBlock(), addConditional(), etc.)
+		- Pre-generate using defaults, let user modify later? IMPRACTICAL
+		- Provide hooks at all stages and levels of code generation
+	- Include the ability add header files

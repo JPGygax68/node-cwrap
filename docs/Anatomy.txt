@@ -1,0 +1,112 @@
+Anatomy of a bindings file
+==========================
+
+- Generic header includes (STL, node, v8, etc.)
+- Module header include
+
+- Error reporting support functions (project-specific, provided by header file?)
+
+- Class forward declarations
+
+- Class declarations
+
+- Method implementations of each class
+
+- Function implementations
+
+- Module init function implemention
+
+- Module initialization macro
+
+
+Class declarations
+------------------
+
+- Either derived from another mapped class, or from node::Object
+
+- Public class methods:
+  - Class initialization [Init()]
+	- Factory/lookup function [GetInstance()]
+
+- Public class members:
+	- constructor function template [tpl]
+	- constructor function [ctor]
+
+- Mapped class methods
+
+- Protected:
+  - Typedef of base class
+	- Destructor (invokes class-specific destruction function, removes instance from module-global map)
+	- Class member: instance map (maps native object handles to instance pointer)
+	- Constructor: gets and stores native object handle
+	
+- Private:
+  - Class method NewHandler() (will be bound to the native function designated as the "constructor" for this class)
+	- All mapped methods
+	- Native handle
+	
+	
+For each class: implementations of predefined methods
+-----------------------------------------------------
+
+- Init() (class method):
+	- Executed only once (static boolean guard variable)
+	- Create the v8 constructor Function Template (that calls the function that user code has defined as "constructor" - if any)
+	- Assign class name to template
+	- Set the function template's Instance Template's internal field count to 1
+	- Assign all mapped static methods directly to the function template
+	- Assign all other methods to the function template's Prototype Template
+	
+- Instantiation of instance map
+
+- Instantiation of the Function Template
+
+- Instantiation of the constructor Function
+
+- Implementation of GetInstance() (class method)
+  - Gets a native object handle
+	- If no wrapper object yet exists for the native handle:
+		- Creates an instance of the wrapper class
+		- Calls the constructor v8 Function (which will call back to the designated native constructor function) [TERMINOLOGY: "native initializer"?]
+		- Calls the Wrap() method object node::Object derivative
+		- Add the new instance to the map
+		
+
+Method wrappers
+---------------
+
+- Obtain the native object handle by calling the Unwrap() method on the wrapper object
+
+- Convert pure input and input/output parameters
+
+- Allocate pure output parameters
+
+- If error reporting by return value:
+	- Call the function, passing all converted/allocated parameters, storing the return value
+	- Use custom error checking expression to determine if error occurred
+  - If an error is detected:
+		- Use custom expressions to determine error type (JS) and text; function name is added to text
+		- Create the exception object and return it
+- else (error reporting by exceptions):
+	- Wrap the function call into a try..catch clause that maps C++ exception classes to JS error classes
+	- Call the function, passing all converted/allocated parameters, storing the return value
+	- The catch() clauses use the stdexcept what() to extract the error string (overridable by custom expression?)
+			
+- Convert output parameters (if not directly mapped)
+
+- If mapping output parameters to the return value (single output parameter):
+  - Return the converted output parameter
+- else if mapping output parameters to a return object (multiple output parameters):
+  - Create an object
+	- Assign convert output parameters (use output parameter names by default)
+	
+
+Module initialization function [init()]
+------------------------------
+
+- Call the initialization functions of all wrapper classes (correct order: ancestors first)
+	- If class is non-abstract, export constructor Function
+
+- Export all global constants
+
+- Export all global functions [NODE_SET_METHOD]

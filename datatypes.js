@@ -183,6 +183,15 @@ function(  _          ,    Type  ) {
     return this;
   }
   
+  /** Replace a parameter with an expression.
+   */
+  CFunction.prototype.replaceParam = function(index, expr) {
+    var parm = this.parm_list[index];
+    parm.input = parm.output = false;
+    parm.value_expr = expr;
+    for (var i = index + 1; i < this.parm_list.length; i ++) this.parm_list[i].index --;
+  }
+  
   // TODO: destructor function
 
   // Constant
